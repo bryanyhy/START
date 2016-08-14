@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,6 +52,46 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Date"
+            android:id="@+id/textView7" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose a date"
+            android:id="@+id/dateButton"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:id="@+id/textView8" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Time"
+                android:id="@+id/sTimeButton"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Time"
+                android:id="@+id/eTimeButton"
+                android:layout_weight="0.6" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Location"
             android:id="@+id/textView6" />
 
@@ -62,11 +103,11 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:id="@+id/nextButton"
-            android:layout_gravity="center_horizontal" />
+            android:text="Create"
+            android:id="@+id/createButton"
+            android:backgroundTint="#22d640" />
 
     </LinearLayout>
 </RelativeLayout>

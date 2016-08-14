@@ -2,19 +2,24 @@ package ambiesoft.start.Fragment;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,6 +31,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ambiesoft.start.R;
 
@@ -43,12 +53,19 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
     private String selectedCategory;
     private Double selectedLat;
     private Double selectedLng;
+    private String selectedDate;
+    private String selectedSTime;
+    private String selectedETime;
+    private int startOrEndTime;
 
     private EditText nameInput;
     private EditText descInput;
     private Spinner categorySpinner;
-    private Button nextButton;
+    private Button createButton;
     private Button locationButton;
+    private Button dateButton;
+    private Button sTimeButton;
+    private Button eTimeButton;
 
 
     private static final String CATEGORY_TYPE[] = {"Instrument", "Dance", "Magic"};
@@ -65,8 +82,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         nameInput = (EditText) view.findViewById(R.id.nameInput);
         descInput = (EditText) view.findViewById(R.id.descInput);
         categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
-        nextButton = (Button) view.findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        createButton = (Button) view.findViewById(R.id.createButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 submit();
@@ -77,6 +94,33 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
             @Override
             public void onClick(View arg0) {
                 chooseLocation();
+            }
+        });
+        dateButton = (Button) view.findViewById(R.id.dateButton);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                try {
+                    chooseDate();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        sTimeButton = (Button) view.findViewById(R.id.sTimeButton);
+        sTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                startOrEndTime = 0;
+                chooseStartTime();
+            }
+        });
+        eTimeButton = (Button) view.findViewById(R.id.eTimeButton);
+        eTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                startOrEndTime = 1;
+                chooseStartTime();
             }
         });
         return view;
@@ -118,6 +162,48 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         });
     }
 
+    public void chooseDate() throws ParseException {
+        // TODO Auto-generated method stub
+        //To show current date in the datepicker
+        Calendar mCurrentDate = Calendar.getInstance();
+        int mYear = mCurrentDate.get(Calendar.YEAR);
+        int mMonth = mCurrentDate.get(Calendar.MONTH);
+        int mDay = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                Toast.makeText(getActivity(), selectedDate + " is selected.", Toast.LENGTH_SHORT).show();
+                dateButton.setText(selectedDate);
+            }
+        },mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setMinDate(mCurrentDate.getTimeInMillis());
+        mDatePicker.setTitle("Select date");
+        mDatePicker.show();
+    }
+
+    public void chooseStartTime() {
+        Calendar mCurrentTime = Calendar.getInstance();
+        int mHour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+        int mMinute = mCurrentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                if (startOrEndTime == 0) {
+                    selectedSTime = selectedHour + ":" + selectedMinute;
+                    Toast.makeText(getActivity(), selectedSTime + " is selected.", Toast.LENGTH_SHORT).show();
+                    sTimeButton.setText(selectedSTime);
+                } else {
+                    selectedETime = selectedHour + ":" + selectedMinute;
+                    Toast.makeText(getActivity(), selectedETime + " is selected.", Toast.LENGTH_SHORT).show();
+                    eTimeButton.setText(selectedETime);
+                }
+            }
+        },mHour, mMinute, true);
+        mTimePicker.setTitle("Select time");
+        mTimePicker.show();
+    }
+
     public void chooseLocation() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
@@ -146,7 +232,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
     public void submit() {
         String name = nameInput.getText().toString();
         String desc = descInput.getText().toString();
-        if (name.trim().matches("") || desc.trim().matches("")) {
+        if (name.trim().matches("") || desc.trim().matches("") || selectedLat == null || selectedLng == null
+                || selectedDate == null || selectedSTime == null || selectedETime == null) {
             // check if any empty field
             showAlertBox("No empty field is allowed.", getActivity());
         } else {
