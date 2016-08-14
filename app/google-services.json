@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "760441206701",
+    "firebase_url": "https://start-c9adf.firebaseio.com",
+    "project_id": "start-c9adf",
+    "storage_bucket": "start-c9adf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760441206701:android:6ff9821460bcf683",
+        "android_client_info": {
+          "package_name": "ambiesoft.start"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760441206701-535ck755jach7gfmh2eu48mc8nki4l29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrjW3Hw0f52uqcoIRdSUE47I-Ied9h0FQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
