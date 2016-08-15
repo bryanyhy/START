@@ -9,12 +9,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
+<<<<<<< Updated upstream
 import android.util.Log;
+=======
+import android.view.Gravity;
+>>>>>>> Stashed changes
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -49,6 +57,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ArrayList<Artwork> artworks;
 
+    final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
+    private Firebase firebase;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,12 +88,42 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         LatLng defaultMarker = new LatLng(-37.813243, 144.962762);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 13));
+
+        //default zoom in
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
         mMap.addMarker(new MarkerOptions().title("Default marker in CBD").position(defaultMarker));
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
+
+        //Get firebase instance
+        Firebase.setAndroidContext(getContext());
+        firebase = new Firebase(DB_URL);
+
+        //Retrieve latitude and longitude from each post on firebase and add marker on map
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
+
+                for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+                    LatLng googleMapLocations = new LatLng(latitude, longitude);
+                    mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+                Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0 ,0);
+                toast.show();
+
+            }
+        });
     }
 
     // class used for setup the markers on artwork in City of Melbourne
