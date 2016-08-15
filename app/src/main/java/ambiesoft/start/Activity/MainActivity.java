@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // initialised Firebase when application start
-        Firebase.setAndroidContext(this);
-        Firebase myFirebaseRef = new Firebase("https://start-c9adf.firebaseio.com/");
+
 
         // Ask for location permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
