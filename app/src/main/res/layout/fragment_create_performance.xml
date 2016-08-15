@@ -84,8 +84,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="End Time"
-                android:id="@+id/eTimeButton"
+                android:text="Duration"
+                android:id="@+id/durationButton"
                 android:layout_weight="0.6" />
         </LinearLayout>
 

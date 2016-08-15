@@ -2,8 +2,11 @@ package ambiesoft.start.fragment;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,7 +35,9 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Performance;
@@ -55,7 +61,7 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
     private String selectedDate;
     private String selectedSTime;
     private String selectedETime;
-    private int startOrEndTime;
+    private int selectedDuration;
 
     private EditText nameInput;
     private EditText descInput;
@@ -64,10 +70,7 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
     private Button locationButton;
     private Button dateButton;
     private Button sTimeButton;
-    private Button eTimeButton;
-
-
-    private static final String CATEGORY_TYPE[] = {"Instrument", "Dance", "Magic"};
+    private Button durationButton;
 
     public CreatePerformanceFragment() {
         // Required empty public constructor
@@ -85,7 +88,11 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                submit();
+                try {
+                    submit();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         locationButton = (Button) view.findViewById(R.id.locationButton);
@@ -110,16 +117,14 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         sTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                startOrEndTime = 0;
                 chooseStartTime();
             }
         });
-        eTimeButton = (Button) view.findViewById(R.id.eTimeButton);
-        eTimeButton.setOnClickListener(new View.OnClickListener() {
+        durationButton = (Button) view.findViewById(R.id.durationButton);
+        durationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                startOrEndTime = 1;
-                chooseStartTime();
+                chooseDuration();
             }
         });
         return view;
@@ -161,6 +166,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+        selectedDuration = 0;
     }
 
     public void chooseDate() throws ParseException {
@@ -190,19 +197,51 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
 
         TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                if (startOrEndTime == 0) {
-                    selectedSTime = selectedHour + ":" + selectedMinute;
-                    Toast.makeText(getActivity(), selectedSTime + " is selected.", Toast.LENGTH_SHORT).show();
-                    sTimeButton.setText(selectedSTime);
-                } else {
-                    selectedETime = selectedHour + ":" + selectedMinute;
-                    Toast.makeText(getActivity(), selectedETime + " is selected.", Toast.LENGTH_SHORT).show();
-                    eTimeButton.setText(selectedETime);
-                }
+                selectedSTime = selectedHour + ":" + selectedMinute;
+                Toast.makeText(getActivity(), selectedSTime + " is selected.", Toast.LENGTH_SHORT).show();
+                sTimeButton.setText(selectedSTime);
             }
         },mHour, mMinute, true);
         mTimePicker.setTitle("Select time");
         mTimePicker.show();
+    }
+
+    public void chooseDuration() {
+        NumberPicker mNumberPicker = new NumberPicker(getContext());
+        mNumberPicker.setMaxValue(120);
+        mNumberPicker.setMinValue(1);
+        if (selectedDuration == 0) {
+            selectedDuration = 1;
+            mNumberPicker.setValue(selectedDuration);
+        } else {
+            mNumberPicker.setValue(selectedDuration);
+        }
+        NumberPicker.OnValueChangeListener mVCL = new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                selectedDuration = newVal;
+            }
+        };
+        mNumberPicker.setOnValueChangedListener(mVCL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setView(mNumberPicker);
+        builder.setTitle("Performance Duration (Minutes)");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int any) {
+                durationButton.setText(selectedDuration + " minutes");
+                Toast.makeText(getActivity(), selectedDuration + " is selected.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
+    }
+
+    public String getEndingTime() throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Date d = df.parse(selectedSTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.MINUTE, selectedDuration);
+        return df.format(cal.getTime());
     }
 
     public void chooseLocation() {
@@ -230,14 +269,15 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         }
     }
 
-    public void submit() {
+    public void submit() throws ParseException {
         String name = nameInput.getText().toString();
         String desc = descInput.getText().toString();
         if (name.trim().matches("") || desc.trim().matches("") || selectedLat == null || selectedLng == null
-                || selectedDate == null || selectedSTime == null || selectedETime == null) {
+                || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
             // check if any empty field
             showAlertBox("No empty field is allowed.", getActivity());
         } else {
+            selectedETime = getEndingTime();
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
                     ,selectedETime, selectedLat, selectedLng );
             savePerformance(performance);
