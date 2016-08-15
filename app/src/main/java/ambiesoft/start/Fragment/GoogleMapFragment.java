@@ -1,4 +1,4 @@
-package ambiesoft.start.Fragment;
+package ambiesoft.start.fragment;
 
 
 import android.Manifest;
@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import ambiesoft.start.R;
 
-import static ambiesoft.start.Utility.NetworkAvailability.isNetworkAvailable;
+import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
 
 /**
  * A simple {@link Fragment} subclass.

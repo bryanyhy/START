@@ -1,4 +1,4 @@
-package ambiesoft.start.Fragment;
+package ambiesoft.start.fragment;
 
 
 import android.os.Bundle;

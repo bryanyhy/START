@@ -1,4 +1,4 @@
-package ambiesoft.start.Utility;
+package ambiesoft.start.utility;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

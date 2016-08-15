@@ -1,4 +1,4 @@
-package ambiesoft.start.Fragment;
+package ambiesoft.start.fragment;
 
 
 import android.app.Activity;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,20 +25,20 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import ambiesoft.start.R;
+import ambiesoft.start.dataclass.Performance;
 
-import static ambiesoft.start.Utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.Firebase.savePerformance;
+import static ambiesoft.start.utility.Firebase.setupFirebase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,6 +128,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setupFirebase(getContext());
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient
@@ -237,7 +238,10 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
             // check if any empty field
             showAlertBox("No empty field is allowed.", getActivity());
         } else {
-            Toast.makeText(getActivity(), "All input are valid", Toast.LENGTH_SHORT).show();
+            Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
+                    ,selectedETime, selectedLat, selectedLng );
+            savePerformance(performance);
+            Toast.makeText(getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,14 +1,10 @@
-package ambiesoft.start.Activity;
+package ambiesoft.start.activity;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,14 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
-import ambiesoft.start.Fragment.CreatePerformanceFragment;
-import ambiesoft.start.Fragment.GoogleMapFragment;
-import ambiesoft.start.Fragment.GreetingFragment;
+import ambiesoft.start.fragment.CreatePerformanceFragment;
+import ambiesoft.start.fragment.GoogleMapFragment;
+import ambiesoft.start.fragment.GreetingFragment;
 import ambiesoft.start.R;
 
 public class MainActivity extends AppCompatActivity

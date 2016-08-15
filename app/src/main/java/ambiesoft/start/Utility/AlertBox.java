@@ -1,4 +1,4 @@
-package ambiesoft.start.Utility;
+package ambiesoft.start.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
