@@ -55,6 +55,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         LatLng defaultMarker = new LatLng(-37.813243, 144.962762);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 13));
         mMap.addMarker(new MarkerOptions().title("Default marker in CBD").position(defaultMarker));
