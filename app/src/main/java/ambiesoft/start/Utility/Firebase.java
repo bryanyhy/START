@@ -21,7 +21,7 @@ public class Firebase {
         // create a firebase reference
         com.firebase.client.Firebase ref = new com.firebase.client.Firebase(REF_LINK);
         com.firebase.client.Firebase performanceRef = ref.child("performance");
-        performanceRef.setValue(performance);
+        performanceRef.push().setValue(performance);
     }
 
 }
