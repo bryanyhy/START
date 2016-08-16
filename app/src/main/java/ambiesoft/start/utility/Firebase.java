@@ -16,6 +16,7 @@ import ambiesoft.start.dataclass.Performance;
 public class Firebase {
 
     private static final String REF_LINK = "https://start-c9adf.firebaseio.com/";
+    final static String PER_URL = "https://start-c9adf.firebaseio.com/performance";
 
     public static void setupFirebase(Context context) {
 
@@ -29,7 +30,6 @@ public class Firebase {
         com.firebase.client.Firebase performanceRef = ref.child("performance");
         performanceRef.push().setValue(performance);
     }
-
 
 
 }
