@@ -12,10 +12,10 @@ import ambiesoft.start.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GreetingFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
 
-    public GreetingFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 

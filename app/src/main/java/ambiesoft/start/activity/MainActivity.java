@@ -3,8 +3,10 @@ package ambiesoft.start.activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,9 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
+
 import ambiesoft.start.fragment.CreatePerformanceFragment;
 import ambiesoft.start.fragment.GoogleMapFragment;
-import ambiesoft.start.fragment.GreetingFragment;
+import ambiesoft.start.fragment.HomeFragment;
 import ambiesoft.start.R;
 
 public class MainActivity extends AppCompatActivity
@@ -27,12 +32,12 @@ public class MainActivity extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
 
+    private BottomBar mBottomBar;
     private android.app.FragmentManager fm = getFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         // Ask for location permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -46,6 +51,42 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
+
+        // setting up the bottom navigation bar
+        mBottomBar = BottomBar.attach(findViewById(R.id.content_frame), savedInstanceState);
+        mBottomBar.noTopOffset();
+        mBottomBar.noNavBarGoodness();
+        // set the items in the bottom bar
+        mBottomBar.setItems(R.menu.bottombar_menu);
+        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+            // when a menu tab is selected
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.bottomBarItemOne) {
+                    // The user selected item number one.
+                    Log.i("System.out","asfasfaf");
+                    fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+                }
+            }
+
+            // when a menu tab is reselected
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.bottomBarItemOne) {
+                    // The user reselected item number one, scroll your content to top.
+                    //fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+                }
+            }
+        });
+
+        // Setting colors for different tabs when there's more than three of them.
+        // You can set colors for tabs in three different ways as shown below.
+//        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
+//        mBottomBar.mapColorForTab(1, 0xFF5D4037);
+//        mBottomBar.mapColorForTab(2, "#7B1FA2");
+//        mBottomBar.mapColorForTab(3, "#FF5252");
+//        mBottomBar.mapColorForTab(4, "#FF9800");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -68,7 +109,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fm.beginTransaction().replace(R.id.content_frame, new GreetingFragment()).commit();
+        fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
     }
 
     @Override
