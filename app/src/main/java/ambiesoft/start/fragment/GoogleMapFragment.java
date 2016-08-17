@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,7 +64,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<Artwork> artworks;
     private static boolean showArtworks = true;
 
-    final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
+    private String filterDate;
+
+    private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
     private Firebase firebase;
 
     @Override
@@ -89,8 +92,18 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("date")) {
+                filterDate = bundle.getString("date");
+                Log.i("System.out","Bundle found + " + filterDate);
+            }
+        }
+
         artworks = new ArrayList<>();
-        new SetupArtworkMarker().execute();
+        if (showArtworks == true) {
+            new SetupArtworkMarker().execute();
+        }
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (mapFragment == null) {
@@ -152,7 +165,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         if (id == R.id.action_search) {
-
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, new FilterResultFragment()).commit();
         }
 
         return super.onOptionsItemSelected(item);
@@ -166,7 +179,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         //default zoom in
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
-        mMap.addMarker(new MarkerOptions().title("Default marker in CBD").position(defaultMarker));
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -179,30 +191,56 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
+        if (filterDate != null) {
+            Query queryRef = firebase.orderByChild("date").equalTo(filterDate);
+            //Retrieve latitude and longitude from each post on firebase and add marker on map
+            queryRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot ds) {
 
-        //Retrieve latitude and longitude from each post on firebase and add marker on map
-        firebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot ds) {
+                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+                        LatLng googleMapLocations = new LatLng(latitude, longitude);
+                        mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
+                    }
 
-                for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                    LatLng googleMapLocations = new LatLng(latitude, longitude);
-                    mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
                 }
 
-            }
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0 ,0);
+                    toast.show();
 
-                Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0 ,0);
-                toast.show();
+                }
+            });
+        } else {
+            //Retrieve latitude and longitude from each post on firebase and add marker on map
+            firebase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot ds) {
 
-            }
-        });
+                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+                        LatLng googleMapLocations = new LatLng(latitude, longitude);
+                        mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0 ,0);
+                    toast.show();
+
+                }
+            });
+        }
     }
 
     // class used for setup the markers on artwork in City of Melbourne
