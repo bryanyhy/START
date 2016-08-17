@@ -3,6 +3,7 @@ package ambiesoft.start.fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -14,6 +15,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -57,6 +61,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
     private GoogleMap mMap;
     private ArrayList<Artwork> artworks;
+    private static boolean showArtworks = true;
 
     final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
     private Firebase firebase;
@@ -66,7 +71,10 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+        // display menu of the top action bar
+        setHasOptionsMenu(true);
 
+        // setting up the floating action button, to access from map to home fragment
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +89,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         artworks = new ArrayList<>();
         new SetupArtworkMarker().execute();
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -92,6 +101,58 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             Toast.makeText(getActivity(), "Map is loaded.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // setup the menu items on the top action bar
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.map_fragment_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_settings);
+        // check if the show artwork setting is turn on or off
+        if (showArtworks == true) {
+            // if show artwork is on
+            item.setTitle("Hide artworks");
+
+        } else {
+            // if show artwork is off
+            item.setTitle("Show artworks");
+
+        }
+    }
+
+    // action after menu item on top action bar is selected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        // if the item is clicked
+        if (id == R.id.action_settings) {
+            // turn on/off the display of artworks on map
+            showArtworks = !showArtworks;
+            // check if the show artwork setting is turn on or off
+            if (showArtworks == true) {
+                // if show artwork is on
+                item.setTitle("Hide artworks");
+                // clear the map, and show all artwork and performance as markers on map
+                mMap.clear();
+                new SetupArtworkMarker().execute();
+                addPerformanceMarker();
+
+            } else {
+                // if show artwork is off
+                item.setTitle("Show artworks");
+                // clear the map, and show only performance as markers on map
+                mMap.clear();
+                addPerformanceMarker();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -108,6 +169,10 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             mMap.setMyLocationEnabled(true);
         }
 
+        addPerformanceMarker();
+    }
+
+    public void addPerformanceMarker() {
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
