@@ -165,7 +165,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         if (id == R.id.action_search) {
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, new FilterResultFragment()).commit();
+            Fragment filterResultFragment = new FilterResultFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("requestFragment",1);
+            filterResultFragment.setArguments(bundle);
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
         }
 
         return super.onOptionsItemSelected(item);

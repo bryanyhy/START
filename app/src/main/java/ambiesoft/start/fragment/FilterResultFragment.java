@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,11 @@ import static ambiesoft.start.utility.Firebase.setupFirebase;
  */
 public class FilterResultFragment extends Fragment {
 
-    private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int HOME_FRAGMENT = 0;
+    private static final int MAP_FRAGMENT = 1;
 
     private boolean isStartup = true;
+    private int requestFragment;
     private String selectedCategory;
     private String selectedDate;
     private String selectedSTime;
@@ -96,8 +99,15 @@ public class FilterResultFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("requestFragment")) {
+                requestFragment = bundle.getInt("requestFragment");
+            }
+        }
+
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.category_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.performance_category_array_for_filter, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -155,29 +165,18 @@ public class FilterResultFragment extends Fragment {
     }
 
     public void submit() throws ParseException {
+        Fragment fragment = null;
+        if (requestFragment == HOME_FRAGMENT) {
+            fragment = new HomeFragment();
+        }
+        else if (requestFragment == MAP_FRAGMENT){
+            fragment = new GoogleMapFragment();
+        }
         if (selectedDate != null) {
-            Fragment googleMapFragment = new GoogleMapFragment();
             Bundle bundle = new Bundle();
             bundle.putString("date",selectedDate);
-            googleMapFragment.setArguments(bundle);
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
-        } else {
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+            fragment.setArguments(bundle);
         }
-
-
-
-//        String name = nameInput.getText().toString();
-//        if (name.trim().matches("") || desc.trim().matches("") || selectedLat == null || selectedLng == null
-//                || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
-//            // check if any empty field
-//            showAlertBox("No empty field is allowed.", getActivity());
-//        } else {
-//            selectedETime = getEndingTime();
-//            Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
-//                    ,selectedETime, selectedLat, selectedLng );
-//            savePerformance(performance);
-//            Toast.makeText(getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
-//        }
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 }

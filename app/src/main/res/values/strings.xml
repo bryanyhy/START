@@ -22,6 +22,20 @@
         <item>Others</item>
     </string-array>
 
+    <string-array name="performance_category_array_for_filter">
+        <item>Any</item>
+        <item>Instruments</item>
+        <item>Singing</item>
+        <item>Reciting</item>
+        <item>Conjuring</item>
+        <item>Juggling</item>
+        <item>Puppetry</item>
+        <item>Miming</item>
+        <item>Dancing</item>
+        <item>Drawing</item>
+        <item>Others</item>
+    </string-array>
+
     <string-array name="artwork_category_array">
         <item>Art</item>
         <item>Fountain</item>
