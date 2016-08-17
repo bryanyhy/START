@@ -61,6 +61,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
+    private static final String DB_URL = "https://start-c9adf.firebaseio.com/performance";
+
     private GoogleMap mMap;
     private ArrayList<Artwork> artworks;
     private static boolean showArtworks = true;
@@ -68,7 +70,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     private String filterDate;
 
-    private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
+
     private Firebase firebase;
 
     @Override
@@ -98,7 +100,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         if (bundle != null) {
             if (bundle.containsKey("date")) {
                 filterDate = bundle.getString("date");
-                Log.i("System.out","Bundle found + " + filterDate);
             }
         }
 

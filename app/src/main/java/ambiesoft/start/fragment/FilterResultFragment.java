@@ -155,6 +155,20 @@ public class FilterResultFragment extends Fragment {
 
         TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                // check if the hour or minute is smaller than 10, as the leading zero may be missing in such case
+                if (selectedHour < 10 && selectedMinute < 10) {
+                    // add leading 0 to both hour and minute
+                    selectedSTime = "0" + selectedHour + ":0" + selectedMinute;
+                } else if (selectedHour < 10) {
+                    // add leading 0 to hour
+                    selectedSTime = "0" + selectedHour + ":" + selectedMinute;
+                } else if (selectedMinute < 10) {
+                    // add leading 0 to minute
+                    selectedSTime = selectedHour + ":0" + selectedMinute;
+                } else {
+                    // no leading 0 is needed
+                    selectedSTime = selectedHour + ":" + selectedMinute;
+                }
                 selectedSTime = selectedHour + ":" + selectedMinute;
                 Toast.makeText(getActivity(), selectedSTime + " is selected.", Toast.LENGTH_SHORT).show();
                 sTimeButton.setText(selectedSTime);
