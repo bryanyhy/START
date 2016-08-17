@@ -82,7 +82,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
             }
         });
-
         return view;
     }
 
@@ -150,6 +149,10 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 mMap.clear();
                 addPerformanceMarker();
             }
+        }
+
+        if (id == R.id.action_search) {
+
         }
 
         return super.onOptionsItemSelected(item);
