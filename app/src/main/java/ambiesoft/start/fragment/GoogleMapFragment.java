@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Artwork;
+import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.JSON.loadJSONFromAsset;
 import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
@@ -63,6 +64,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ArrayList<Artwork> artworks;
     private static boolean showArtworks = true;
+    private ArrayList<Performance> performances;
 
     private String filterDate;
 
@@ -100,8 +102,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+        // initialize ArrayList
         artworks = new ArrayList<>();
+
+        // if the show artworks is switched on
         if (showArtworks == true) {
+            // load artworks and setup markers on the map
             new SetupArtworkMarker().execute();
         }
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -110,8 +116,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(getActivity(), "Map can't be loaded.", Toast.LENGTH_SHORT).show();
         } else if (isNetworkAvailable(getContext()) == false) {
             Toast.makeText(getActivity(), "Network is not available.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Map is loaded.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,14 +157,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 // clear the map, and show all artwork and performance as markers on map
                 mMap.clear();
                 new SetupArtworkMarker().execute();
-                addPerformanceMarker();
+                getPerformanceFromFireBase();
 
             } else {
                 // if show artwork is off
                 item.setTitle("Show artworks");
                 // clear the map, and show only performance as markers on map
                 mMap.clear();
-                addPerformanceMarker();
+                getPerformanceFromFireBase();
             }
         }
 
@@ -187,15 +191,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
-
-        addPerformanceMarker();
+        getPerformanceFromFireBase();
     }
 
-    public void addPerformanceMarker() {
+    public void getPerformanceFromFireBase() {
+        // initialize performance ArrayList
+        performances = new ArrayList<>();
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
         if (filterDate != null) {
+            // get data that match the specific date from Firebase
             Query queryRef = firebase.orderByChild("date").equalTo(filterDate);
             //Retrieve latitude and longitude from each post on firebase and add marker on map
             queryRef.addValueEventListener(new ValueEventListener() {
@@ -203,12 +209,22 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 public void onDataChange(DataSnapshot ds) {
 
                     for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        String category = dataSnapshot.child("category").getValue().toString();
+                        String desc = dataSnapshot.child("desc").getValue().toString();
+                        String date = dataSnapshot.child("date").getValue().toString();
+                        String sTime = dataSnapshot.child("sTime").getValue().toString();
+                        String eTime = dataSnapshot.child("eTime").getValue().toString();
                         Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
                         Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        LatLng googleMapLocations = new LatLng(latitude, longitude);
-                        mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
+                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+                        performances.add(performance);
                     }
-
+                    if (performances.size() != 0) {
+                        setPerformanceMarker();
+                    } else {
+                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -217,7 +233,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0 ,0);
                     toast.show();
-
                 }
             });
         } else {
@@ -227,12 +242,22 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 public void onDataChange(DataSnapshot ds) {
 
                     for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        String category = dataSnapshot.child("category").getValue().toString();
+                        String desc = dataSnapshot.child("desc").getValue().toString();
+                        String date = dataSnapshot.child("date").getValue().toString();
+                        String sTime = dataSnapshot.child("sTime").getValue().toString();
+                        String eTime = dataSnapshot.child("eTime").getValue().toString();
                         Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
                         Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        LatLng googleMapLocations = new LatLng(latitude, longitude);
-                        mMap.addMarker(new MarkerOptions().title(String.valueOf(latitude)).snippet(String.valueOf(longitude)).position(googleMapLocations));
+                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+                        performances.add(performance);
                     }
-
+                    if (performances.size() != 0) {
+                        setPerformanceMarker();
+                    } else {
+                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -241,9 +266,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0 ,0);
                     toast.show();
-
                 }
             });
+        }
+    }
+
+    // method to set the performance markers on map, based on the performance ArrayList
+    public void setPerformanceMarker() {
+        for (Performance performance: performances) {
+            LatLng googleMapLocations = new LatLng(performance.getLat(), performance.getLng());
+            mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations));
         }
     }
 
