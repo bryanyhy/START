@@ -9,9 +9,9 @@ import android.content.DialogInterface;
  */
 public class AlertBox {
 
-    public static void showAlertBox(String output, Activity activity) {
+    public static void showAlertBox(String title, String output, Activity activity) {
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle("Alert");
+        alertDialog.setTitle(title);
         alertDialog.setMessage(output);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {

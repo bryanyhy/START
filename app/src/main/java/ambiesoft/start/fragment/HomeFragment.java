@@ -1,6 +1,7 @@
 package ambiesoft.start.fragment;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -24,11 +25,16 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ambiesoft.start.R;
+import ambiesoft.start.activity.MainActivity;
 import ambiesoft.start.dataclass.Performance;
 import ambiesoft.start.utility.RecyclerViewAdapter;
+
+import static ambiesoft.start.utility.AlertBox.showAlertBox;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,10 +47,12 @@ public class HomeFragment extends Fragment {
     private RecyclerViewAdapter adapter;
 
     private ArrayList<Performance> performances;
+    private static ArrayList<Performance> filteredPerformances;
+
 
     private Firebase firebase;
 
-    private String filterDate;
+    private static String selectedDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +61,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // display menu of the top action bar
         setHasOptionsMenu(true);
+
+        // initialize performance ArrayList
         performances = new ArrayList<>();
+        filteredPerformances = new ArrayList<>();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         setRecyclerViewAdapter();
@@ -63,7 +74,12 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+                Fragment googleMapFragment = new GoogleMapFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("dateFromPreviousFragment", selectedDate);
+                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
+                googleMapFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
             }
         });
 
@@ -76,18 +92,35 @@ public class HomeFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("date")) {
-                filterDate = bundle.getString("date");
+            if (bundle.containsKey("dateFromFilter")) {
+                selectedDate = bundle.getString("dateFromFilter");
+                getPerformanceFromFireBase(getActivity());
+            } else if (bundle.containsKey("dateFromPreviousFragment")) {
+                selectedDate = bundle.getString("dateFromPreviousFragment");
+            } else  {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                selectedDate = df.format(c.getTime());
+                getPerformanceFromFireBase(getActivity());
             }
+            if (bundle.containsKey("performancesFromPreviousFragment")) {
+                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
+                setRecyclerViewAdapter();
+                if (filteredPerformances.size() == 0) {
+                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
+                }
+            }
+        } else {
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            selectedDate = df.format(c.getTime());
+            getPerformanceFromFireBase(getActivity());
         }
-        // initialize performance ArrayList
-        performances = new ArrayList<>();
-
-        getPerformanceFromFireBase();
     }
 
     public void setRecyclerViewAdapter() {
-        adapter = new RecyclerViewAdapter(performances, getContext());
+
+        adapter = new RecyclerViewAdapter(filteredPerformances, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -111,7 +144,8 @@ public class HomeFragment extends Fragment {
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment",0);
+            bundle.putInt("requestFragment", 0);
+            bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
         }
@@ -119,81 +153,85 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getPerformanceFromFireBase() {
+    public void getPerformanceFromFireBase(final Activity activity) {
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
-        if (filterDate != null) {
-            // get data that match the specific date from Firebase
-            Query queryRef = firebase.orderByChild("date").equalTo(filterDate);
-            //Retrieve latitude and longitude from each post on firebase and add marker on map
-            queryRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
+        Log.i("System.out","Firebase start");
 
-                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String category = dataSnapshot.child("category").getValue().toString();
-                        String desc = dataSnapshot.child("desc").getValue().toString();
-                        String date = dataSnapshot.child("date").getValue().toString();
-                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                        performances.add(performance);
-                    }
-                    setRecyclerViewAdapter();
-                    if (performances.size() != 0) {
+        // get data that match the specific date from Firebase
+        Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
+        Log.i("System.out","Date filter set done " + selectedDate);
+        //Retrieve latitude and longitude from each post on firebase and add marker on map
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
 
-                    } else {
-                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-                    }
+                Log.i("System.out","Start on data change" + performances.size());
+                for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String category = dataSnapshot.child("category").getValue().toString();
+                    String desc = dataSnapshot.child("desc").getValue().toString();
+                    String date = dataSnapshot.child("date").getValue().toString();
+                    String sTime = dataSnapshot.child("sTime").getValue().toString();
+                    String eTime = dataSnapshot.child("eTime").getValue().toString();
+                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+                    Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+                    performances.add(performance);
                 }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0 ,0);
-                    toast.show();
+                if (performances.size() != 0) {
+                    filteredPerformances = performances;
+                } else {
+//                    Toast.makeText(getActivity(), "No result.", Toast.LENGTH_SHORT).show();
+                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
-            });
-        } else {
-            //Retrieve latitude and longitude from each post on firebase and add marker on map
-            firebase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
+                setRecyclerViewAdapter();
+            }
 
-                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String category = dataSnapshot.child("category").getValue().toString();
-                        String desc = dataSnapshot.child("desc").getValue().toString();
-                        String date = dataSnapshot.child("date").getValue().toString();
-                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                        performances.add(performance);
-                    }
-                    setRecyclerViewAdapter();
-                    if (performances.size() != 0) {
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
-                    } else {
-                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0 ,0);
+                toast.show();
+            }
+        });
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0 ,0);
-                    toast.show();
-                }
-            });
-        }
+//        else {
+//            //Retrieve latitude and longitude from each post on firebase and add marker on map
+//            firebase.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot ds) {
+//
+//                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
+//                        String name = dataSnapshot.child("name").getValue().toString();
+//                        String category = dataSnapshot.child("category").getValue().toString();
+//                        String desc = dataSnapshot.child("desc").getValue().toString();
+//                        String date = dataSnapshot.child("date").getValue().toString();
+//                        String sTime = dataSnapshot.child("sTime").getValue().toString();
+//                        String eTime = dataSnapshot.child("eTime").getValue().toString();
+//                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+//                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+//                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+//                        performances.add(performance);
+//                    }
+//                    setRecyclerViewAdapter();
+//                    if (performances.size() != 0) {
+//
+//                    } else {
+//                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError firebaseError) {
+//
+//                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+//                    toast.setGravity(Gravity.CENTER, 0 ,0);
+//                    toast.show();
+//                }
+//            });
+//        }
     }
-
 }

@@ -51,12 +51,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Artwork;
 import ambiesoft.start.dataclass.Performance;
 
+import static ambiesoft.start.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.utility.JSON.loadJSONFromAsset;
 import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
 
@@ -70,14 +73,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private static final String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private GoogleMap mMap;
-    private ArrayList<Artwork> artworks;
-    private static boolean showArtworks = true;
+    private static ArrayList<Artwork> artworks = new ArrayList<>();
+    private static boolean showArtworks = false;
     private ArrayList<Performance> performances;
+    private static ArrayList<Performance> filteredPerformances;
+    private boolean arrayListBundleFromPreviousFragment;
+    private static boolean artworkArrayListCreatedBefore = false;
 
     private GoogleApiClient mGoogleApiClient;
 
-    private String filterDate;
-
+    private static String selectedDate;
 
     private Firebase firebase;
 
@@ -94,7 +99,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+                Fragment homeFragment = new HomeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("dateFromPreviousFragment", selectedDate);
+                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
+                homeFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, homeFragment).commit();
             }
         });
         return view;
@@ -105,26 +115,51 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = getArguments();
+        arrayListBundleFromPreviousFragment = false;
         if (bundle != null) {
-            if (bundle.containsKey("date")) {
-                filterDate = bundle.getString("date");
+            if (bundle.containsKey("dateFromFilter")) {
+                selectedDate = bundle.getString("dateFromFilter");
+            } else if (bundle.containsKey("dateFromPreviousFragment")) {
+                selectedDate = bundle.getString("dateFromPreviousFragment");
+            } else {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                selectedDate = df.format(c.getTime());
+            }
+            if (bundle.containsKey("performancesFromPreviousFragment")) {
+                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
+                arrayListBundleFromPreviousFragment = true;
+                if (filteredPerformances.size() == 0) {
+                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
+                }
             }
         }
 
-        // initialize ArrayList
-        artworks = new ArrayList<>();
+//        // initialize ArrayList
+//        artworks = new ArrayList<>();
+//        // if the show artworks is switched on
+//        if (showArtworks == true) {
+//            if (artworks.size() == 0) {
+//                // load artworks and setup markers on the map
+//                new SetupArtworkMarker().execute();
+//            } else {
+//                setArtworksMarker();
+//            }
+//        }
 
-        // if the show artworks is switched on
-        if (showArtworks == true) {
-            // load artworks and setup markers on the map
-            new SetupArtworkMarker().execute();
-        }
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (mapFragment == null) {
             Toast.makeText(getActivity(), "Map can't be loaded.", Toast.LENGTH_SHORT).show();
         } else if (isNetworkAvailable(getContext()) == false) {
             Toast.makeText(getActivity(), "Network is not available.", Toast.LENGTH_SHORT).show();
+        }
+        // if the show artworks is switched on
+        if (showArtworks == true) {
+            if (artworks.size() == 0) {
+                // load artworks and setup markers on the map
+                new SetupArtworkMarker().execute();
+            }
         }
     }
 
@@ -139,11 +174,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         if (showArtworks == true) {
             // if show artwork is on
             item.setTitle("Hide artworks");
-
         } else {
             // if show artwork is off
             item.setTitle("Show artworks");
-
         }
     }
 
@@ -165,22 +198,27 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 item.setTitle("Hide artworks");
                 // clear the map, and show all artwork and performance as markers on map
                 mMap.clear();
-                new SetupArtworkMarker().execute();
-                getPerformanceFromFireBase();
+                if (artworks.size() == 0) {
+                    new SetupArtworkMarker().execute();
+                } else {
+                    setArtworksMarker();
+                }
+                setPerformanceMarker();
 
             } else {
                 // if show artwork is off
                 item.setTitle("Show artworks");
                 // clear the map, and show only performance as markers on map
                 mMap.clear();
-                getPerformanceFromFireBase();
+                setPerformanceMarker();
             }
         }
 
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment",1);
+            bundle.putInt("requestFragment", 1);
+            bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
         }
@@ -195,7 +233,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         LatLng defaultMarker = new LatLng(-37.813243, 144.962762);
 
         //default zoom in
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 15));
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(false);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -209,139 +247,146 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 //        } else {
 //            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
 //        }
-
-        getPerformanceFromFireBase();
+        if (arrayListBundleFromPreviousFragment == false) {
+            getPerformanceFromFireBase();
+        } else {
+            setPerformanceMarker();
+        }
+        if (artworkArrayListCreatedBefore == true && showArtworks == true) {
+            setArtworksMarker();
+        }
     }
 
     public void getPerformanceFromFireBase() {
+        Log.i("System.out","Run Firebase");
         // initialize performance ArrayList
         performances = new ArrayList<>();
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
 
-        if (filterDate != null) {
-            // get data that match the specific date from Firebase
-            Query queryRef = firebase.orderByChild("date").equalTo(filterDate);
-            //Retrieve latitude and longitude from each post on firebase and add marker on map
-            queryRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
+        // get data that match the specific date from Firebase
+        Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
+        //Retrieve latitude and longitude from each post on firebase and add marker on map
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
 
-                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String category = dataSnapshot.child("category").getValue().toString();
-                        String desc = dataSnapshot.child("desc").getValue().toString();
-                        String date = dataSnapshot.child("date").getValue().toString();
-                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                        performances.add(performance);
-                    }
-                    if (performances.size() != 0) {
-                        setPerformanceMarker();
-                    } else {
-                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-                    }
+                for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String category = dataSnapshot.child("category").getValue().toString();
+                    String desc = dataSnapshot.child("desc").getValue().toString();
+                    String date = dataSnapshot.child("date").getValue().toString();
+                    String sTime = dataSnapshot.child("sTime").getValue().toString();
+                    String eTime = dataSnapshot.child("eTime").getValue().toString();
+                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+                    Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+                    performances.add(performance);
                 }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0 ,0);
-                    toast.show();
+                if (performances.size() != 0) {
+                    filteredPerformances = performances;
+                    setPerformanceMarker();
+                } else {
+                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
-            });
-        } else {
+            }
 
-            //Retrieve latitude and longitude from each post on firebase and add marker on map
-            firebase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
-                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String category = dataSnapshot.child("category").getValue().toString();
-                        String desc = dataSnapshot.child("desc").getValue().toString();
-                        String date = dataSnapshot.child("date").getValue().toString();
-                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                        performances.add(performance);
-                    }
-                    if (performances.size() != 0) {
-                        setPerformanceMarker();
-                    } else {
-                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0 ,0);
+                toast.show();
+            }
+        });
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0 ,0);
-                    toast.show();
-                }
-            });
-        }
+//        else {
+//
+//            //Retrieve latitude and longitude from each post on firebase and add marker on map
+//            firebase.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot ds) {
+//
+//                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
+//                        String name = dataSnapshot.child("name").getValue().toString();
+//                        String category = dataSnapshot.child("category").getValue().toString();
+//                        String desc = dataSnapshot.child("desc").getValue().toString();
+//                        String date = dataSnapshot.child("date").getValue().toString();
+//                        String sTime = dataSnapshot.child("sTime").getValue().toString();
+//                        String eTime = dataSnapshot.child("eTime").getValue().toString();
+//                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
+//                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
+//                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+//                        performances.add(performance);
+//                    }
+//                    if (performances.size() != 0) {
+//                        setPerformanceMarker();
+//                    } else {
+//                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError firebaseError) {
+//
+//                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
+//                    toast.setGravity(Gravity.CENTER, 0 ,0);
+//                    toast.show();
+//                }
+//            });
+//        }
     }
 
     // method to set the performance markers on map, based on the performance ArrayList
     public void setPerformanceMarker() {
-        for (Performance performance: performances) {
-            LatLng googleMapLocations = new LatLng(performance.getLat(), performance.getLng());
-            String cat = performance.getCategory();
-            switch (cat){
-                case "Instruments":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                    break;
-                case "Singing":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                    break;
-                case "Reciting":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                    break;
-                case "Conjuring":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                    break;
-                case "Juggling":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
-                    break;
-                case "Puppetry":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                    break;
-                case "Miming":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    break;
-                case "Dancing":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                    break;
-                case "Drawing":
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                    break;
-                default:
-                    mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-                    break;
-
+        if (filteredPerformances.size() != 0) {
+            for (Performance performance: filteredPerformances) {
+                LatLng googleMapLocations = new LatLng(performance.getLat(), performance.getLng());
+                String cat = performance.getCategory();
+                switch (cat){
+                    case "Instruments":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                        break;
+                    case "Singing":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        break;
+                    case "Reciting":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                        break;
+                    case "Conjuring":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        break;
+                    case "Juggling":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                        break;
+                    case "Puppetry":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        break;
+                    case "Miming":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        break;
+                    case "Dancing":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                        break;
+                    case "Drawing":
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        break;
+                    default:
+                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                        break;
+                }
             }
-
-
         }
     }
 
@@ -378,6 +423,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         // by making use of their latitude and longitude
         protected void onPostExecute(Void aVoid) {
             Log.i("System.out","Size is " + artworks.size());
+            artworkArrayListCreatedBefore = true;
+            setArtworksMarker();
+        }
+    }
+
+    private void setArtworksMarker() {
+        if (artworks.size() != 0) {
             for (Artwork artwork: artworks) {
                 LatLng artworkMarker = new LatLng(artwork.getLat(), artwork.getLng());
                 mMap.addMarker(new MarkerOptions().title(artwork.getName()).position(artworkMarker)

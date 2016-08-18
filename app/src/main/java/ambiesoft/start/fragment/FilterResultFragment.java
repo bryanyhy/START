@@ -43,7 +43,7 @@ public class FilterResultFragment extends Fragment {
     private boolean isStartup = true;
     private int requestFragment;
     private String selectedCategory;
-    private String selectedDate;
+    private static String selectedDate;
     private String selectedSTime;
     private String selectedETime;
 
@@ -104,7 +104,11 @@ public class FilterResultFragment extends Fragment {
             if (bundle.containsKey("requestFragment")) {
                 requestFragment = bundle.getInt("requestFragment");
             }
+            if (bundle.containsKey("filterDate")) {
+                selectedDate = bundle.getString("filterDate");
+            }
         }
+        dateButton.setText(selectedDate);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.performance_category_array_for_filter, android.R.layout.simple_spinner_item);
@@ -188,7 +192,7 @@ public class FilterResultFragment extends Fragment {
         }
         if (selectedDate != null) {
             Bundle bundle = new Bundle();
-            bundle.putString("date",selectedDate);
+            bundle.putString("dateFromFilter",selectedDate);
             fragment.setArguments(bundle);
         }
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();

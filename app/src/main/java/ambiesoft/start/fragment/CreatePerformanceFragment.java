@@ -288,7 +288,7 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         if (name.trim().matches("") || desc.trim().matches("") || selectedLat == null || selectedLng == null
                 || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
             // check if any empty field
-            showAlertBox("No empty field is allowed.", getActivity());
+            showAlertBox("Alert", "No empty field is allowed.", getActivity());
         } else {
             selectedETime = getEndingTime();
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
