@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -28,11 +29,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.cast.framework.media.uicontroller.UIController;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -68,6 +73,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<Artwork> artworks;
     private static boolean showArtworks = true;
     private ArrayList<Performance> performances;
+
+    private GoogleApiClient mGoogleApiClient;
 
     private String filterDate;
 
@@ -189,10 +196,20 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         //default zoom in
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
+//        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//        if (location != null){
+//            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+//        } else {
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
+//        }
+
         getPerformanceFromFireBase();
     }
 
