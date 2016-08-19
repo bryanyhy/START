@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -180,7 +181,19 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
 
         DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                if (selectedDay < 10 && (selectedMonth + 1) < 10) {
+                    // add leading 0 to both day and month
+                    selectedDate = "0" + selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+                } else if (selectedDay < 10) {
+                    // add leading 0 to day
+                    selectedDate = "0" + selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                } else if ((selectedMonth + 1) < 10) {
+                    // add leading 0 to month
+                    selectedDate = selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+                } else {
+                    // no leading 0 is needed
+                    selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                }
                 Toast.makeText(getActivity(), selectedDate + " is selected.", Toast.LENGTH_SHORT).show();
                 dateButton.setText(selectedDate);
             }
@@ -295,6 +308,9 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
                     ,selectedETime, selectedLat, selectedLng );
             savePerformance(performance);
             Toast.makeText(getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new CreatePerformanceFragment());
+            ft.commit();
         }
     }
 

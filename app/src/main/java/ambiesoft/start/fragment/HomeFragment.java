@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
                 Fragment googleMapFragment = new GoogleMapFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("dateFromPreviousFragment", selectedDate);
-                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
+//                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
                 googleMapFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
             }
@@ -98,14 +98,12 @@ public class HomeFragment extends Fragment {
         if (bundle != null) {
             if (bundle.containsKey("dateFromFilter")) {
                 selectedDate = bundle.getString("dateFromFilter");
-                getPerformanceFromFireBase(getActivity());
             } else if (bundle.containsKey("dateFromPreviousFragment")) {
                 selectedDate = bundle.getString("dateFromPreviousFragment");
             } else  {
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 selectedDate = df.format(c.getTime());
-                getPerformanceFromFireBase(getActivity());
             }
             if (bundle.containsKey("keywordFromFilter")) {
                 filterKeyword = bundle.getString("keywordFromFilter");
@@ -122,24 +120,25 @@ public class HomeFragment extends Fragment {
             } else {
                 filterTime = null;
             }
-            if (bundle.containsKey("performancesFromPreviousFragment")) {
-                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
-                setRecyclerViewAdapter();
-                if (filteredPerformances.size() == 0) {
-                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
-                }
-            }
+//            if (bundle.containsKey("performancesFromPreviousFragment")) {
+//                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
+//                setRecyclerViewAdapter();
+//                if (filteredPerformances.size() == 0) {
+//                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
+//                }
+//            }
+            setFireBaseListenerOnPerformance(getActivity());
         } else {
             // Always runs when the application start and set the filter date to today by default
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             selectedDate = df.format(c.getTime());
-            getPerformanceFromFireBase(getActivity());
+            Log.i("System.out","Today is " + selectedDate);
+            setFireBaseListenerOnPerformance(getActivity());
         }
     }
 
     public void setRecyclerViewAdapter() {
-
         adapter = new RecyclerViewAdapter(filteredPerformances, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -173,21 +172,21 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getPerformanceFromFireBase(final Activity activity) {
-        Log.i("System.out","Run Firebase");
+    public void setFireBaseListenerOnPerformance(final Activity activity) {
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
+        //establish connection to firebase
         firebase = new Firebase(DB_URL);
-        Log.i("System.out","Firebase start");
-
         // get data that match the specific date from Firebase
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
-        Log.i("System.out","Date filter set done " + selectedDate);
-        //Retrieve latitude and longitude from each post on firebase and add marker on map
+        // value event listener that is triggered everytime data in Firebase's Performance root is updated
+        //Retrieve latitude and longitude from each post on Firebase and add marker on map
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
-
+                // initialize performance ArrayList
+                performances = new ArrayList<>();
+                // get all performance detail and save them into Performance ArrayList as Performance Object
                 for (DataSnapshot dataSnapshot : ds.getChildren()) {
                     String name = dataSnapshot.child("name").getValue().toString();
                     String category = dataSnapshot.child("category").getValue().toString();
@@ -221,7 +220,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
                 Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0 ,0);
                 toast.show();

@@ -152,7 +152,19 @@ public class FilterResultFragment extends Fragment {
 
         DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                if (selectedDay < 10 && (selectedMonth + 1) < 10) {
+                    // add leading 0 to both day and month
+                    selectedDate = "0" + selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+                } else if (selectedDay < 10) {
+                    // add leading 0 to day
+                    selectedDate = "0" + selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                } else if ((selectedMonth + 1) < 10) {
+                    // add leading 0 to month
+                    selectedDate = selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+                } else {
+                    // no leading 0 is needed
+                    selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                }
                 Toast.makeText(getActivity(), selectedDate + " is selected.", Toast.LENGTH_SHORT).show();
                 dateButton.setText(selectedDate);
             }
