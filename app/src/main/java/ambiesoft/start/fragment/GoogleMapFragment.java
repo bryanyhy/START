@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -72,8 +73,7 @@ import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
  */
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
-    private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
+    private static final int GOOGLE_MAP_FRAGMENT_ID = 1;
     private static final String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private GoogleMap mMap;
@@ -81,10 +81,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     private static boolean showArtworks = false;
     private ArrayList<Performance> performances;
     private static ArrayList<Performance> filteredPerformances;
-    private boolean arrayListBundleFromPreviousFragment;
-    private static boolean artworkArrayListCreatedBefore = false;
-
-    private GoogleApiClient mGoogleApiClient;
 
     private static String selectedDate;
     private String filterKeyword;
@@ -122,7 +118,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = getArguments();
-        arrayListBundleFromPreviousFragment = false;
         if (bundle != null) {
             if (bundle.containsKey("dateFromFilter")) {
                 selectedDate = bundle.getString("dateFromFilter");
@@ -148,13 +143,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
             } else {
                 filterTime = null;
             }
-//            if (bundle.containsKey("performancesFromPreviousFragment")) {
-//                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
-//                arrayListBundleFromPreviousFragment = true;
-//                if (filteredPerformances.size() == 0) {
-//                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
-//                }
-//            }
         } else {
             // Always runs when the application start and set the filter date to today by default
             Calendar c = Calendar.getInstance();
@@ -226,7 +214,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment", 1);
+            bundle.putInt("requestFragment", GOOGLE_MAP_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
@@ -249,6 +237,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
             mMap.setMyLocationEnabled(true);
         }
         mMap.setOnInfoWindowClickListener(this);
+
         getPerformanceListFromFireBaseByDate();
 
         // if the show artworks is switched on
@@ -392,8 +381,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 Fragment performanceDetailFragment = new PerformanceDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+                bundle.putString("filterDate", selectedDate);
+                bundle.putString("filterKeyword", filterKeyword);
+                bundle.putString("filterCategory", filterCategory);
+                bundle.putString("filterTime", filterTime);
+                bundle.putInt("previousFragment", GOOGLE_MAP_FRAGMENT_ID);
                 performanceDetailFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
                 break;
             }
         }
@@ -432,7 +426,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         // by making use of their latitude and longitude
         protected void onPostExecute(Void aVoid) {
             Log.i("System.out","Size is " + artworks.size());
-            artworkArrayListCreatedBefore = true;
             // draw the artworks marker on map
             drawArtworksMarker();
         }

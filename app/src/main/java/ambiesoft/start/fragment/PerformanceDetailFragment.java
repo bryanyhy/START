@@ -24,6 +24,11 @@ public class PerformanceDetailFragment extends Fragment {
     private Button backButton;
 
     private Performance selectedPerformance;
+    private int previousFragment;
+    private String filterDate;
+    private String filterKeyword;
+    private String filterCategory;
+    private String filterTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,11 +53,37 @@ public class PerformanceDetailFragment extends Fragment {
             if (bundle.containsKey("performancesDetailFromPreviousFragment")) {
                 selectedPerformance = bundle.getParcelable("performancesDetailFromPreviousFragment");
             }
+            if (bundle.containsKey("filterDate")) {
+                filterDate = bundle.getString("filterDate");
+            }
+            if (bundle.containsKey("filterKeyword")) {
+                filterKeyword = bundle.getString("filterKeyword");
+            }
+            if (bundle.containsKey("filterCategory")) {
+                filterCategory = bundle.getString("filterCategory");
+            }
+            if (bundle.containsKey("filterTime")) {
+                filterTime = bundle.getString("filterTime");
+            }
+            if (bundle.containsKey("previousFragment")) {
+                previousFragment = bundle.getInt("previousFragment");
+            }
             nameText.setText(selectedPerformance.getName());
         }
     }
 
     public void back() {
-        getFragmentManager().popBackStackImmediate();
+        if (previousFragment == 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            Fragment googleMapFragment = new GoogleMapFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("dateFromFilter", filterDate);
+            bundle.putString("keywordFromFilter", filterKeyword);
+            bundle.putString("categoryFromFilter", filterCategory);
+            bundle.putString("timeFromFilter", filterTime);
+            googleMapFragment.setArguments(bundle);
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+        }
     }
 }

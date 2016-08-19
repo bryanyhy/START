@@ -43,6 +43,7 @@ import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanc
  */
 public class HomeFragment extends Fragment {
 
+    private static final int HOME_FRAGMENT_ID = 0;
     private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private RecyclerView recyclerView;
@@ -127,19 +128,19 @@ public class HomeFragment extends Fragment {
 //                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
 //                }
 //            }
-            setFireBaseListenerOnPerformance(getActivity());
+            setFireBaseListenerOnPerformance();
         } else {
             // Always runs when the application start and set the filter date to today by default
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             selectedDate = df.format(c.getTime());
             Log.i("System.out","Today is " + selectedDate);
-            setFireBaseListenerOnPerformance(getActivity());
+            setFireBaseListenerOnPerformance();
         }
     }
 
     public void setRecyclerViewAdapter() {
-        adapter = new RecyclerViewAdapter(filteredPerformances, getContext());
+        adapter = new RecyclerViewAdapter(filteredPerformances, getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -163,7 +164,7 @@ public class HomeFragment extends Fragment {
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment", 0);
+            bundle.putInt("requestFragment", HOME_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
@@ -172,7 +173,7 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setFireBaseListenerOnPerformance(final Activity activity) {
+    public void setFireBaseListenerOnPerformance() {
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         //establish connection to firebase
@@ -184,6 +185,7 @@ public class HomeFragment extends Fragment {
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
+                Log.i("System.out","Firebase has update");
                 // initialize performance ArrayList
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
