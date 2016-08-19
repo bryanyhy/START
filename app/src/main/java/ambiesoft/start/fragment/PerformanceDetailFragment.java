@@ -21,6 +21,10 @@ import ambiesoft.start.dataclass.Performance;
 public class PerformanceDetailFragment extends Fragment {
 
     private TextView nameText;
+    private TextView categoryText;
+    private TextView dateText;
+    private TextView timeText;
+    private TextView descText;
     private Button backButton;
 
     private Performance selectedPerformance;
@@ -36,6 +40,10 @@ public class PerformanceDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_performance_detail, container, false);
         nameText = (TextView) view.findViewById(R.id.nameText);
+        categoryText = (TextView) view.findViewById(R.id.categoryText);
+        dateText = (TextView) view.findViewById(R.id.dateText);
+        timeText = (TextView) view.findViewById(R.id.timeText);
+        descText = (TextView) view.findViewById(R.id.descText);
         backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +77,10 @@ public class PerformanceDetailFragment extends Fragment {
                 previousFragment = bundle.getInt("previousFragment");
             }
             nameText.setText(selectedPerformance.getName());
+            categoryText.setText(selectedPerformance.getCategory());
+            dateText.setText(selectedPerformance.getDate());
+            timeText.setText(selectedPerformance.getsTime() + " - " + selectedPerformance.geteTime());
+            descText.setText(selectedPerformance.getDesc());
         }
     }
 

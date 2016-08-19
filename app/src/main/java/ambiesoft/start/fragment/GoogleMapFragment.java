@@ -65,8 +65,12 @@ import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
+import static ambiesoft.start.utility.Firebase.getPerformanceListFromFirebaseByDate;
+import static ambiesoft.start.utility.Firebase.setupFirebase;
 import static ambiesoft.start.utility.JSON.loadJSONFromAsset;
 import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
+import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,7 +120,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        showProgressDialog(getContext());
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("dateFromFilter")) {
@@ -150,7 +154,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
             selectedDate = df.format(c.getTime());
             Log.i("System.out","Today is " + selectedDate);
         }
-
+        setupFirebase(getContext());
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (mapFragment == null) {
@@ -237,23 +241,19 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
             mMap.setMyLocationEnabled(true);
         }
         mMap.setOnInfoWindowClickListener(this);
-
-        getPerformanceListFromFireBaseByDate();
-
-        // if the show artworks is switched on
-        if (showArtworks == true) {
-            if (artworks.size() == 0) {
-                // load artworks and setup markers on the map
-                new SetupArtworkMarker().execute();
-            } else {
-                drawArtworksMarker();
-            }
-        }
+        setFireBaseListener();
+//        // if the show artworks is switched on
+//        if (showArtworks == true) {
+//            if (artworks.size() == 0) {
+//                // load artworks and setup markers on the map
+//                new SetupArtworkMarker().execute();
+//            } else {
+//                drawArtworksMarker();
+//            }
+//        }
     }
 
-    public void getPerformanceListFromFireBaseByDate() {
-        // Get Firebase instance
-        Firebase.setAndroidContext(getContext());
+    public void setFireBaseListener() {
         // Establish connection with Firebase URL
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from Firebase
@@ -262,23 +262,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
+                Log.i("System.out","Firebase has update");
                 // clear all markers on map if data changed in Firebase
                 mMap.clear();
                 // initialize performance ArrayList
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
-                for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                    String name = dataSnapshot.child("name").getValue().toString();
-                    String category = dataSnapshot.child("category").getValue().toString();
-                    String desc = dataSnapshot.child("desc").getValue().toString();
-                    String date = dataSnapshot.child("date").getValue().toString();
-                    String sTime = dataSnapshot.child("sTime").getValue().toString();
-                    String eTime = dataSnapshot.child("eTime").getValue().toString();
-                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                    Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                    performances.add(performance);
-                }
+                performances = getPerformanceListFromFirebaseByDate(ds);
                 if (performances.size() != 0) {
                     if (filterKeyword != null || filterCategory != null || filterTime != null) {
                         try {
@@ -306,6 +296,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                         drawArtworksMarker();
                     }
                 }
+                dismissProgressDialog();
             }
 
             @Override
@@ -313,6 +304,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0 ,0);
                 toast.show();
+                dismissProgressDialog();
             }
         });
     }

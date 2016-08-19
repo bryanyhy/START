@@ -2,6 +2,7 @@ package ambiesoft.start.fragment;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,10 @@ import ambiesoft.start.utility.RecyclerViewAdapter;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
+import static ambiesoft.start.utility.Firebase.getPerformanceListFromFirebaseByDate;
+import static ambiesoft.start.utility.Firebase.setupFirebase;
+import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,7 +99,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        showProgressDialog(getContext());
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("dateFromFilter")) {
@@ -121,22 +126,15 @@ public class HomeFragment extends Fragment {
             } else {
                 filterTime = null;
             }
-//            if (bundle.containsKey("performancesFromPreviousFragment")) {
-//                filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
-//                setRecyclerViewAdapter();
-//                if (filteredPerformances.size() == 0) {
-//                    showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
-//                }
-//            }
-            setFireBaseListenerOnPerformance();
         } else {
             // Always runs when the application start and set the filter date to today by default
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             selectedDate = df.format(c.getTime());
             Log.i("System.out","Today is " + selectedDate);
-            setFireBaseListenerOnPerformance();
         }
+        setupFirebase(getContext());
+        setFireBaseListener();
     }
 
     public void setRecyclerViewAdapter() {
@@ -173,9 +171,8 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setFireBaseListenerOnPerformance() {
-        //Get firebase instance
-        Firebase.setAndroidContext(getContext());
+    public void setFireBaseListener() {
+        Log.i("System.out","Firebase 111");
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from Firebase
@@ -189,18 +186,7 @@ public class HomeFragment extends Fragment {
                 // initialize performance ArrayList
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
-                for (DataSnapshot dataSnapshot : ds.getChildren()) {
-                    String name = dataSnapshot.child("name").getValue().toString();
-                    String category = dataSnapshot.child("category").getValue().toString();
-                    String desc = dataSnapshot.child("desc").getValue().toString();
-                    String date = dataSnapshot.child("date").getValue().toString();
-                    String sTime = dataSnapshot.child("sTime").getValue().toString();
-                    String eTime = dataSnapshot.child("eTime").getValue().toString();
-                    Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-                    Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-                    Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-                    performances.add(performance);
-                }
+                performances = getPerformanceListFromFirebaseByDate(ds);
                 if (performances.size() != 0) {
                     if (filterKeyword != null || filterCategory != null || filterTime != null) {
                         try {
@@ -218,6 +204,7 @@ public class HomeFragment extends Fragment {
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
                 setRecyclerViewAdapter();
+                dismissProgressDialog();
             }
 
             @Override
@@ -225,6 +212,7 @@ public class HomeFragment extends Fragment {
                 Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0 ,0);
                 toast.show();
+                dismissProgressDialog();
             }
         });
     }

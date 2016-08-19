@@ -46,27 +46,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerView
-        final Performance performance = (Performance) list.get(position);
-        holder.name.setText(performance.getName());
-        holder.category.setText(performance.getCategory());
-        holder.date.setText(performance.getDate());
-        holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
+        if (list.size() != 0) {
+            //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerView
+            final Performance performance = (Performance) list.get(position);
+            holder.name.setText(performance.getName());
+            holder.category.setText(performance.getCategory());
+            holder.date.setText(performance.getDate());
+            holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
 
-        holder.cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //implement onClick
-                Log.i("System.out","CV selected");
-                Fragment performanceDetailFragment = new PerformanceDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
-                bundle.putInt("previousFragment", 0);
-                performanceDetailFragment.setArguments(bundle);
-                context.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
-            }
-        });
-
+            holder.cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //implement onClick
+                    Log.i("System.out","CV selected");
+                    Fragment performanceDetailFragment = new PerformanceDetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+                    bundle.putInt("previousFragment", 0);
+                    performanceDetailFragment.setArguments(bundle);
+                    context.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
+                }
+            });
+        }
 //        holder.imageView.setImageResource(list.get(position).imageId);
 
         //animate(holder);
