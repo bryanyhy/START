@@ -25,6 +25,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import ambiesoft.start.dataclass.Performance;
 import ambiesoft.start.utility.RecyclerViewAdapter;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,10 +51,12 @@ public class HomeFragment extends Fragment {
     private ArrayList<Performance> performances;
     private static ArrayList<Performance> filteredPerformances;
 
-
     private Firebase firebase;
 
     private static String selectedDate;
+    private String filterKeyword;
+    private String filterCategory;
+    private String filterTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +107,21 @@ public class HomeFragment extends Fragment {
                 selectedDate = df.format(c.getTime());
                 getPerformanceFromFireBase(getActivity());
             }
+            if (bundle.containsKey("keywordFromFilter")) {
+                filterKeyword = bundle.getString("keywordFromFilter");
+            } else {
+                filterKeyword = null;
+            }
+            if (bundle.containsKey("categoryFromFilter")) {
+                filterCategory = bundle.getString("categoryFromFilter");
+            } else {
+                filterCategory = null;
+            }
+            if (bundle.containsKey("timeFromFilter")) {
+                filterTime = bundle.getString("timeFromFilter");
+            } else {
+                filterTime = null;
+            }
             if (bundle.containsKey("performancesFromPreviousFragment")) {
                 filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
                 setRecyclerViewAdapter();
@@ -111,6 +130,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         } else {
+            // Always runs when the application start and set the filter date to today by default
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             selectedDate = df.format(c.getTime());
@@ -154,6 +174,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getPerformanceFromFireBase(final Activity activity) {
+        Log.i("System.out","Run Firebase");
         //Get firebase instance
         Firebase.setAndroidContext(getContext());
         firebase = new Firebase(DB_URL);
@@ -167,7 +188,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot ds) {
 
-                Log.i("System.out","Start on data change" + performances.size());
                 for (DataSnapshot dataSnapshot : ds.getChildren()) {
                     String name = dataSnapshot.child("name").getValue().toString();
                     String category = dataSnapshot.child("category").getValue().toString();
@@ -181,9 +201,19 @@ public class HomeFragment extends Fragment {
                     performances.add(performance);
                 }
                 if (performances.size() != 0) {
-                    filteredPerformances = performances;
+                    if (filterKeyword != null || filterCategory != null || filterTime != null) {
+                        try {
+                            filteredPerformances = advancedFilteringOnPerformanceList(performances, filterKeyword, filterCategory, filterTime);
+                            if (filteredPerformances.size() == 0) {
+                                showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        filteredPerformances = performances;
+                    }
                 } else {
-//                    Toast.makeText(getActivity(), "No result.", Toast.LENGTH_SHORT).show();
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
                 setRecyclerViewAdapter();
@@ -197,41 +227,5 @@ public class HomeFragment extends Fragment {
                 toast.show();
             }
         });
-
-//        else {
-//            //Retrieve latitude and longitude from each post on firebase and add marker on map
-//            firebase.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot ds) {
-//
-//                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-//                        String name = dataSnapshot.child("name").getValue().toString();
-//                        String category = dataSnapshot.child("category").getValue().toString();
-//                        String desc = dataSnapshot.child("desc").getValue().toString();
-//                        String date = dataSnapshot.child("date").getValue().toString();
-//                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-//                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-//                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-//                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-//                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-//                        performances.add(performance);
-//                    }
-//                    setRecyclerViewAdapter();
-//                    if (performances.size() != 0) {
-//
-//                    } else {
-//                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//
-//                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0 ,0);
-//                    toast.show();
-//                }
-//            });
-//        }
     }
 }

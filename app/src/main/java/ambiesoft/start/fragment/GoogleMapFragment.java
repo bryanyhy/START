@@ -51,15 +51,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Artwork;
 import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.utility.JSON.loadJSONFromAsset;
 import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
 
@@ -83,6 +86,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleApiClient mGoogleApiClient;
 
     private static String selectedDate;
+    private String filterKeyword;
+    private String filterCategory;
+    private String filterTime;
 
     private Firebase firebase;
 
@@ -126,6 +132,21 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 selectedDate = df.format(c.getTime());
             }
+            if (bundle.containsKey("keywordFromFilter")) {
+                filterKeyword = bundle.getString("keywordFromFilter");
+            } else {
+                filterKeyword = null;
+            }
+            if (bundle.containsKey("categoryFromFilter")) {
+                filterCategory = bundle.getString("categoryFromFilter");
+            } else {
+                filterCategory = null;
+            }
+            if (bundle.containsKey("timeFromFilter")) {
+                filterTime = bundle.getString("timeFromFilter");
+            } else {
+                filterTime = null;
+            }
             if (bundle.containsKey("performancesFromPreviousFragment")) {
                 filteredPerformances = bundle.getParcelableArrayList("performancesFromPreviousFragment");
                 arrayListBundleFromPreviousFragment = true;
@@ -134,18 +155,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         }
-
-//        // initialize ArrayList
-//        artworks = new ArrayList<>();
-//        // if the show artworks is switched on
-//        if (showArtworks == true) {
-//            if (artworks.size() == 0) {
-//                // load artworks and setup markers on the map
-//                new SetupArtworkMarker().execute();
-//            } else {
-//                setArtworksMarker();
-//            }
-//        }
 
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -201,7 +210,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 if (artworks.size() == 0) {
                     new SetupArtworkMarker().execute();
                 } else {
-                    setArtworksMarker();
+                    drawArtworksMarker();
                 }
                 setPerformanceMarker();
 
@@ -248,16 +257,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 //            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultMarker, 16));
 //        }
         if (arrayListBundleFromPreviousFragment == false) {
-            getPerformanceFromFireBase();
+            getPerformanceListFromFireBaseByDate();
         } else {
             setPerformanceMarker();
         }
         if (artworkArrayListCreatedBefore == true && showArtworks == true) {
-            setArtworksMarker();
+            drawArtworksMarker();
         }
     }
 
-    public void getPerformanceFromFireBase() {
+    public void getPerformanceListFromFireBaseByDate() {
         Log.i("System.out","Run Firebase");
         // initialize performance ArrayList
         performances = new ArrayList<>();
@@ -285,8 +294,21 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     performances.add(performance);
                 }
                 if (performances.size() != 0) {
-                    filteredPerformances = performances;
-                    setPerformanceMarker();
+                    if (filterKeyword != null || filterCategory != null || filterTime != null) {
+                        try {
+                            filteredPerformances = advancedFilteringOnPerformanceList(performances, filterKeyword, filterCategory, filterTime);
+                            if (filteredPerformances.size() != 0) {
+                                setPerformanceMarker();
+                            } else {
+                                showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        filteredPerformances = performances;
+                        setPerformanceMarker();
+                    }
                 } else {
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
@@ -300,42 +322,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 toast.show();
             }
         });
-
-//        else {
-//
-//            //Retrieve latitude and longitude from each post on firebase and add marker on map
-//            firebase.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot ds) {
-//
-//                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
-//                        String name = dataSnapshot.child("name").getValue().toString();
-//                        String category = dataSnapshot.child("category").getValue().toString();
-//                        String desc = dataSnapshot.child("desc").getValue().toString();
-//                        String date = dataSnapshot.child("date").getValue().toString();
-//                        String sTime = dataSnapshot.child("sTime").getValue().toString();
-//                        String eTime = dataSnapshot.child("eTime").getValue().toString();
-//                        Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
-//                        Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-//                        Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
-//                        performances.add(performance);
-//                    }
-//                    if (performances.size() != 0) {
-//                        setPerformanceMarker();
-//                    } else {
-//                        Toast.makeText(getActivity(), "Sorry, there is no matching result.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//
-//                    Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0 ,0);
-//                    toast.show();
-//                }
-//            });
-//        }
     }
 
     // method to set the performance markers on map, based on the performance ArrayList
@@ -424,11 +410,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(Void aVoid) {
             Log.i("System.out","Size is " + artworks.size());
             artworkArrayListCreatedBefore = true;
-            setArtworksMarker();
+            // draw the artworks marker on map
+            drawArtworksMarker();
         }
     }
 
-    private void setArtworksMarker() {
+    // draw the artworks marker on map
+    private void drawArtworksMarker() {
         if (artworks.size() != 0) {
             for (Artwork artwork: artworks) {
                 LatLng artworkMarker = new LatLng(artwork.getLat(), artwork.getLng());
