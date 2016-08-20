@@ -44,8 +44,18 @@ import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.DateFormatter.getCurrentDay;
+import static ambiesoft.start.utility.DateFormatter.getCurrentHour;
+import static ambiesoft.start.utility.DateFormatter.getCurrentMinute;
+import static ambiesoft.start.utility.DateFormatter.getCurrentMonth;
+import static ambiesoft.start.utility.DateFormatter.getCurrentYear;
+import static ambiesoft.start.utility.DateFormatter.getEndingTimeForPerformance;
+import static ambiesoft.start.utility.DateFormatter.getSelectedDateWithLeadingZero;
+import static ambiesoft.start.utility.DateFormatter.getSelectedTimeWithLeadingZero;
 import static ambiesoft.start.utility.Firebase.savePerformance;
 import static ambiesoft.start.utility.Firebase.setupFirebase;
+import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +66,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
 
     private GoogleApiClient mGoogleApiClient;
     private boolean isStartup = true;
+    private String name;
+    private String desc;
     private String selectedCategory;
     private Double selectedLat;
     private Double selectedLng;
@@ -173,57 +185,32 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
 
     public void chooseDate() throws ParseException {
         // TODO Auto-generated method stub
-        //To show current date in the datepicker
-        Calendar mCurrentDate = Calendar.getInstance();
-        int mYear = mCurrentDate.get(Calendar.YEAR);
-        int mMonth = mCurrentDate.get(Calendar.MONTH);
-        int mDay = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+        //Set and show current date in the datepicker by default
+        int mYear = getCurrentYear();
+        int mMonth = getCurrentMonth();
+        int mDay = getCurrentDay();
 
         DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                if (selectedDay < 10 && (selectedMonth + 1) < 10) {
-                    // add leading 0 to both day and month
-                    selectedDate = "0" + selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
-                } else if (selectedDay < 10) {
-                    // add leading 0 to day
-                    selectedDate = "0" + selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
-                } else if ((selectedMonth + 1) < 10) {
-                    // add leading 0 to month
-                    selectedDate = selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
-                } else {
-                    // no leading 0 is needed
-                    selectedDate = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
-                }
+                selectedDate = getSelectedDateWithLeadingZero(selectedDay, selectedMonth, selectedYear);
                 Toast.makeText(getActivity(), selectedDate + " is selected.", Toast.LENGTH_SHORT).show();
                 dateButton.setText(selectedDate);
             }
         },mYear, mMonth, mDay);
-        mDatePicker.getDatePicker().setMinDate(mCurrentDate.getTimeInMillis());
+        mDatePicker.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
         mDatePicker.setTitle("Select date");
         mDatePicker.show();
     }
 
     public void chooseStartTime() {
-        Calendar mCurrentTime = Calendar.getInstance();
-        int mHour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
-        int mMinute = mCurrentTime.get(Calendar.MINUTE);
+        //Set and show current time in the timepicker by default
+        int mHour = getCurrentHour();
+        int mMinute = getCurrentMinute();
 
         TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 // check if the hour or minute is smaller than 10, as the leading zero may be missing in such case
-                if (selectedHour < 10 && selectedMinute < 10) {
-                    // add leading 0 to both hour and minute
-                    selectedSTime = "0" + selectedHour + ":0" + selectedMinute;
-                } else if (selectedHour < 10) {
-                    // add leading 0 to hour
-                    selectedSTime = "0" + selectedHour + ":" + selectedMinute;
-                } else if (selectedMinute < 10) {
-                    // add leading 0 to minute
-                    selectedSTime = selectedHour + ":0" + selectedMinute;
-                } else {
-                    // no leading 0 is needed
-                    selectedSTime = selectedHour + ":" + selectedMinute;
-                }
+                selectedSTime = getSelectedTimeWithLeadingZero(selectedHour, selectedMinute);
                 Toast.makeText(getActivity(), selectedSTime + " is selected.", Toast.LENGTH_SHORT).show();
                 sTimeButton.setText(selectedSTime);
             }
@@ -261,16 +248,8 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         builder.show();
     }
 
-    public String getEndingTime() throws ParseException {
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-        Date d = df.parse(selectedSTime);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        cal.add(Calendar.MINUTE, selectedDuration);
-        return df.format(cal.getTime());
-    }
-
     public void chooseLocation() {
+        showProgressDialog(getContext());
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
@@ -289,21 +268,18 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
                 LatLng latLng = place.getLatLng();
                 selectedLat = latLng.latitude;
                 selectedLng = latLng.longitude;
-                Toast.makeText(getActivity(), "Lat: " + selectedLat + ", Lng: " + selectedLng, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "Lat: " + selectedLat + ", Lng: " + selectedLng, Toast.LENGTH_LONG).show();
                 locationButton.setText(locationName);
+                dismissProgressDialog();
             }
         }
     }
 
     public void submit() throws ParseException {
-        String name = nameInput.getText().toString();
-        String desc = descInput.getText().toString();
-        if (name.trim().matches("") || desc.trim().matches("") || selectedLat == null || selectedLng == null
-                || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
-            // check if any empty field
-            showAlertBox("Alert", "No empty field is allowed.", getActivity());
-        } else {
-            selectedETime = getEndingTime();
+        name = nameInput.getText().toString().trim();
+        desc = descInput.getText().toString().trim();
+        if (validInput()) {
+            selectedETime = getEndingTimeForPerformance(selectedSTime, selectedDuration);
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
                     ,selectedETime, selectedLat, selectedLng );
             savePerformance(performance);
@@ -311,21 +287,34 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new CreatePerformanceFragment());
             ft.commit();
+        } else {
+            showAlertBox("Alert", "No empty field is allowed.", getActivity());
+        }
+    }
+
+    public boolean validInput() {
+        if (name.matches("") || desc.matches("") || selectedLat == null || selectedLng == null
+                || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        dismissProgressDialog();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        dismissProgressDialog();
+        showAlertBox("Alert", "Connection to Google Map is suspended. Please try again later.", getActivity());
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        dismissProgressDialog();
+        showAlertBox("Alert", "Connection to Google Map is failed. Please try again later.", getActivity());
     }
 }

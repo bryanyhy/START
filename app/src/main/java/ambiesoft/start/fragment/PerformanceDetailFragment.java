@@ -3,6 +3,7 @@ package ambiesoft.start.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,14 @@ import java.text.ParseException;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Performance;
+
+import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterCategoryFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +37,7 @@ public class PerformanceDetailFragment extends Fragment {
     private Button backButton;
 
     private Performance selectedPerformance;
-    private int previousFragment;
+    private int previousFragmentID;
     private String filterDate;
     private String filterKeyword;
     private String filterCategory;
@@ -48,7 +57,7 @@ public class PerformanceDetailFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                back();
+                backToPreviousFragment();
             }
         });
         return view;
@@ -58,24 +67,13 @@ public class PerformanceDetailFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("performancesDetailFromPreviousFragment")) {
-                selectedPerformance = bundle.getParcelable("performancesDetailFromPreviousFragment");
-            }
-            if (bundle.containsKey("filterDate")) {
-                filterDate = bundle.getString("filterDate");
-            }
-            if (bundle.containsKey("filterKeyword")) {
-                filterKeyword = bundle.getString("filterKeyword");
-            }
-            if (bundle.containsKey("filterCategory")) {
-                filterCategory = bundle.getString("filterCategory");
-            }
-            if (bundle.containsKey("filterTime")) {
-                filterTime = bundle.getString("filterTime");
-            }
-            if (bundle.containsKey("previousFragment")) {
-                previousFragment = bundle.getInt("previousFragment");
-            }
+            filterDate = getFilterDateFromBundle(bundle);
+            filterKeyword = getFilterKeywordFromBundle(bundle);
+            filterCategory = getFilterCategoryFromBundle(bundle);
+            filterTime = getFilterTimeFromBundle(bundle);
+            selectedPerformance = getSelectedPerformanceFromBundle(bundle);
+            previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
+
             nameText.setText(selectedPerformance.getName());
             categoryText.setText(selectedPerformance.getCategory());
             dateText.setText(selectedPerformance.getDate());
@@ -84,10 +82,11 @@ public class PerformanceDetailFragment extends Fragment {
         }
     }
 
-    public void back() {
-        if (previousFragment == 0) {
+    public void backToPreviousFragment() {
+        Log.i("System.out","ID:" + previousFragmentID);
+        if (previousFragmentID == 0) {
             getFragmentManager().popBackStack();
-        } else {
+        } else if (previousFragmentID == 1) {
             Fragment googleMapFragment = new GoogleMapFragment();
             Bundle bundle = new Bundle();
             bundle.putString("dateFromFilter", filterDate);
@@ -96,6 +95,8 @@ public class PerformanceDetailFragment extends Fragment {
             bundle.putString("timeFromFilter", filterTime);
             googleMapFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+        } else {
+            showAlertBox("Error", "Unexpected error occurs. Please restart the app.", getActivity());
         }
     }
 }

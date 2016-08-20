@@ -62,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     Fragment performanceDetailFragment = new PerformanceDetailFragment();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
-                    bundle.putInt("previousFragment", 0);
+                    bundle.putInt("previousFragmentID", 0);
                     performanceDetailFragment.setArguments(bundle);
                     context.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
                 }

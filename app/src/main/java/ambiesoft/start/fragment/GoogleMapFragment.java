@@ -64,6 +64,11 @@ import ambiesoft.start.dataclass.Artwork;
 import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterCategoryFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.utility.Firebase.getPerformanceListFromFirebaseByDate;
 import static ambiesoft.start.utility.Firebase.setupFirebase;
@@ -123,36 +128,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         showProgressDialog(getContext());
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("dateFromFilter")) {
-                selectedDate = bundle.getString("dateFromFilter");
-            } else if (bundle.containsKey("dateFromPreviousFragment")) {
-                selectedDate = bundle.getString("dateFromPreviousFragment");
-            } else {
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                selectedDate = df.format(c.getTime());
-            }
-            if (bundle.containsKey("keywordFromFilter")) {
-                filterKeyword = bundle.getString("keywordFromFilter");
-            } else {
-                filterKeyword = null;
-            }
-            if (bundle.containsKey("categoryFromFilter")) {
-                filterCategory = bundle.getString("categoryFromFilter");
-            } else {
-                filterCategory = null;
-            }
-            if (bundle.containsKey("timeFromFilter")) {
-                filterTime = bundle.getString("timeFromFilter");
-            } else {
-                filterTime = null;
-            }
+            selectedDate = getFilterDateFromBundle(bundle);
+            filterKeyword = getFilterKeywordFromBundle(bundle);
+            filterCategory = getFilterCategoryFromBundle(bundle);
+            filterTime = getFilterTimeFromBundle(bundle);
         } else {
             // Always runs when the application start and set the filter date to today by default
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            selectedDate = df.format(c.getTime());
-            Log.i("System.out","Today is " + selectedDate);
+            selectedDate = getTodayDate();
         }
         setupFirebase(getContext());
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -218,7 +200,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment", GOOGLE_MAP_FRAGMENT_ID);
+            bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
@@ -373,11 +355,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 Fragment performanceDetailFragment = new PerformanceDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
-                bundle.putString("filterDate", selectedDate);
-                bundle.putString("filterKeyword", filterKeyword);
-                bundle.putString("filterCategory", filterCategory);
-                bundle.putString("filterTime", filterTime);
-                bundle.putInt("previousFragment", GOOGLE_MAP_FRAGMENT_ID);
+                bundle.putString("dateFromFilter", selectedDate);
+                bundle.putString("keywordFromFilter", filterKeyword);
+                bundle.putString("categoryFromFilter", filterCategory);
+                bundle.putString("timeFromFilter", filterTime);
+                bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
                 performanceDetailFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
                 break;

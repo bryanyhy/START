@@ -1,12 +1,9 @@
 package ambiesoft.start.fragment;
 
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -27,16 +23,18 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import ambiesoft.start.R;
-import ambiesoft.start.activity.MainActivity;
 import ambiesoft.start.dataclass.Performance;
 import ambiesoft.start.utility.RecyclerViewAdapter;
 
 import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterCategoryFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.utility.Firebase.getPerformanceListFromFirebaseByDate;
 import static ambiesoft.start.utility.Firebase.setupFirebase;
@@ -102,36 +100,13 @@ public class HomeFragment extends Fragment {
         showProgressDialog(getContext());
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("dateFromFilter")) {
-                selectedDate = bundle.getString("dateFromFilter");
-            } else if (bundle.containsKey("dateFromPreviousFragment")) {
-                selectedDate = bundle.getString("dateFromPreviousFragment");
-            } else  {
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                selectedDate = df.format(c.getTime());
-            }
-            if (bundle.containsKey("keywordFromFilter")) {
-                filterKeyword = bundle.getString("keywordFromFilter");
-            } else {
-                filterKeyword = null;
-            }
-            if (bundle.containsKey("categoryFromFilter")) {
-                filterCategory = bundle.getString("categoryFromFilter");
-            } else {
-                filterCategory = null;
-            }
-            if (bundle.containsKey("timeFromFilter")) {
-                filterTime = bundle.getString("timeFromFilter");
-            } else {
-                filterTime = null;
-            }
+            selectedDate = getFilterDateFromBundle(bundle);
+            filterKeyword = getFilterKeywordFromBundle(bundle);
+            filterCategory = getFilterCategoryFromBundle(bundle);
+            filterTime = getFilterTimeFromBundle(bundle);
         } else {
             // Always runs when the application start and set the filter date to today by default
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            selectedDate = df.format(c.getTime());
-            Log.i("System.out","Today is " + selectedDate);
+            selectedDate = getTodayDate();
         }
         setupFirebase(getContext());
         setFireBaseListener();
@@ -162,7 +137,7 @@ public class HomeFragment extends Fragment {
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("requestFragment", HOME_FRAGMENT_ID);
+            bundle.putInt("previousFragmentID", HOME_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
@@ -172,7 +147,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void setFireBaseListener() {
-        Log.i("System.out","Firebase 111");
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from Firebase

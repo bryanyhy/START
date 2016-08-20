@@ -14,6 +14,7 @@ public class ProgressLoadingDialog {
         progress = new ProgressDialog(context);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
+        progress.setCancelable(false);
         progress.show();
     }
 
