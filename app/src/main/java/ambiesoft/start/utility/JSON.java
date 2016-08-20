@@ -8,6 +8,7 @@ import java.io.InputStream;
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
+// class for handling JSON functions, mainly for the Melbourne Public Artwork dataset
 public class JSON {
 
     // dataset JSON file for artwork in City of Melbourne, saved in assets folder

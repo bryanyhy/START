@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -26,6 +25,9 @@ import ambiesoft.start.fragment.GoogleMapFragment;
 import ambiesoft.start.fragment.HomeFragment;
 import ambiesoft.start.R;
 
+/**
+ * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Ask for location permission
+        // Ask for location permission once user start the application
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -60,11 +62,13 @@ public class MainActivity extends AppCompatActivity
         mBottomBar.setItems(R.menu.bottombar_menu);
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             // when a menu tab is selected
+            // By default the first tab button is selected, which shows the HomeFragment
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.bottomBarItemOne) {
-                    // The user selected item number one.
+                    // The user selected first item in tab.
                     Log.i("System.out","asfasfaf");
+                    // Show a new HomeFragment
                     fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
                 }
             }
@@ -80,7 +84,6 @@ public class MainActivity extends AppCompatActivity
         });
 
         // Setting colors for different tabs when there's more than three of them.
-        // You can set colors for tabs in three different ways as shown below.
 //        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
 //        mBottomBar.mapColorForTab(1, 0xFF5D4037);
 //        mBottomBar.mapColorForTab(2, "#7B1FA2");
@@ -90,15 +93,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // hide the floating action button. We only need them on fragment but not activity.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,8 +105,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
 
     }
 
@@ -132,28 +127,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.home_fragment_menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -161,9 +134,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_map) {
+            // map is selected in navigation bar
             fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
 
         } else if (id == R.id.nav_crePer) {
+            // create performance is selected in navigation bar
             Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
             fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
         }

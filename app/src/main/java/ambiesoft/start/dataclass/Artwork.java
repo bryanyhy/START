@@ -3,6 +3,7 @@ package ambiesoft.start.dataclass;
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
+// Storing the information of the artworks retrieved from MelbournePublicArtwork JSON
 public class Artwork {
 
     private String assetType;

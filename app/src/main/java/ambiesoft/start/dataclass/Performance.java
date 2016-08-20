@@ -1,9 +1,13 @@
 package ambiesoft.start.dataclass;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
-public class Performance {
+// Storing all attributes for a performance
+public class Performance implements Parcelable {
 
     private String name;
     private String category;
@@ -90,4 +94,55 @@ public class Performance {
     public void setLng(Double lng) {
         this.lng = lng;
     }
+
+    protected Performance(Parcel in) {
+        name = in.readString();
+        category = in.readString();
+        desc = in.readString();
+        date = in.readString();
+        sTime = in.readString();
+        eTime = in.readString();
+        lat = in.readByte() == 0x00 ? null : in.readDouble();
+        lng = in.readByte() == 0x00 ? null : in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(category);
+        dest.writeString(desc);
+        dest.writeString(date);
+        dest.writeString(sTime);
+        dest.writeString(eTime);
+        if (lat == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lat);
+        }
+        if (lng == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lng);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Performance> CREATOR = new Parcelable.Creator<Performance>() {
+        @Override
+        public Performance createFromParcel(Parcel in) {
+            return new Performance(in);
+        }
+
+        @Override
+        public Performance[] newArray(int size) {
+            return new Performance[size];
+        }
+    };
 }

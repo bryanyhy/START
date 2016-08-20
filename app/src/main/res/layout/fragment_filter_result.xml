@@ -65,16 +65,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From"
-                android:id="@+id/sTimeButton"
+                android:text="Choose a Time"
+                android:id="@+id/timeButton"
                 android:layout_weight="0.6" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="To"
-                android:id="@+id/eTimeButton"
-                android:layout_weight="0.6" />
         </LinearLayout>
 
         <Button
