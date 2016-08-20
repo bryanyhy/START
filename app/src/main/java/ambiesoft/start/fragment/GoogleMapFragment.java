@@ -2,18 +2,13 @@ package ambiesoft.start.fragment;
 
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,8 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -30,16 +23,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
-import com.google.android.gms.cast.framework.media.uicontroller.UIController;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -48,16 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import ambiesoft.start.R;
 import ambiesoft.start.dataclass.Artwork;
@@ -78,15 +57,18 @@ import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialo
 import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Class for showing the performance or artworks on Google Map
  */
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
+    // ID for this fragment, for fragment transact identification
     private static final int GOOGLE_MAP_FRAGMENT_ID = 1;
+    // Firebase link for the performance root
     private static final String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private GoogleMap mMap;
     private static ArrayList<Artwork> artworks = new ArrayList<>();
+    // not showing artwork on map by default
     private static boolean showArtworks = false;
     private ArrayList<Performance> performances;
     private static ArrayList<Performance> filteredPerformances;
@@ -105,17 +87,20 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         // display menu of the top action bar
         setHasOptionsMenu(true);
-
         // setting up the floating action button, to access from map to home fragment
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment homeFragment = new HomeFragment();
+                // put filter data into bundle
                 Bundle bundle = new Bundle();
-                bundle.putString("dateFromPreviousFragment", selectedDate);
-//                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
+                bundle.putString("dateFromFilter", selectedDate);
+                bundle.putString("keywordFromFilter", filterKeyword);
+                bundle.putString("categoryFromFilter", filterCategory);
+                bundle.putString("timeFromFilter", filterTime);
                 homeFragment.setArguments(bundle);
+                // transact to homeFragment with bundle
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, homeFragment).commit();
             }
         });
@@ -125,9 +110,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // show the loading progress dialog, when retrieving data from Firebase
         showProgressDialog(getContext());
+        // get bundle from previous fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
+            // if bundle exists, get the filter values
             selectedDate = getFilterDateFromBundle(bundle);
             filterKeyword = getFilterKeywordFromBundle(bundle);
             filterCategory = getFilterCategoryFromBundle(bundle);
@@ -136,12 +124,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
             // Always runs when the application start and set the filter date to today by default
             selectedDate = getTodayDate();
         }
+        // setup the firebase
         setupFirebase(getContext());
+        // Load the Google map fragment
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (mapFragment == null) {
+            // if the map can't be loaded
             Toast.makeText(getActivity(), "Map can't be loaded.", Toast.LENGTH_SHORT).show();
         } else if (isNetworkAvailable(getContext()) == false) {
+            // if no network is detected
             Toast.makeText(getActivity(), "Network is not available.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -166,12 +158,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     // action after menu item on top action bar is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        // if the item is clicked
+        // if the setting icon is clicked
         if (id == R.id.action_settings) {
             // turn on/off the display of artworks on map
             showArtworks = !showArtworks;
@@ -181,11 +169,15 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 item.setTitle("Hide artworks");
                 // clear the map, and show all artwork and performance as markers on map
                 mMap.clear();
+                // check if artwork is loaded before
                 if (artworks.size() == 0) {
+                    // if not, setup the artwork arraylist
                     new SetupArtworkMarker().execute();
                 } else {
+                    // if yes, draw the artwork marker on map
                     drawArtworksMarker();
                 }
+                // draw the performance marker based on the arraylist of performance result
                 drawPerformanceMarker();
 
             } else {
@@ -196,18 +188,21 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 drawPerformanceMarker();
             }
         }
-
+        // if search button is clicked
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
+            // make a bundle with this fragment's ID and current selected date
             Bundle bundle = new Bundle();
             bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
+            // pass the bundle to new FilterResultFragment
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // when the google map fragment is loaded and ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -218,29 +213,25 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultCenter, 15));
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(false);
+        // enable the current location button if there is permission to access user's location
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
+        // set the info window listener after clicking on the marker
         mMap.setOnInfoWindowClickListener(this);
+        // set the Firebase data listener, and get the performance data
         setFireBaseListener();
-//        // if the show artworks is switched on
-//        if (showArtworks == true) {
-//            if (artworks.size() == 0) {
-//                // load artworks and setup markers on the map
-//                new SetupArtworkMarker().execute();
-//            } else {
-//                drawArtworksMarker();
-//            }
-//        }
     }
 
+    // set the Firebase data listener, and update the data retrieved in the application
     public void setFireBaseListener() {
         // Establish connection with Firebase URL
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from Firebase
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
-        //Retrieve latitude and longitude from each post on Firebase and add marker on map
+        // value event listener that is triggered everytime data in Firebase's Performance root is updated
+        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
@@ -251,36 +242,50 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
                 performances = getPerformanceListFromFirebaseByDate(ds);
+                // check if any matching result is retrieved
                 if (performances.size() != 0) {
+                    // if there is matching result, check if there are any advanced filter option other than date
                     if (filterKeyword != null || filterCategory != null || filterTime != null) {
+                        // if there is other parameter as the filter requirement
                         try {
+                            // do the advanced filtering, and get the final result in ArrayList
                             filteredPerformances = advancedFilteringOnPerformanceList(performances, filterKeyword, filterCategory, filterTime);
+                            // check if there is matching result after advanced filtering
                             if (filteredPerformances.size() != 0) {
+                                // if yes, draw performance as marker in map
                                 drawPerformanceMarker();
                             } else {
+                                // if no, show alertbox
                                 showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     } else {
+                        // if only date is the filter parameters, the final result is what we retrieved from Firebase
                         filteredPerformances = performances;
                         drawPerformanceMarker();
                     }
                 } else {
+                    // if no matching result is found from Firebase
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
+                // check if show artwork option is true
                 if (showArtworks == true) {
+                    // if show artwork is true, check if the artwork is loaded
                     if (artworks.size() == 0) {
                         // load artworks and setup markers on the map
                         new SetupArtworkMarker().execute();
                     } else {
+                        // draw artworks as marker on map
                         drawArtworksMarker();
                     }
                 }
+                // dismiss the progress dialog after all markers are drawn on map
                 dismissProgressDialog();
             }
 
+            // Handle Firebase error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
@@ -293,10 +298,15 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
 
     // method to draw the performance markers on map, based on the performance ArrayList
     public void drawPerformanceMarker() {
+        // check if there are result
         if (filteredPerformances.size() != 0) {
+            // if there are result, for every performance object in ArrayList
             for (Performance performance: filteredPerformances) {
+                // get latitude and longitude from Performance object, and combine them into LatLng format
                 LatLng googleMapLocations = new LatLng(performance.getLat(), performance.getLng());
+                // get category of the performance
                 String cat = performance.getCategory();
+                // different colours on marker for different category of performance
                 switch (cat){
                     case "Instruments":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
@@ -343,16 +353,20 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         }
     }
 
+    // when the info window, generated after clicking marker, is clicked
     @Override
     public void onInfoWindowClick(final Marker marker) {
-
         Log.i("System.out","Info box is clicked");
+        // get latitude and longiutde of marker
         double markerLat = marker.getPosition().latitude;
         double markerLng = marker.getPosition().longitude;
+        // do matching of the lat and lng value on every performance result
         for (Performance performance: filteredPerformances) {
+            // if the lat and lng are matched, it means the Performance object is for that marker
             if (markerLat == performance.getLat() && markerLng == performance.getLng()) {
                 Log.i("System.out","Found match");
                 Fragment performanceDetailFragment = new PerformanceDetailFragment();
+                // create bundle, add all performance information into it
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
                 bundle.putString("dateFromFilter", selectedDate);
@@ -361,6 +375,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 bundle.putString("timeFromFilter", filterTime);
                 bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
                 performanceDetailFragment.setArguments(bundle);
+                // pass bundle to the new performanceDetailFragment
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
                 break;
             }
@@ -369,8 +384,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
 
     // class used for setup the markers on artwork in City of Melbourne
     private class SetupArtworkMarker extends AsyncTask<Void, Void, Void> {
-
-        // Achieve the JSON file on the artwork, and get necessary attributes from it
+        // Achieve the JSON file of artwork, and get necessary attributes from it
         // Pass those values to a new Artwork object in an Artwork ArrayList
         protected Void doInBackground(Void... voids) {
             try {
@@ -407,6 +421,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
 
     // draw the artworks marker on map
     private void drawArtworksMarker() {
+        // ensure there is artwork result
         if (artworks.size() != 0) {
             for (Artwork artwork: artworks) {
                 LatLng artworkMarker = new LatLng(artwork.getLat(), artwork.getLng());

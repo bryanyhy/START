@@ -21,27 +21,30 @@ import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanc
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
+// Class fore Firebase functions
 public class Firebase {
 
+    // reference link for the root of the project
     private static final String REF_LINK = "https://start-c9adf.firebaseio.com/";
-    final static String PERFORMANCE_URL = "https://start-c9adf.firebaseio.com/performance";
 
-    private static com.firebase.client.Firebase firebase;
     private static ArrayList<Performance> tempPerformanceList;
 
+    // setup the Firebase, necessary before calling other function on Firebase
     public static void setupFirebase(Context context) {
-
         // initialised Firebase
         com.firebase.client.Firebase.setAndroidContext(context);
     }
 
+    // save the performance to Firebase
     public static void savePerformance(Performance performance) {
         // create a firebase reference
         com.firebase.client.Firebase ref = new com.firebase.client.Firebase(REF_LINK);
+        // the child of the root is performance
         com.firebase.client.Firebase performanceRef = ref.child("performance");
         performanceRef.push().setValue(performance);
     }
 
+    // get all the performance result that match a specific date, create Performance object accordingly and add them to ArrayList
     public static ArrayList<Performance> getPerformanceListFromFirebaseByDate (DataSnapshot ds) {
         Log.i("System.out","Firebase has update.");
         // initialize performance ArrayList
@@ -59,6 +62,7 @@ public class Firebase {
             Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
             tempPerformanceList.add(performance);
         }
+        // return the ArrayList
         return tempPerformanceList;
     }
 

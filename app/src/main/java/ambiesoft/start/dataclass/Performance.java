@@ -6,6 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
+// Storing all attributes for a performance
 public class Performance implements Parcelable {
 
     private String name;

@@ -42,11 +42,13 @@ import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialo
 import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Class for the Home Fragment, which shows the result in an list of cardview
  */
 public class HomeFragment extends Fragment {
 
+    // ID for this fragment, for fragment transact identification
     private static final int HOME_FRAGMENT_ID = 0;
+    // Firebase link for the performance root
     private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private RecyclerView recyclerView;
@@ -69,37 +71,41 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // display menu of the top action bar
         setHasOptionsMenu(true);
-
         // initialize performance ArrayList
         performances = new ArrayList<>();
         filteredPerformances = new ArrayList<>();
-
+        // recycleView to hold all the cardview
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         setRecyclerViewAdapter();
-
         // setting up the floating action button, to access from home to map fragment
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment googleMapFragment = new GoogleMapFragment();
+                // put filter data into bundle
                 Bundle bundle = new Bundle();
-                bundle.putString("dateFromPreviousFragment", selectedDate);
-//                bundle.putParcelableArrayList("performancesFromPreviousFragment", filteredPerformances);
+                bundle.putString("dateFromFilter", selectedDate);
+                bundle.putString("keywordFromFilter", filterKeyword);
+                bundle.putString("categoryFromFilter", filterCategory);
+                bundle.putString("timeFromFilter", filterTime);
                 googleMapFragment.setArguments(bundle);
+                // transact to GoogleMapFragment with bundle
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
             }
         });
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // show the loading progress dialog, when retrieving data from Firebase
         showProgressDialog(getContext());
+        // get bundle from previous fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
+            // if bundle exists, get the filter values
             selectedDate = getFilterDateFromBundle(bundle);
             filterKeyword = getFilterKeywordFromBundle(bundle);
             filterCategory = getFilterCategoryFromBundle(bundle);
@@ -108,11 +114,15 @@ public class HomeFragment extends Fragment {
             // Always runs when the application start and set the filter date to today by default
             selectedDate = getTodayDate();
         }
+        // setup the firebase
         setupFirebase(getContext());
+        // set the Firebase data listener, and get the performance data
         setFireBaseListener();
     }
 
+    // for setting the recycler view adapter
     public void setRecyclerViewAdapter() {
+        // adapter for recycler view, to get all performance result and show them in cardview
         adapter = new RecyclerViewAdapter(filteredPerformances, getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -129,30 +139,29 @@ public class HomeFragment extends Fragment {
     // action after menu item on top action bar is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        // if search button is clicked
         if (id == R.id.action_search) {
             Fragment filterResultFragment = new FilterResultFragment();
+            // make a bundle with this fragment's ID and current selected date
             Bundle bundle = new Bundle();
             bundle.putInt("previousFragmentID", HOME_FRAGMENT_ID);
             bundle.putString("filterDate", selectedDate);
             filterResultFragment.setArguments(bundle);
+            // pass the bundle to new FilterResultFragment
             getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    // set the Firebase data listener, and update the data retrieved in the application
     public void setFireBaseListener() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from Firebase
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
         // value event listener that is triggered everytime data in Firebase's Performance root is updated
-        //Retrieve latitude and longitude from each post on Firebase and add marker on map
+        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
@@ -161,26 +170,37 @@ public class HomeFragment extends Fragment {
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
                 performances = getPerformanceListFromFirebaseByDate(ds);
+                // check if any matching result is retrieved
                 if (performances.size() != 0) {
+                    // if there is matching result, check if there are any advanced filter option other than date
                     if (filterKeyword != null || filterCategory != null || filterTime != null) {
+                        // if there is other parameter as the filter requirement
                         try {
+                            // do the advanced filtering, and get the final result in ArrayList
                             filteredPerformances = advancedFilteringOnPerformanceList(performances, filterKeyword, filterCategory, filterTime);
+                            // check if there is matching result after advanced filtering
                             if (filteredPerformances.size() == 0) {
+                                // if no, show alertbox
                                 showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     } else {
+                        // if only date is the filter parameters, the final result is what we retrieved from Firebase
                         filteredPerformances = performances;
                     }
                 } else {
+                    // if no matching result is found from Firebase
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", getActivity());
                 }
+                // update the recyclerView
                 setRecyclerViewAdapter();
+                // dismiss the progress dialog after all the updates
                 dismissProgressDialog();
             }
 
+            // Handle Firebase error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);

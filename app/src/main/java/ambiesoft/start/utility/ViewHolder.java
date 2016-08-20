@@ -10,6 +10,7 @@ import ambiesoft.start.R;
 /**
  * Created by Bryanyhy on 17/8/2016.
  */
+// class for the viewholder, which is a cardview to hold the information on performance
 public class ViewHolder extends RecyclerView.ViewHolder {
 
     public CardView cv;
@@ -17,7 +18,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView category;
     public TextView date;
     public TextView time;
-
 
     public ViewHolder(View itemView) {
         super(itemView);

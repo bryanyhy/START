@@ -6,10 +6,12 @@ import android.content.Context;
 /**
  * Created by Bryanyhy on 19/8/2016.
  */
+// class for functions on the progress loading dialog
 public class ProgressLoadingDialog {
 
     private static ProgressDialog progress;
 
+    // Show the progress dialog
     public static void showProgressDialog(Context context) {
         progress = new ProgressDialog(context);
         progress.setTitle("Loading");
@@ -18,6 +20,7 @@ public class ProgressLoadingDialog {
         progress.show();
     }
 
+    // dismiss the dialog
     public static void dismissProgressDialog() {
         progress.dismiss();
     }
