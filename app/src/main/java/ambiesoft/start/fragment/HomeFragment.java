@@ -38,6 +38,7 @@ import static ambiesoft.start.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.utility.Firebase.getPerformanceListFromFirebaseByDate;
 import static ambiesoft.start.utility.Firebase.setupFirebase;
+import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
 
@@ -114,10 +115,18 @@ public class HomeFragment extends Fragment {
             // Always runs when the application start and set the filter date to today by default
             selectedDate = getTodayDate();
         }
-        // setup the firebase
-        setupFirebase(getContext());
-        // set the Firebase data listener, and get the performance data
-        setFireBaseListener();
+        // check if there is network connection
+        if (isNetworkAvailable(getContext()) == false) {
+            // if no network is detected, dismiss the progress dialog and show alertbox to user
+            dismissProgressDialog();
+            showAlertBox("Alert", "There is no internet connection.", getActivity());
+        } else {
+            // if network is available
+            // setup the firebase
+            setupFirebase(getContext());
+            // set the Firebase data listener, and get the performance data
+            setFireBaseListener();
+        }
     }
 
     // for setting the recycler view adapter
