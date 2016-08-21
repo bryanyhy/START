@@ -5,6 +5,7 @@ import android.os.Bundle;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import ambiesoft.start.dataclass.Artwork;
 import ambiesoft.start.dataclass.Performance;
 
 import static ambiesoft.start.utility.DateFormatter.getTodayDate;
@@ -78,6 +79,17 @@ public class BundleItemChecker {
         } else {
             // return -1 if no ID in bundle
             return -1;
+        }
+    }
+
+    // check if there is artwork object in bundle
+    public static Artwork getSelectedArtworkFromBundle(Bundle bundle) {
+        if (bundle.containsKey("artworkDetailFromPreviousFragment")) {
+            // return the object from bundle
+            return bundle.getParcelable("artworkDetailFromPreviousFragment");
+        } else {
+            // return null if no object in bundle
+            return null;
         }
     }
 

@@ -1,10 +1,13 @@
 package ambiesoft.start.dataclass;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
 // Storing the information of the artworks retrieved from MelbournePublicArtwork JSON
-public class Artwork {
+public class Artwork implements Parcelable {
 
     private String assetType;
     private String name;
@@ -81,4 +84,53 @@ public class Artwork {
     public void setLng(Double lng) {
         this.lng = lng;
     }
+
+    protected Artwork(Parcel in) {
+        assetType = in.readString();
+        name = in.readString();
+        address = in.readString();
+        artist = in.readString();
+        artDate = in.readString();
+        lat = in.readByte() == 0x00 ? null : in.readDouble();
+        lng = in.readByte() == 0x00 ? null : in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(assetType);
+        dest.writeString(name);
+        dest.writeString(address);
+        dest.writeString(artist);
+        dest.writeString(artDate);
+        if (lat == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lat);
+        }
+        if (lng == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lng);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artwork> CREATOR = new Parcelable.Creator<Artwork>() {
+        @Override
+        public Artwork createFromParcel(Parcel in) {
+            return new Artwork(in);
+        }
+
+        @Override
+        public Artwork[] newArray(int size) {
+            return new Artwork[size];
+        }
+    };
 }
