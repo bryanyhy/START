@@ -137,14 +137,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_map) {
-            // map is selected in navigation bar
-            fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
-
-        } else if (id == R.id.nav_crePer) {
+            // check if network is available
             if (isNetworkAvailable(this) == false) {
                 // if no network is detected
                 dismissProgressDialog();
-                showAlertBox("Alert", "There is no internet connection detected. Create performance is not allowed.", this);
+                showAlertBox("Alert", "There is no internet connection detected. Map access is disabled.", this);
+            } else {
+                // map is selected in navigation bar
+                fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+            }
+
+        } else if (id == R.id.nav_crePer) {
+            // check if network is available
+            if (isNetworkAvailable(this) == false) {
+                // if no network is detected
+                dismissProgressDialog();
+                showAlertBox("Alert", "There is no internet connection detected. Create performance is disabled.", this);
             } else {
                 // create performance is selected in navigation bar
                 Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();

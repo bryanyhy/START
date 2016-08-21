@@ -200,14 +200,20 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         }
         // if search button is clicked
         if (id == R.id.action_search) {
-            Fragment filterResultFragment = new FilterResultFragment();
-            // make a bundle with this fragment's ID and current selected date
-            Bundle bundle = new Bundle();
-            bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
-            bundle.putString("filterDate", selectedDate);
-            filterResultFragment.setArguments(bundle);
-            // pass the bundle to new FilterResultFragment
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+            if (isNetworkAvailable(getContext()) == false) {
+                // if no network is detected
+                dismissProgressDialog();
+                showAlertBox("Alert", "There is no internet connection detected. Filter is disabled.", getActivity());
+            } else {
+                Fragment filterResultFragment = new FilterResultFragment();
+                // make a bundle with this fragment's ID and current selected date
+                Bundle bundle = new Bundle();
+                bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
+                bundle.putString("filterDate", selectedDate);
+                filterResultFragment.setArguments(bundle);
+                // pass the bundle to new FilterResultFragment
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -367,7 +373,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     @Override
     public void onInfoWindowClick(final Marker marker) {
         Log.i("System.out","Info box is clicked");
-        // get latitude and longiutde of marker
+        // get latitude and longitude of marker
         double markerLat = marker.getPosition().latitude;
         double markerLng = marker.getPosition().longitude;
         // do matching of the lat and lng value on every performance result
@@ -387,6 +393,25 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 performanceDetailFragment.setArguments(bundle);
                 // pass bundle to the new performanceDetailFragment
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
+                break;
+            }
+        }
+        // do matching of the lat and lng value on every artwork result
+        for (Artwork artwork: artworks) {
+            if (markerLat == artwork.getLat() && markerLng == artwork.getLng()) {
+                Log.i("System.out","Found match");
+                Fragment artworkDetailFragment = new ArtworkDetailFragment();
+                // create bundle, add all performance information into it
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("artworkDetailFromPreviousFragment", artwork);
+                bundle.putString("dateFromFilter", selectedDate);
+                bundle.putString("keywordFromFilter", filterKeyword);
+                bundle.putString("categoryFromFilter", filterCategory);
+                bundle.putString("timeFromFilter", filterTime);
+                bundle.putInt("previousFragmentID", GOOGLE_MAP_FRAGMENT_ID);
+                artworkDetailFragment.setArguments(bundle);
+                // pass bundle to the new performanceDetailFragment
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, artworkDetailFragment).commit();
                 break;
             }
         }

@@ -86,16 +86,22 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment googleMapFragment = new GoogleMapFragment();
-                // put filter data into bundle
-                Bundle bundle = new Bundle();
-                bundle.putString("dateFromFilter", selectedDate);
-                bundle.putString("keywordFromFilter", filterKeyword);
-                bundle.putString("categoryFromFilter", filterCategory);
-                bundle.putString("timeFromFilter", filterTime);
-                googleMapFragment.setArguments(bundle);
-                // transact to GoogleMapFragment with bundle
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+                if (isNetworkAvailable(getContext()) == false) {
+                    // if no network is detected
+                    dismissProgressDialog();
+                    showAlertBox("Alert", "There is no internet connection detected. Map access is disabled.", getActivity());
+                } else {
+                    Fragment googleMapFragment = new GoogleMapFragment();
+                    // put filter data into bundle
+                    Bundle bundle = new Bundle();
+                    bundle.putString("dateFromFilter", selectedDate);
+                    bundle.putString("keywordFromFilter", filterKeyword);
+                    bundle.putString("categoryFromFilter", filterCategory);
+                    bundle.putString("timeFromFilter", filterTime);
+                    googleMapFragment.setArguments(bundle);
+                    // transact to GoogleMapFragment with bundle
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+                }
             }
         });
 
@@ -156,14 +162,20 @@ public class HomeFragment extends Fragment {
         int id = item.getItemId();
         // if search button is clicked
         if (id == R.id.action_search) {
-            Fragment filterResultFragment = new FilterResultFragment();
-            // make a bundle with this fragment's ID and current selected date
-            Bundle bundle = new Bundle();
-            bundle.putInt("previousFragmentID", HOME_FRAGMENT_ID);
-            bundle.putString("filterDate", selectedDate);
-            filterResultFragment.setArguments(bundle);
-            // pass the bundle to new FilterResultFragment
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+            if (isNetworkAvailable(getContext()) == false) {
+                // if no network is detected
+                dismissProgressDialog();
+                showAlertBox("Alert", "There is no internet connection detected. Filter is disabled.", getActivity());
+            } else {
+                Fragment filterResultFragment = new FilterResultFragment();
+                // make a bundle with this fragment's ID and current selected date
+                Bundle bundle = new Bundle();
+                bundle.putInt("previousFragmentID", HOME_FRAGMENT_ID);
+                bundle.putString("filterDate", selectedDate);
+                filterResultFragment.setArguments(bundle);
+                // pass the bundle to new FilterResultFragment
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
