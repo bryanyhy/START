@@ -4,6 +4,7 @@ package ambiesoft.start.fragment;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,9 +66,11 @@ public class HomeFragment extends Fragment {
     private String filterCategory;
     private String filterTime;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // display menu of the top action bar
@@ -95,8 +98,10 @@ public class HomeFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
             }
         });
+
         return view;
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

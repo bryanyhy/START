@@ -48,7 +48,9 @@
             android:layout_height="wrap_content"
             android:text="Choose a date"
             android:id="@+id/dateButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/textColor"
+            android:background="@color/colorPrimaryDark"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +69,9 @@
                 android:layout_height="wrap_content"
                 android:text="Choose a Time"
                 android:id="@+id/timeButton"
-                android:layout_weight="0.6" />
+                android:layout_weight="0.6"
+                android:textColor="@color/textColor"
+                android:background="@color/colorPrimaryDark"/>
 
         </LinearLayout>
 
@@ -76,6 +80,8 @@
             android:layout_height="wrap_content"
             android:text="Filter"
             android:id="@+id/filterButton"
-            android:backgroundTint="#22d640" />
+            android:backgroundTint="#22d640"
+            android:textColor="@color/textColor"
+            android:background="@color/colorPrimaryDark"/>
     </LinearLayout>
 </RelativeLayout>
