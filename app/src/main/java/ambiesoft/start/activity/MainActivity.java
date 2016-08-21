@@ -73,17 +73,22 @@ public class MainActivity extends AppCompatActivity
                     // The user selected first item in tab.
                     // Show a new HomeFragment
                     fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+                } else if (menuItemId == R.id.bottomBarItemTwo) {
+                    // The user reselected item number one, scroll your content to top.
+                    fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+                }
+                else if (menuItemId == R.id.bottomBarItemThree) {
+                    fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
                 }
             }
 
             // when a menu tab is reselected
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-                    // The user reselected item number one, scroll your content to top.
-                    //fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
-                }
+
             }
+
+
         });
 
         // Setting colors for different tabs when there's more than three of them.

@@ -2,19 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bottomBarItemOne"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_menu_gallery"
         android:title="Home" />
     <item
         android:id="@+id/bottomBarItemTwo"
-        android:icon="@drawable/ic_menu_gallery"
-        android:title="Item2" />
+        android:icon="@drawable/ic_map_white_24px"
+        android:title="Map" />
     <item
         android:id="@+id/bottomBarItemThree"
-        android:icon="@drawable/ic_menu_manage"
-        android:title="Item3" />
-    <item
-        android:id="@+id/bottomBarItemFour"
-        android:icon="@drawable/ic_menu_send"
-        android:title="Item4" />
+        android:icon="@drawable/ic_media_play"
+        android:title="New Event" />
+
 
 </menu>
