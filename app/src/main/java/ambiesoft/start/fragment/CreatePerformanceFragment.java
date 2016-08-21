@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,6 +55,7 @@ import static ambiesoft.start.utility.Firebase.savePerformance;
 import static ambiesoft.start.utility.Firebase.setupFirebase;
 import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.utility.ProgressLoadingDialog.showProgressDialog;
+import static ambiesoft.start.utility.SoftKeyboard.hideSoftKeyboard;
 
 /**
  * A Fragment for performance creation.
@@ -89,6 +92,7 @@ public class CreatePerformanceFragment extends Fragment implements GoogleApiClie
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_performance, container, false);
         nameInput = (EditText) view.findViewById(R.id.nameInput);
+        hideSoftKeyboard(getActivity(), nameInput.getWindowToken());
         descInput = (EditText) view.findViewById(R.id.descInput);
         categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
         createButton = (Button) view.findViewById(R.id.createButton);

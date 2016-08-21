@@ -131,10 +131,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         mapFragment.getMapAsync(this);
         if (mapFragment == null) {
             // if the map can't be loaded
+            dismissProgressDialog();
             Toast.makeText(getActivity(), "Map can't be loaded.", Toast.LENGTH_SHORT).show();
         } else if (isNetworkAvailable(getContext()) == false) {
             // if no network is detected
-            Toast.makeText(getActivity(), "Network is not available.", Toast.LENGTH_SHORT).show();
+            dismissProgressDialog();
+            showAlertBox("Alert", "There is no internet connection detected. Please check your internet connection " +
+                    "in order to experience full functions.", getActivity());
         }
     }
 
@@ -161,31 +164,38 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         int id = item.getItemId();
         // if the setting icon is clicked
         if (id == R.id.action_settings) {
-            // turn on/off the display of artworks on map
-            showArtworks = !showArtworks;
-            // check if the show artwork setting is turn on or off
-            if (showArtworks == true) {
-                // if show artwork is on
-                item.setTitle("Hide artworks");
-                // clear the map, and show all artwork and performance as markers on map
-                mMap.clear();
-                // check if artwork is loaded before
-                if (artworks.size() == 0) {
-                    // if not, setup the artwork arraylist
-                    new SetupArtworkMarker().execute();
-                } else {
-                    // if yes, draw the artwork marker on map
-                    drawArtworksMarker();
-                }
-                // draw the performance marker based on the arraylist of performance result
-                drawPerformanceMarker();
-
+            if (isNetworkAvailable(getContext()) == false) {
+                // if no network is detected
+                dismissProgressDialog();
+                showAlertBox("Alert", "There is no internet connection detected. Please check your internet connection " +
+                        "in order to experience full functions.", getActivity());
             } else {
-                // if show artwork is off
-                item.setTitle("Show artworks");
-                // clear the map, and show only performance as markers on map
-                mMap.clear();
-                drawPerformanceMarker();
+                // turn on/off the display of artworks on map
+                showArtworks = !showArtworks;
+                // check if the show artwork setting is turn on or off
+                if (showArtworks == true) {
+                    // if show artwork is on
+                    item.setTitle("Hide artworks");
+                    // clear the map, and show all artwork and performance as markers on map
+                    mMap.clear();
+                    // check if artwork is loaded before
+                    if (artworks.size() == 0) {
+                        // if not, setup the artwork arraylist
+                        new SetupArtworkMarker().execute();
+                    } else {
+                        // if yes, draw the artwork marker on map
+                        drawArtworksMarker();
+                    }
+                    // draw the performance marker based on the arraylist of performance result
+                    drawPerformanceMarker();
+
+                } else {
+                    // if show artwork is off
+                    item.setTitle("Show artworks");
+                    // clear the map, and show only performance as markers on map
+                    mMap.clear();
+                    drawPerformanceMarker();
+                }
             }
         }
         // if search button is clicked

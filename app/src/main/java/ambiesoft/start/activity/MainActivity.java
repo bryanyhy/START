@@ -25,6 +25,10 @@ import ambiesoft.start.fragment.GoogleMapFragment;
 import ambiesoft.start.fragment.HomeFragment;
 import ambiesoft.start.R;
 
+import static ambiesoft.start.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.utility.NetworkAvailability.isNetworkAvailable;
+import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialog;
+
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
  */
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.bottomBarItemOne) {
                     // The user selected first item in tab.
-                    Log.i("System.out","asfasfaf");
                     // Show a new HomeFragment
                     fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
                 }
@@ -138,9 +141,15 @@ public class MainActivity extends AppCompatActivity
             fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
 
         } else if (id == R.id.nav_crePer) {
-            // create performance is selected in navigation bar
-            Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
-            fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
+            if (isNetworkAvailable(this) == false) {
+                // if no network is detected
+                dismissProgressDialog();
+                showAlertBox("Alert", "There is no internet connection detected. Create performance is not allowed.", this);
+            } else {
+                // create performance is selected in navigation bar
+                Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
+                fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
