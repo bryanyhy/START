@@ -35,8 +35,7 @@ import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialo
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
-    private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
+    private MainActivityPresenter presenter;
 
     private BottomBar mBottomBar;
     private android.app.FragmentManager fm = getFragmentManager();
@@ -45,18 +44,24 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Ask for location permission once user start the application
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_COARSE_LOCATION);
-        }
+//        // Ask for location permission once user start the application
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    MY_PERMISSIONS_REQUEST_COARSE_LOCATION);
+//        }
 
         setContentView(R.layout.activity_main);
+
+        if (presenter == null) {
+            presenter = new MainActivityPresenter(fm);
+        }
+        presenter.onTakeView(this);
+        presenter.askForLocationPermission();
 
         // setting up the bottom navigation bar
         mBottomBar = BottomBar.attach(findViewById(R.id.content_frame), savedInstanceState);
@@ -69,26 +74,13 @@ public class MainActivity extends AppCompatActivity
             // By default the first tab button is selected, which shows the HomeFragment
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-                    // The user selected first item in tab.
-                    // Show a new HomeFragment
-                    fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
-                } else if (menuItemId == R.id.bottomBarItemTwo) {
-                    // The user reselected item number one, scroll your content to top.
-                    fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
-                }
-                else if (menuItemId == R.id.bottomBarItemThree) {
-                    fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
-                }
+                presenter.checkMenuTabItemSelection(menuItemId);
             }
 
             // when a menu tab is reselected
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
-
             }
-
-
         });
 
         // Setting colors for different tabs when there's more than three of them.
@@ -105,14 +97,14 @@ public class MainActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
     }
 

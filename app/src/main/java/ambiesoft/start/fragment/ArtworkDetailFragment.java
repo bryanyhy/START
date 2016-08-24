@@ -28,12 +28,13 @@ import static ambiesoft.start.utility.BundleItemChecker.getSelectedPerformanceFr
  */
 public class ArtworkDetailFragment extends Fragment {
 
+    private ArtworkDetailFragmentPresenter presenter;
 
-    private TextView nameText;
-    private TextView assetText;
-    private TextView creatorText;
-    private TextView yearText;
-    private TextView locText;
+    public TextView nameText;
+    public TextView assetText;
+    public TextView creatorText;
+    public TextView yearText;
+    public TextView locText;
     private Button backButton;
 
     private Artwork selectedArtwork;
@@ -65,44 +66,17 @@ public class ArtworkDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // get bundle from previous fragment
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            // if bundle exists, get the filter values
-            filterDate = getFilterDateFromBundle(bundle);
-            filterKeyword = getFilterKeywordFromBundle(bundle);
-            filterCategory = getFilterCategoryFromBundle(bundle);
-            filterTime = getFilterTimeFromBundle(bundle);
-            selectedArtwork = getSelectedArtworkFromBundle(bundle);
-            previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
-            // set the textView from data in bundle accordingly
-            nameText.setText(selectedArtwork.getName());
-            assetText.setText(selectedArtwork.getAssetType());
-            creatorText.setText(selectedArtwork.getArtist());
-            yearText.setText(selectedArtwork.getArtDate());
-            locText.setText(selectedArtwork.getAddress());
+        super.onViewCreated(view, savedInstanceState);
+        if (presenter == null) {
+            presenter = new ArtworkDetailFragmentPresenter(this);
         }
+        presenter.getBundleFromPreviousFragment();
+        presenter.setTextView();
     }
 
     // Method called when user clicked the "back" button
     public void backToPreviousFragment() {
-        if (previousFragmentID == 1) {
-            // if it is GoogleMapFragment, pop back will call errors
-            // so we have to restart the googleMapFragment
-            Fragment googleMapFragment = new GoogleMapFragment();
-            // create the bundle with previous filter settings
-            Bundle bundle = new Bundle();
-            bundle.putString("dateFromFilter", filterDate);
-            bundle.putString("keywordFromFilter", filterKeyword);
-            bundle.putString("categoryFromFilter", filterCategory);
-            bundle.putString("timeFromFilter", filterTime);
-            googleMapFragment.setArguments(bundle);
-            // pass the bundle to a new googleMapFragment
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
-        } else {
-            // show alertbox if the previous fragment ID is not valid
-            showAlertBox("Error", "Unexpected error occurs. Please restart the app.", getActivity());
-        }
+        presenter.backToPreviousFragment();
     }
 
 }
