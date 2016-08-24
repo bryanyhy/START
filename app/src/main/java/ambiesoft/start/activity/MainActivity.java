@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
         // setting up the bottom navigation bar
         mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
+//        if (true) {
+//            mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
+//        } else {
+//            mBottomBar = (BottomBar) findViewById(R.id.bottomBar_normal);
+//        }
 //        mBottomBar.noTopOffset();
 //        mBottomBar.noNavBarGoodness();
 //        mBottomBar.setBackgroundColor(Color.parseColor("#9f90af"));
