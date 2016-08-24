@@ -50,7 +50,7 @@ public class MainActivityPresenter {
             fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (menuItemId == R.id.bottomBarItemTwo) {
             // The user reselected item number one, scroll your content to top.
-            fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+            fm.beginTransaction().replace(R.id.content_frame_map, new GoogleMapFragment()).commit();
         }
         else if (menuItemId == R.id.bottomBarItemThree) {
             fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();

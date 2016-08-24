@@ -92,7 +92,7 @@ public class HomeFragmentPresenter {
                     bundle.putString("timeFromFilter", filterTime);
                     googleMapFragment.setArguments(bundle);
                     // transact to GoogleMapFragment with bundle
-                    fm.beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+                    fm.beginTransaction().replace(R.id.content_frame_map, googleMapFragment).commit();
                 }
             }
         });

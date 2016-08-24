@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -106,6 +108,8 @@ public class GoogleMapFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FrameLayout fl = (FrameLayout) getActivity().findViewById(R.id.content_frame_map);
+                fl.removeAllViews();
                 presenter.transactToHomeFragment();
 //                Fragment homeFragment = new HomeFragment();
 //                // put filter data into bundle

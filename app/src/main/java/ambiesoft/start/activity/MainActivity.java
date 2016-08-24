@@ -2,8 +2,10 @@ package ambiesoft.start.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -18,7 +20,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+import com.roughike.bottombar.OnTabReselectListener;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import ambiesoft.start.fragment.CreatePerformanceFragment;
 import ambiesoft.start.fragment.GoogleMapFragment;
@@ -32,8 +35,7 @@ import static ambiesoft.start.utility.ProgressLoadingDialog.dismissProgressDialo
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
  */
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private MainActivityPresenter presenter;
 
@@ -64,24 +66,38 @@ public class MainActivity extends AppCompatActivity
         presenter.askForLocationPermission();
 
         // setting up the bottom navigation bar
-        mBottomBar = BottomBar.attach(findViewById(R.id.content_frame), savedInstanceState);
-        mBottomBar.noTopOffset();
-        mBottomBar.noNavBarGoodness();
+        mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
+//        mBottomBar.noTopOffset();
+//        mBottomBar.noNavBarGoodness();
+//        mBottomBar.setBackgroundColor(Color.parseColor("#9f90af"));
         // set the items in the bottom bar
-        mBottomBar.setItems(R.menu.bottombar_menu);
-        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            // when a menu tab is selected
-            // By default the first tab button is selected, which shows the HomeFragment
+//        mBottomBar.setItems(R.menu.bottombar_menu);
+        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-                presenter.checkMenuTabItemSelection(menuItemId);
-            }
-
-            // when a menu tab is reselected
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
+            public void onTabSelected(@IdRes int tabId) {
+                presenter.checkMenuTabItemSelection(tabId);
             }
         });
+        mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {
+            @Override
+            public void onTabReSelected(@IdRes int tabId) {
+            }
+        });
+
+
+//        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+//            // when a menu tab is selected
+//            // By default the first tab button is selected, which shows the HomeFragment
+//            @Override
+//            public void onMenuTabSelected(@IdRes int menuItemId) {
+//                presenter.checkMenuTabItemSelection(menuItemId);
+//            }
+//
+//            // when a menu tab is reselected
+//            @Override
+//            public void onMenuTabReSelected(@IdRes int menuItemId) {
+//            }
+//        });
 
         // Setting colors for different tabs when there's more than three of them.
 //        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
@@ -90,12 +106,16 @@ public class MainActivity extends AppCompatActivity
 //        mBottomBar.mapColorForTab(3, "#FF5252");
 //        mBottomBar.mapColorForTab(4, "#FF9800");
 
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setExpandedTitleColor(Color.parseColor("#009F90AF"));
+        collapsingToolbar.setCollapsedTitleTextColor(Color.parseColor("#9f90af"));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
-        // hide the floating action button. We only need them on fragment but not activity.
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+//        // hide the floating action button. We only need them on fragment but not activity.
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setVisibility(View.GONE);
 
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -112,53 +132,53 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // Necessary to restore the BottomBar's state, otherwise we would
-        // lose the current tab on orientation change.
-        mBottomBar.onSaveInstanceState(outState);
+//        // Necessary to restore the BottomBar's state, otherwise we would
+//        // lose the current tab on orientation change.
+//        mBottomBar.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_map) {
-            // check if network is available
-            if (isNetworkAvailable(this) == false) {
-                // if no network is detected
-                dismissProgressDialog();
-                showAlertBox("Alert", "There is no internet connection detected. Map access is disabled.", this);
-            } else {
-                // map is selected in navigation bar
-                fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
-            }
-
-        } else if (id == R.id.nav_crePer) {
-            // check if network is available
-            if (isNetworkAvailable(this) == false) {
-                // if no network is detected
-                dismissProgressDialog();
-                showAlertBox("Alert", "There is no internet connection detected. Create performance is disabled.", this);
-            } else {
-                // create performance is selected in navigation bar
-                Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
-                fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
-            }
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
+//
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_map) {
+//            // check if network is available
+//            if (isNetworkAvailable(this) == false) {
+//                // if no network is detected
+//                dismissProgressDialog();
+//                showAlertBox("Alert", "There is no internet connection detected. Map access is disabled.", this);
+//            } else {
+//                // map is selected in navigation bar
+//                fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+//            }
+//
+//        } else if (id == R.id.nav_crePer) {
+//            // check if network is available
+//            if (isNetworkAvailable(this) == false) {
+//                // if no network is detected
+//                dismissProgressDialog();
+//                showAlertBox("Alert", "There is no internet connection detected. Create performance is disabled.", this);
+//            } else {
+//                // create performance is selected in navigation bar
+//                Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
+//                fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
+//            }
+//        }
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 }

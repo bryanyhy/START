@@ -88,12 +88,15 @@ public class HomeFragment extends Fragment {
         setRecyclerViewAdapter();
         // setting up the floating action button, to access from home to map fragment
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         if (presenter == null) {
             Log.i("System.out","Create home presenter");

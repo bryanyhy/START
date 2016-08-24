@@ -9,17 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="127dp"
-            android:id="@+id/imageView2"
-            android:background="@drawable/banner"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignBottom="@+id/scrollView" />
 
-
-
-    <ScrollView
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
@@ -45,7 +36,9 @@
         android:layout_height="87dp"
         android:layout_gravity="right|bottom"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

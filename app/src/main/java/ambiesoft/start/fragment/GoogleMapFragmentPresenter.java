@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -102,7 +103,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
     public void loadGoogleMapFragment() {
         // Load the Google map fragment
         MapFragment mapFragment = (MapFragment) view.getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(view);
+        mapFragment.getMapAsync(this);
         if (mapFragment == null) {
             // if the map can't be loaded
             dismissProgressDialog();
