@@ -10,7 +10,7 @@
         android:title="Map" />
     <item
         android:id="@+id/bottomBarItemThree"
-        android:icon="@drawable/ic_media_play"
+        android:icon="@drawable/ic_menu_camera"
         android:title="New Event" />
 
 
