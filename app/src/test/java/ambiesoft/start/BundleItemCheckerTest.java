@@ -8,16 +8,15 @@ import org.mockito.Mockito;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import ambiesoft.start.dataclass.Performance;
-import ambiesoft.start.utility.BundleItemChecker;
+import ambiesoft.start.model.dataclass.Performance;
 
-import static ambiesoft.start.utility.BundleItemChecker.getFilterCategoryFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getFilterDateFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getFilterKeywordFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getFilterTimeFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getSelectedArtworkFromBundle;
-import static ambiesoft.start.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedArtworkFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 import static org.junit.Assert.*;
 
 /**

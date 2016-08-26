@@ -42,4 +42,12 @@
         <item>Monument</item>
     </string-array>
 
+    <string-array name="tab_bar_array">
+        <item>Result</item>
+        <item>Portfolio</item>
+        <item>My List</item>
+        <item>Buskers</item>
+        <item>More</item>
+    </string-array>
+
 </resources>

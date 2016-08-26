@@ -6,10 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static ambiesoft.start.utility.DateFormatter.getEndingTimeForPerformance;
-import static ambiesoft.start.utility.DateFormatter.getSelectedDateWithLeadingZero;
-import static ambiesoft.start.utility.DateFormatter.getSelectedTimeWithLeadingZero;
-import static ambiesoft.start.utility.DateFormatter.getTodayDate;
+import static ambiesoft.start.model.utility.DateFormatter.getEndingTimeForPerformance;
+import static ambiesoft.start.model.utility.DateFormatter.getSelectedDateWithLeadingZero;
+import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLeadingZero;
+import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static org.junit.Assert.*;
 
 /**
