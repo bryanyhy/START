@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,6 +49,7 @@ public class FilterResultFragment extends Fragment {
         filterButton = (Button) view.findViewById(R.id.filterButton);
         dateButton = (Button) view.findViewById(R.id.dateButton);
         timeButton = (Button) view.findViewById(R.id.timeButton);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -103,5 +106,11 @@ public class FilterResultFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+    }
+
+    // setup the menu items on the top action bar
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +47,7 @@ public class PerformanceDetailFragment extends Fragment {
                 presenter.backToPreviousFragment();
             }
         });
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -58,5 +61,11 @@ public class PerformanceDetailFragment extends Fragment {
             presenter = new PerformanceDetailFragmentPresenter(this);
         }
         presenter.getBundleFromPreviousFragment();
+    }
+
+    // setup the menu items on the top action bar
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 }

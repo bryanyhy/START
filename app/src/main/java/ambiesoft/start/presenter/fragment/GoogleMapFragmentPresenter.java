@@ -5,9 +5,11 @@ import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -295,6 +297,16 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                 performanceDetailFragment.setArguments(bundle);
                 // pass bundle to the new performanceDetailFragment
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        FrameLayout fl = (FrameLayout) view.getActivity().findViewById(R.id.content_frame_map);
+                        fl.removeAllViews();
+                    }
+                }, 100);
                 break;
             }
         }
