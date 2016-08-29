@@ -126,4 +126,8 @@ public class CreatePerformanceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         presenter.getLocationLatAndLng(requestCode, resultCode, data);
     }
+
+    public void updateLocationInfo(String address, Double lat, Double lng) {
+        presenter.setLocationInfo(address, lat, lng);
+    }
 }

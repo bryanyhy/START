@@ -60,6 +60,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     private String name;
     private String desc;
     private String selectedCategory;
+    private String selectedAddress;
     private Double selectedLat;
     private Double selectedLng;
     private String selectedDate;
@@ -211,12 +212,10 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     }
     @Override
     public void onConnectionSuspended(int i) {
-        dismissProgressDialog();
         showAlertBox("Alert", "Connection to Google API Client is suspended. Please try again later.", view.getActivity());
     }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        dismissProgressDialog();
         showAlertBox("Alert", "Connection to Google API Client is failed. Please try again later.", view.getActivity());
     }
 
@@ -231,7 +230,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
             selectedETime = getEndingTimeForPerformance(selectedSTime, selectedDuration);
             // create a new performance object
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
-                    ,selectedETime, selectedLat, selectedLng);
+                    ,selectedETime, selectedLat, selectedLng, selectedAddress);
             // save performance into Firebase
             savePerformance(performance);
             Toast.makeText(view.getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
@@ -261,5 +260,11 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     public void setSelectedCategory(AdapterView<?> parent, int position) {
         // On selecting a spinner item
         selectedCategory = parent.getItemAtPosition(position).toString();
+    }
+
+    public void setLocationInfo(String address, Double lat, Double lng) {
+        selectedAddress = address;
+        selectedLat = lat;
+        selectedLng = lng;
     }
 }

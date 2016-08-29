@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.common.api.Status;
@@ -33,14 +34,14 @@ public class HeatMapFragment extends Fragment {
     private HeatMapFragmentPresenter presenter;
     private PlaceAutocompleteFragment autocompleteFragment;
     private AppBarLayout abl;
+    private Button confirmButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_heatmap, container, false);
-        // display menu of the top action bar
-//        setHasOptionsMenu(true);
+        confirmButton = (Button) view.findViewById(R.id.confirmButton);
         return view;
     }
 
@@ -51,6 +52,14 @@ public class HeatMapFragment extends Fragment {
         abl = ((MainActivity) getActivity()).getAppBarLayout();
         abl.setExpanded(false, false);
         abl.setActivated(false);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                presenter.confirmLocation();
+            }
+        });
+
         if (presenter == null) {
             presenter = new HeatMapFragmentPresenter(this);
         }
@@ -61,18 +70,14 @@ public class HeatMapFragment extends Fragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i("System.out", "Place: " + place.getName());
+                presenter.setMarkerOnSearchedPlace(place.getLatLng(), place.getAddress().toString());
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("System.out", "An error occurred: " + status);
             }
         });
     }
-
-
 
 }

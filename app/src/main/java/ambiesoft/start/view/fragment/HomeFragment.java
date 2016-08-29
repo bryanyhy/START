@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         // recycleView to hold all the cardview
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        setRecyclerViewAdapter();
         // setting up the floating action button, to access from home to map fragment
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -55,6 +54,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setRecyclerViewAdapter();
         // show the floating action button in main activity
         fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.show();

@@ -18,12 +18,15 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.presenter.activity.MainActivityPresenter;
+import ambiesoft.start.presenter.fragment.HeatMapFragmentPresenter;
+import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.FilterResultFragment;
+import ambiesoft.start.view.fragment.HeatMapFragment;
 
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener {
 
     private MainActivityPresenter presenter;
 
@@ -220,6 +223,18 @@ public class MainActivity extends AppCompatActivity {
 //        }
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+        }
+    }
+
+    public void onLocationSelected(String address, Double lat, Double lng) {
+        CreatePerformanceFragment cpf = (CreatePerformanceFragment)
+                getFragmentManager().findFragmentById(R.id.content_frame);
+
+        if (cpf != null) {
+            // If article frag is available, we're in two-pane layout...
+
+            // Call a method in the ArticleFragment to update its content
+            cpf.updateLocationInfo(address, lat, lng);
         }
     }
 

@@ -73,8 +73,6 @@ public class HomeFragmentPresenter {
         performances = new ArrayList<>();
         filteredPerformances = new ArrayList<>();
         setFloatingActionButton();
-        // show the loading progress dialog, when retrieving data from Firebase
-        showProgressDialog(view.getContext());
     }
 
     public void setFloatingActionButton() {
@@ -123,6 +121,8 @@ public class HomeFragmentPresenter {
             showAlertBox("Alert", "There is no internet connection.", view.getActivity());
         } else {
             // if network is available
+            // show the loading progress dialog, when retrieving data from Firebase
+            showProgressDialog(view.getContext());
             // setup the firebase
             setupFirebase(view.getContext());
             // set the Firebase data listener, and get the performance data
