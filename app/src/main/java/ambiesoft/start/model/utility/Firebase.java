@@ -46,9 +46,15 @@ public class Firebase {
             String date = dataSnapshot.child("date").getValue().toString();
             String sTime = dataSnapshot.child("sTime").getValue().toString();
             String eTime = dataSnapshot.child("eTime").getValue().toString();
+//            String address = dataSnapshot.child("address").getValue().toString();
             Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
             Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
-            Performance performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+            Performance performance;
+//            if (address != null) {
+//                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude, address);
+//            } else {
+                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+//            }
             tempPerformanceList.add(performance);
         }
         // return the ArrayList

@@ -1,0 +1,340 @@
+{
+  "meta" : {
+    "view" : {
+      "id" : "ygaw-6rzq",
+      "name" : "Pedestrian Sensor Locations",
+      "attribution" : "City of Melbourne, Australia",
+      "averageRating" : 0,
+      "category" : "Transport & Movement",
+      "createdAt" : 1398737651,
+      "description" : "Co-ordinates of the City of Melbourne's pedestrian sensors. Please refer to the Pedestrian Counts dataset for more information on the counts each sensor reports.",
+      "displayType" : "table",
+      "downloadCount" : 268,
+      "indexUpdatedAt" : 1471735285,
+      "licenseId" : "CC_30_BY_AUS",
+      "newBackend" : false,
+      "numberOfComments" : 0,
+      "oid" : 22548087,
+      "publicationAppendEnabled" : true,
+      "publicationDate" : 1469077116,
+      "publicationGroup" : 1561926,
+      "publicationStage" : "published",
+      "rowsUpdatedAt" : 1471574409,
+      "rowsUpdatedBy" : "xcv7-86fp",
+      "tableId" : 12042923,
+      "totalTimesRated" : 0,
+      "viewCount" : 1330,
+      "viewLastModified" : 1471574389,
+      "viewType" : "tabular",
+      "columns" : [ {
+        "id" : -1,
+        "name" : "sid",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":sid",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "id",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":id",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "position",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":position",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "created_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "created_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "updated_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "updated_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : -1,
+        "name" : "meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { }
+      }, {
+        "id" : 263777535,
+        "name" : "Sensor ID",
+        "dataTypeName" : "number",
+        "fieldName" : "sensorid",
+        "position" : 1,
+        "renderTypeName" : "number",
+        "tableColumnId" : 19443285,
+        "width" : 208,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 263777536,
+        "name" : "Sensor Name",
+        "dataTypeName" : "text",
+        "fieldName" : "sensorname",
+        "position" : 2,
+        "renderTypeName" : "text",
+        "tableColumnId" : 19443286,
+        "width" : 340,
+        "format" : {
+          "align" : "left"
+        }
+      }, {
+        "id" : 263777537,
+        "name" : "Sensor Description",
+        "dataTypeName" : "text",
+        "fieldName" : "sensorloc",
+        "position" : 3,
+        "renderTypeName" : "text",
+        "tableColumnId" : 19443287,
+        "width" : 340,
+        "format" : {
+          "align" : "left"
+        }
+      }, {
+        "id" : 263777538,
+        "name" : "Status",
+        "dataTypeName" : "text",
+        "fieldName" : "status",
+        "position" : 4,
+        "renderTypeName" : "text",
+        "tableColumnId" : 21783079,
+        "width" : 100,
+        "format" : {
+          "align" : "left"
+        }
+      }, {
+        "id" : 263777539,
+        "name" : "Upload Date",
+        "dataTypeName" : "date",
+        "fieldName" : "dt",
+        "position" : 5,
+        "renderTypeName" : "date",
+        "tableColumnId" : 21783193,
+        "width" : 237,
+        "format" : {
+          "view" : "date_dmy_time",
+          "align" : "left"
+        }
+      }, {
+        "id" : 263777540,
+        "name" : "Year Installed",
+        "dataTypeName" : "number",
+        "fieldName" : "xdate",
+        "position" : 6,
+        "renderTypeName" : "number",
+        "tableColumnId" : 28546492,
+        "width" : 100,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "true",
+          "align" : "right"
+        }
+      }, {
+        "id" : 263777541,
+        "name" : "Location Type",
+        "dataTypeName" : "text",
+        "fieldName" : "loctype",
+        "position" : 7,
+        "renderTypeName" : "text",
+        "tableColumnId" : 28546582,
+        "width" : 100,
+        "format" : {
+          "align" : "left"
+        }
+      }, {
+        "id" : 263777542,
+        "name" : "Geometry",
+        "dataTypeName" : "location",
+        "fieldName" : "location",
+        "position" : 8,
+        "renderTypeName" : "location",
+        "tableColumnId" : 19443292,
+        "width" : 269,
+        "format" : {
+          "view" : "coords",
+          "align" : "left"
+        },
+        "subColumnTypes" : [ "human_address", "latitude", "longitude", "machine_address", "needs_recoding" ]
+      }, {
+        "id" : 263777543,
+        "name" : "Latitude",
+        "dataTypeName" : "text",
+        "fieldName" : "latitude",
+        "position" : 9,
+        "renderTypeName" : "text",
+        "tableColumnId" : 28566261,
+        "width" : 100,
+        "format" : { }
+      }, {
+        "id" : 263777544,
+        "name" : "Longitude",
+        "dataTypeName" : "text",
+        "fieldName" : "longitude",
+        "position" : 10,
+        "renderTypeName" : "text",
+        "tableColumnId" : 28566262,
+        "width" : 100,
+        "format" : { }
+      } ],
+      "grants" : [ {
+        "inherited" : false,
+        "type" : "viewer",
+        "flags" : [ "public" ]
+      } ],
+      "license" : {
+        "name" : "Creative Commons Attribution 3.0 Australia",
+        "logoUrl" : "images/licenses/cc30by.png",
+        "termsLink" : "http://creativecommons.org/licenses/by/3.0/au/deed.en"
+      },
+      "metadata" : {
+        "custom_fields" : {
+          "Melbourne Metadata" : {
+            "Time period covered" : "2009 to present day",
+            "Original upload date" : "29/04/2014",
+            "Geographic coverage – Jurisdiction " : "Melbourne CBD and nearby",
+            "Spatial dataset" : "Yes",
+            "Last Updated" : "27/08/2014",
+            "Version number" : "1",
+            "Language" : "English",
+            "Data Completeness statement: Has the full dataset been included, or has a subset been excluded? Why?" : "All data held by the City of Melbourne has been included",
+            "Update Frequency" : "Ad hoc",
+            "Data Quality" : "5 Star"
+          }
+        },
+        "renderTypeConfig" : {
+          "visible" : {
+            "table" : true
+          }
+        },
+        "rowLabel" : "Row",
+        "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+        "jsonQuery" : {
+          "order" : [ {
+            "ascending" : true,
+            "columnFieldName" : "sensorid"
+          } ]
+        },
+        "rdfSubject" : "0"
+      },
+      "owner" : {
+        "id" : "xcv7-86fp",
+        "displayName" : "City of Melbourne",
+        "profileImageUrlLarge" : "/api/users/xcv7-86fp/profile_images/LARGE",
+        "profileImageUrlMedium" : "/api/users/xcv7-86fp/profile_images/THUMB",
+        "profileImageUrlSmall" : "/api/users/xcv7-86fp/profile_images/TINY",
+        "roleName" : "administrator",
+        "screenName" : "City of Melbourne",
+        "rights" : [ "create_datasets", "edit_others_datasets", "edit_sdp", "edit_site_theme", "moderate_comments", "manage_users", "chown_datasets", "edit_nominations", "approve_nominations", "feature_items", "federations", "manage_stories", "manage_approval", "change_configurations", "view_domain", "view_others_datasets", "edit_pages", "create_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards", "create_dashboards", "manage_provenance", "create_story", "edit_story_title_desc", "create_story_copy", "delete_story", "manage_story_collaborators", "manage_story_visibility", "manage_story_public_version", "edit_story", "view_unpublished_story", "view_story", "view_all_dataset_status_logs", "use_data_connectors" ]
+      },
+      "query" : {
+        "orderBys" : [ {
+          "ascending" : true,
+          "expression" : {
+            "columnId" : 263777535,
+            "type" : "column"
+          }
+        } ]
+      },
+      "rights" : [ "read" ],
+      "sortBys" : [ {
+        "id" : 0,
+        "viewColumnId" : 263777535,
+        "flags" : [ "asc" ]
+      } ],
+      "tableAuthor" : {
+        "id" : "xcv7-86fp",
+        "displayName" : "City of Melbourne",
+        "profileImageUrlLarge" : "/api/users/xcv7-86fp/profile_images/LARGE",
+        "profileImageUrlMedium" : "/api/users/xcv7-86fp/profile_images/THUMB",
+        "profileImageUrlSmall" : "/api/users/xcv7-86fp/profile_images/TINY",
+        "roleName" : "administrator",
+        "screenName" : "City of Melbourne",
+        "rights" : [ "create_datasets", "edit_others_datasets", "edit_sdp", "edit_site_theme", "moderate_comments", "manage_users", "chown_datasets", "edit_nominations", "approve_nominations", "feature_items", "federations", "manage_stories", "manage_approval", "change_configurations", "view_domain", "view_others_datasets", "edit_pages", "create_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards", "create_dashboards", "manage_provenance", "create_story", "edit_story_title_desc", "create_story_copy", "delete_story", "manage_story_collaborators", "manage_story_visibility", "manage_story_public_version", "edit_story", "view_unpublished_story", "view_story", "view_all_dataset_status_logs", "use_data_connectors" ]
+      },
+      "tags" : [ "pedestrian", "eventsplanner" ],
+      "flags" : [ "default" ]
+    }
+  },
+  "data" : [ [ 737, "F21250AF-9AD6-4B3F-AA7D-16843FC1EDDC", 737, 1471549203, "915455", 1471549203, "915455", null, "22", "Eli274_T", "Flinders St-Elizabeth St (East)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8178644478193", "144.965068228214", null, false ], "-37.8178644478193", "144.965068228214" ]
+, [ 738, "9A1ABB82-3487-417D-92E1-25E04BD59560", 738, 1471549203, "915455", 1471549203, "915455", null, "34", "Fli32_T", "Flinders St-Spark La", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8153798501116", "144.974150495806", null, false ], "-37.8153798501116", "144.974150495806" ]
+, [ 739, "7FC7D3A9-DDB3-4FA0-8C4B-2AD9AB3940EE", 739, 1471549203, "915455", 1471549203, "915455", null, "11", "WatCit_T", "Waterfront City", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8154565643471", "144.939579299407", null, false ], "-37.8154565643471", "144.939579299407" ]
+, [ 740, "37893673-CE91-48A6-99BD-AD0364808048", 740, 1471549203, "915455", 1471549203, "915455", null, "8", "WebBN_T", "Webb Bridge", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8229354263742", "144.947175106953", null, false ], "-37.8229354263742", "144.947175106953" ]
+, [ 741, "F9D9B0DD-8285-415A-997E-4F0CE185513C", 741, 1471549203, "915455", 1471549203, "915455", null, "7", "Fed_T", "Birrarung Marr", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8183237506589", "144.971414820121", null, false ], "-37.8183237506589", "144.971414820121" ]
+, [ 742, "2D875DDC-1646-4F4B-A9BE-55CFD6E2D567", 742, 1471549203, "915455", 1471549203, "915455", null, "13", "Wil277_T", "Flagstaff Station", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8123434709568", "144.956647742336", null, false ], "-37.8123434709568", "144.956647742336" ]
+, [ 743, "EFC46FFC-6FD0-4637-957C-F6BEFE8E481B", 743, 1471549203, "915455", 1471549203, "915455", null, "15", "QV_T", "State Library", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8106437830727", "144.964471322694", null, false ], "-37.8106437830727", "144.964471322694" ]
+, [ 744, "0803459B-AB49-4A75-980B-ED044C6EEDC1", 744, 1471549203, "915455", 1471549203, "915455", null, "27", "Vic_T", "QV Market-Peel St", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8062043823034", "144.956630585614", null, false ], "-37.8062043823034", "144.956630585614" ]
+, [ 745, "B84771DB-E94E-49F9-8EC4-24CF3746776F", 745, 1471549203, "915455", 1471549203, "915455", null, "12", "NewQ_T", "New Quay", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8145798719868", "144.942923981029", null, false ], "-37.8145798719868", "144.942923981029" ]
+, [ 746, "0DFFA7A2-34F7-4E84-941C-C246268FBCA4", 746, 1471549203, "915455", 1471549203, "915455", null, "24", "Col620_T", "Spencer St-Collins St (North)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8188796214196", "144.95449198131", null, false ], "-37.8188796214196", "144.95449198131" ]
+, [ 747, "B7920552-56FD-470C-AECF-DFD726063473", 747, 1471549203, "915455", 1471549203, "915455", null, "3", "Swa295_T", "Melbourne Central", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8110530422788", "144.964248046779", null, false ], "-37.8110530422788", "144.964248046779" ]
+, [ 748, "5BC8DBA5-E8B5-4534-BED6-BD3E5FAABA0E", 748, 1471549203, "915455", 1471549203, "915455", null, "20", "LtB170_T", "Chinatown-Lt Bourke St (South)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.811729134669", "144.968246601442", null, false ], "-37.811729134669", "144.968246601442" ]
+, [ 749, "C91A659D-7A6B-4D14-A222-4418C21E428F", 749, 1471549203, "915455", 1471549203, "915455", null, "31", "Lyg161_T", "Lygon St (West)", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8016968046535", "144.966589114895", null, false ], "-37.8016968046535", "144.966589114895" ]
+, [ 750, "87432B4D-A372-4F23-AA2F-6D10F95404AA", 750, 1471549203, "915455", 1471549203, "915455", null, "10", "BouHbr_T", "Victoria Point", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8187647327542", "144.947105451213", null, false ], "-37.8187647327542", "144.947105451213" ]
+, [ 751, "EE1F6ED8-928C-41B4-85FE-AB30ABCFB1C1", 751, 1471549203, "915455", 1471549203, "915455", null, "6", "FliS_T", "Flinders Street Station Underpass", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8191170445268", "144.965582558609", null, false ], "-37.8191170445268", "144.965582558609" ]
+, [ 752, "2DA16D24-F96F-4231-9F54-0E957CF52565", 752, 1471549203, "915455", 1471549203, "915455", null, "21", "Rus180_T", "Bourke St-Russell St (West)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8124803013205", "144.967730746932", null, false ], "-37.8124803013205", "144.967730746932" ]
+, [ 753, "BE2BA8C8-87E8-452D-AAF0-E880038A08C0", 753, 1471549203, "915455", 1471549203, "915455", null, "36", "Que85_T", "Queen St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8164707984673", "144.961276928328", null, false ], "-37.8164707984673", "144.961276928328" ]
+, [ 754, "84C2FD0C-0B38-46AA-A055-56289A6706DD", 754, 1471549203, "915455", 1471549203, "915455", null, "2", "Bou283_T", "Bourke Street Mall (South)", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8138066724228", "144.965167185971", null, false ], "-37.8138066724228", "144.965167185971" ]
+, [ 755, "0C5D700B-1864-469A-8D61-C934F432FAED", 755, 1471549203, "915455", 1471549203, "915455", null, "38", "Swa11_T", "Flinders St-Swanston St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8170916806555", "144.96714779185", null, false ], "-37.8170916806555", "144.96714779185" ]
+, [ 756, "B0BC4B20-EA0D-442E-9708-31E601DD9E46", 756, 1471549203, "915455", 1471549203, "915455", null, "28", "VAC_T", "The Arts Centre", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8212992424763", "144.968793093492", null, false ], "-37.8212992424763", "144.968793093492" ]
+, [ 757, "95F28AD6-8F6A-4754-B2AB-7CC11E318B07", 757, 1471549203, "915455", 1471549203, "915455", null, "18", "Col12_T", "Collins Place (North)", "Installed", 1471610387, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8134486106919", "144.973053538633", null, false ], "-37.8134486106919", "144.973053538633" ]
+, [ 758, "05DA36D2-5B90-4814-8425-7BC0DE841D1A", 758, 1471549203, "915455", 1471549203, "915455", null, "35", "SouthB_T", "Southbank", "Installed", 1471610390, "2016", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8202262044322", "144.965076422932", null, false ], "-37.8202262044322", "144.965076422932" ]
+, [ 759, "A2C52123-BC50-4E3E-8678-724F56F403F2", 759, 1471549203, "915455", 1471549203, "915455", null, "23", "Col623_T", "Spencer St-Collins St (South)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8190925593958", "144.954527490176", null, false ], "-37.8190925593958", "144.954527490176" ]
+, [ 760, "93AD2072-8CF0-4E98-8A62-49D2905D9731", 760, 1471549203, "915455", 1471549203, "915455", null, "33", "Spr13_T", "Flinders St-Spring St (West)", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8148325157834", "144.974540556573", null, false ], "-37.8148325157834", "144.974540556573" ]
+, [ 761, "42714949-04F7-4CD3-8A27-9F4ACF135023", 761, 1471549203, "915455", 1471549203, "915455", null, "42", "UM1_T", "Grattan St-Swanston St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8000856548236", "144.963864121768", null, false ], "-37.8000856548236", "144.963864121768" ]
+, [ 762, "713C4B37-32E6-44CC-9828-838286FCFD6A", 762, 1471549203, "915455", 1471549203, "915455", null, "43", "UM2_T", "Monash Rd-Swanston St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.7984452524968", "144.964117822271", null, false ], "-37.7984452524968", "144.964117822271" ]
+, [ 763, "719AD621-0897-4361-B4A2-18DE00EBCAFB", 763, 1471549203, "915455", 1471549203, "915455", null, "5", "PriNW_T", "Princes Bridge", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8187424894411", "144.967876562712", null, false ], "-37.8187424894411", "144.967876562712" ]
+, [ 764, "EFE72A01-207F-4236-BBDB-8318CB22C02B", 764, 1471549203, "915455", 1471549203, "915455", null, "32", "CSq_T", "City Square", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8157374166874", "144.966857177706", null, false ], "-37.8157374166874", "144.966857177706" ]
+, [ 765, "C506DF88-17C8-45C6-B5B9-8735EF4BA2CE", 765, 1471549203, "915455", 1471549203, "915455", null, "40", "Spr201_T", "Lonsdale St-Spring St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8099934057793", "144.972275879457", null, false ], "-37.8099934057793", "144.972275879457" ]
+, [ 766, "33962D4D-491D-4D03-BCC1-D2B521A2FA23", 766, 1471549203, "915455", 1471549203, "915455", null, "16", "Col270_T", "Australia on Collins", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8157342252752", "144.965210438559", null, false ], "-37.8157342252752", "144.965210438559" ]
+, [ 767, "D17AD08E-2FE6-4A47-8527-75E76D9DE57C", 767, 1471549203, "915455", 1471549203, "915455", null, "14", "SanBri_T", "Sandridge Bridge", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8201124166947", "144.96291897546", null, false ], "-37.8201124166947", "144.96291897546" ]
+, [ 768, "1B334DD3-2C82-4A1A-A6DC-9AAE0C5BB397", 768, 1471549203, "915455", 1471549203, "915455", null, "19", "LtB210_T", "Chinatown-Swanston St (North)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8123720170999", "144.965506710649", null, false ], "-37.8123720170999", "144.965506710649" ]
+, [ 769, "46D3E11A-6D66-46D2-B421-B02F0156976B", 769, 1471549203, "915455", 1471549203, "915455", null, "37", "Lyg260_T", "Lygon St (East)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8031027095484", "144.966714517396", null, false ], "-37.8031027095484", "144.966714517396" ]
+, [ 770, "7044648C-5F0E-4160-9E46-26CA403265D9", 770, 1471549203, "915455", 1471549203, "915455", null, "26", "Eli483_T", "QV Market-Elizabeth St (West)", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8086954214778", "144.960494038903", null, false ], "-37.8086954214778", "144.960494038903" ]
+, [ 771, "A3203AED-60EF-45F4-A0D4-74F57353FC80", 771, 1471549203, "915455", 1471549203, "915455", null, "25", "MCEC_T", "Melbourne Convention Exhibition Centre", "Installed", 1471610390, "2013", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8240318840833", "144.955931412038", null, false ], "-37.8240318840833", "144.955931412038" ]
+, [ 772, "F8DAE3DF-A9FB-43A0-B59D-28AF9CC88343", 772, 1471549203, "915455", 1471549203, "915455", null, "17", "Col15_T", "Collins Place (South)", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8136254240211", "144.973235916778", null, false ], "-37.8136254240211", "144.973235916778" ]
+, [ 773, "4B3A1D1A-10BB-4DDE-B053-2A3553C01B9B", 773, 1471549203, "915455", 1471549203, "915455", null, "44", "UM3_T", "Tin Alley-Swanston St (West)", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.7968227197363", "144.964353917115", null, false ], "-37.7968227197363", "144.964353917115" ]
+, [ 774, "37BC7C71-3C14-4929-84D7-B0D84E65C966", 774, 1471549203, "915455", 1471549203, "915455", null, "9", "Col700_T", "Southern Cross Station", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8198825259225", "144.951082845706", null, false ], "-37.8198825259225", "144.951082845706" ]
+, [ 775, "C0C81BA7-F147-45D3-9740-CCD002BDA724", 775, 1471549203, "915455", 1471549203, "915455", null, "1", "Bou292_T", "Bourke Street Mall (North)", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8134944036338", "144.965153237914", null, false ], "-37.8134944036338", "144.965153237914" ]
+, [ 776, "8E388C33-1795-45FC-88C3-6B20DB95ED47", 776, 1471549203, "915455", 1471549203, "915455", null, "39", "AlfPl_T", "Alfred Place", "Installed", 1471610390, "2015", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8138475498556", "144.970330591529", null, false ], "-37.8138475498556", "144.970330591529" ]
+, [ 777, "60D030CB-C36E-4D2A-A483-706D4C63B6C7", 777, 1471549203, "915455", 1471549203, "915455", null, "4", "Swa123_T", "Town Hall (West)", "Installed", 1471610390, "2009", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8148798759503", "144.966087801437", null, false ], "-37.8148798759503", "144.966087801437" ]
+, [ 778, "65848A49-9A8A-42A4-ABB4-F544BBBCC0E9", 778, 1471549203, "915455", 1471549203, "915455", null, "30", "Lon189_T", "Lonsdale St (South)", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.8112184919515", "144.966568066001", null, false ], "-37.8112184919515", "144.966568066001" ]
+, [ 779, "AF5B7D5D-7B3A-42BF-A850-900EE2DB9039", 779, 1471549203, "915455", 1471549203, "915455", null, "29", "AG_T", "St Kilda Rd-Alexandra Gardens", "Installed", 1471610390, "2014", "Outdoor", [ "{\"address\":\"\",\"city\":\"\",\"state\":\"\",\"zip\":\"\"}", "-37.819658083823", "144.968634533137", null, false ], "-37.819658083823", "144.968634533137" ]
+ ]
+}

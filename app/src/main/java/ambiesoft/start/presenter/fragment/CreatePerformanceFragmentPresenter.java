@@ -45,6 +45,7 @@ import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLea
 import static ambiesoft.start.model.utility.Firebase.savePerformance;
 import static ambiesoft.start.model.utility.Firebase.setupFirebase;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Bryanyhy on 23/8/2016.
@@ -60,6 +61,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     private String name;
     private String desc;
     private String selectedCategory;
+    private String selectedAddress;
     private Double selectedLat;
     private Double selectedLng;
     private String selectedDate;
@@ -181,28 +183,29 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
 //        } catch (GooglePlayServicesNotAvailableException e) {
 //            e.printStackTrace();
 //        }
+        showProgressDialog(view.getContext());
         FragmentTransaction ft = view.getFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame_map, new HeatMapFragment()).addToBackStack(null);
         ft.commit();
     }
 
-    // When a location is selected in Google Place API
-    public void getLocationLatAndLng(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                // get the latitude and longitude of the selected location
-                Place place = PlacePicker.getPlace(data, view.getActivity());
-                String locationName = place.getName().toString();
-                LatLng latLng = place.getLatLng();
-                selectedLat = latLng.latitude;
-                selectedLng = latLng.longitude;
-                // set the button text to be the location name or lat/lng
-                view.locationButton.setText(locationName);
-//                // dismiss the load progress dialog
-//                dismissProgressDialog();
-            }
-        }
-    }
+//    // When a location is selected in Google Place API
+//    public void getLocationLatAndLng(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                // get the latitude and longitude of the selected location
+//                Place place = PlacePicker.getPlace(data, view.getActivity());
+//                String locationName = place.getName().toString();
+//                LatLng latLng = place.getLatLng();
+//                selectedLat = latLng.latitude;
+//                selectedLng = latLng.longitude;
+//                // set the button text to be the location name or lat/lng
+//                view.locationButton.setText(locationName);
+////                // dismiss the load progress dialog
+////                dismissProgressDialog();
+//            }
+//        }
+//    }
 
     // connection status to Google API Client
     @Override
@@ -211,12 +214,10 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     }
     @Override
     public void onConnectionSuspended(int i) {
-        dismissProgressDialog();
         showAlertBox("Alert", "Connection to Google API Client is suspended. Please try again later.", view.getActivity());
     }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        dismissProgressDialog();
         showAlertBox("Alert", "Connection to Google API Client is failed. Please try again later.", view.getActivity());
     }
 
@@ -231,7 +232,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
             selectedETime = getEndingTimeForPerformance(selectedSTime, selectedDuration);
             // create a new performance object
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
-                    ,selectedETime, selectedLat, selectedLng);
+                    ,selectedETime, selectedLat, selectedLng, selectedAddress);
             // save performance into Firebase
             savePerformance(performance);
             Toast.makeText(view.getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
@@ -261,5 +262,13 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     public void setSelectedCategory(AdapterView<?> parent, int position) {
         // On selecting a spinner item
         selectedCategory = parent.getItemAtPosition(position).toString();
+    }
+
+    public void setLocationInfo(String address, Double lat, Double lng) {
+        selectedAddress = address;
+        selectedLat = lat;
+        selectedLng = lng;
+        view.locationButton.setText(selectedAddress);
+        Toast.makeText(view.getActivity(), selectedAddress + " is selected.", Toast.LENGTH_SHORT).show();
     }
 }

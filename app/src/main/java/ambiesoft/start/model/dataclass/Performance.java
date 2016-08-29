@@ -17,6 +17,7 @@ public class Performance implements Parcelable {
     private String eTime;
     private Double lat;
     private Double lng;
+    private String address;
 
     public Performance() {}
 
@@ -29,6 +30,18 @@ public class Performance implements Parcelable {
         this.eTime = eTime;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public Performance(String name, String category, String desc, String date, String sTime, String eTime, Double lat, Double lng, String address) {
+        this.name = name;
+        this.category = category;
+        this.desc = desc;
+        this.date = date;
+        this.sTime = sTime;
+        this.eTime = eTime;
+        this.lat = lat;
+        this.lng = lng;
+        this.address = address;
     }
 
     public String getName() {
@@ -95,6 +108,14 @@ public class Performance implements Parcelable {
         this.lng = lng;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     protected Performance(Parcel in) {
         name = in.readString();
         category = in.readString();
@@ -104,6 +125,7 @@ public class Performance implements Parcelable {
         eTime = in.readString();
         lat = in.readByte() == 0x00 ? null : in.readDouble();
         lng = in.readByte() == 0x00 ? null : in.readDouble();
+        address = in.readString();
     }
 
     @Override
@@ -131,6 +153,7 @@ public class Performance implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeDouble(lng);
         }
+        dest.writeString(address);
     }
 
     @SuppressWarnings("unused")
