@@ -45,10 +45,10 @@ public class GoogleMapFragment extends Fragment {
         // show the floating action button in main activity
         fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.show();
-        fab.setImageResource(R.drawable.ic_search_white_24px);
+        fab.setImageResource(R.drawable.ic_menu_1);
         // collapse the app bar layout
         abl = ((MainActivity) getActivity()).getAppBarLayout();
-        abl.setExpanded(false);
+                abl.setExpanded(false);
 
         if (presenter == null) {
             presenter = new GoogleMapFragmentPresenter(this);
@@ -71,6 +71,8 @@ public class GoogleMapFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.map_fragment_menu, menu);
         MenuItem item = menu.findItem(R.id.action_settings);
+        // TODO: icon
+        item.setIcon(R.drawable.ic_filter_landmark);
         // check if the show artwork setting is turn on or off
         if (presenter.getShowArtworkOption() == true) {
             // if show artwork is on

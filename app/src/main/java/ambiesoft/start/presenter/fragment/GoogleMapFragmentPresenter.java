@@ -234,7 +234,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                         break;
                     case "Singing":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)));
                         break;
                     case "Reciting":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)

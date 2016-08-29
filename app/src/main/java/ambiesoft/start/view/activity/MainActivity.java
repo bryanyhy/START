@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
-import com.roughike.bottombar.BottomBar;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityPresenter presenter;
 
-    private BottomBar mBottomBar;
     public FloatingActionButton fab;
     public AppBarLayout abl;
     private android.app.FragmentManager fm = getFragmentManager();
@@ -134,35 +132,35 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.ic_menu_1),
                         Color.parseColor(colors[0]))
                         .title(tabBarItemName[0])
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_gallery),
+                        getResources().getDrawable(R.drawable.ic_menu_2),
                         Color.parseColor(colors[1]))
                         .title(tabBarItemName[1])
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_manage),
+                        getResources().getDrawable(R.drawable.ic_menu_3),
                         Color.parseColor(colors[2]))
                         .title(tabBarItemName[2])
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_send),
+                        getResources().getDrawable(R.drawable.ic_menu_4),
                         Color.parseColor(colors[3]))
                         .title(tabBarItemName[3])
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_share),
+                        getResources().getDrawable(R.drawable.ic_menu_5),
                         Color.parseColor(colors[4]))
                         .title(tabBarItemName[4])
                         .build()

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">START</string>
+    <string name="app_name">ST.ART</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -43,9 +43,9 @@
     </string-array>
 
     <string-array name="tab_bar_array">
-        <item>Result</item>
+        <item>Busking</item>
         <item>Portfolio</item>
-        <item>My List</item>
+        <item>My Busking</item>
         <item>Buskers</item>
         <item>More</item>
     </string-array>
