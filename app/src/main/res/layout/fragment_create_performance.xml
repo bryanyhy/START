@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
     tools:context=".view.fragment.CreatePerformanceFragment"
     android:padding="10dp">
 
@@ -13,116 +15,186 @@
         android:layout_alignParentStart="true"
         android:weightSum="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:id="@+id/textView2" />
-
-        <EditText
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameInput"
-            android:singleLine="true"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Category"
-            android:id="@+id/textView3" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView2"
+                android:background="@drawable/ic_create_name"/>
 
-        <Spinner
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:id="@+id/nameInput"
+                android:hint="Performance Name"
+                android:textColorHint="@color/buttonText"
+                android:singleLine="true"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/colorTint"
+                android:textColor="@color/textColor" />
+
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/categorySpinner"
-            android:backgroundTint="@color/colorTint" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:id="@+id/textView4" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView3"
+                android:background="@drawable/ic_create_category"/>
 
-        <EditText
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:id="@+id/categorySpinner"
+                android:backgroundTint="@color/colorTint" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/descInput"
-            android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:id="@+id/textView7" />
 
-        <Button
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView4"
+                android:background="@drawable/ic_create_des"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="Performance Highlight"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:textColorHint="@color/buttonText"
+                android:ems="10"
+                android:id="@+id/descInput"
+                android:backgroundTint="@color/colorTint"
+                android:textColor="@color/textColor" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choose a date"
-            android:textColor="@color/textColor"
-            android:background="@color/colorPrimary"
-            android:id="@+id/dateButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time"
-            android:id="@+id/textView8" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView5"
+                android:background="@drawable/ic_create_date"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:text="Choose a date"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme1"
+                android:id="@+id/dateButton"
+                android:layout_gravity="center_horizontal" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView6"
+                android:background="@drawable/ic_create_time"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:text="Start Time"
                 android:id="@+id/sTimeButton"
                 android:layout_weight="0.5"
-                android:textColor="@color/textColor"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/buttonText"
+                android:background="@color/theme2"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView7"
+                android:background="@drawable/ic_create_duration"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:text="Duration"
                 android:id="@+id/durationButton"
                 android:layout_weight="0.6"
-                android:textColor="@color/textColor"
-                android:background="@color/colorPrimary"/>
-        </LinearLayout>
+                android:textColor="@color/buttonText"
+                android:background="@color/theme3"/>
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:id="@+id/textView6" />
-
-        <Button
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choose Location"
-            android:id="@+id/locationButton"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/textColor"
-            android:background="@color/colorPrimary"/>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
-        <Button
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView8"
+                android:background="@drawable/ic_create_location"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:text="Choose Location"
+                android:id="@+id/locationButton"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme5"/>
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create"
-            android:id="@+id/createButton"
-            android:textColor="@color/textColor"
-            android:background="@color/colorPrimaryDark"/>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:text="Create"
+                android:id="@+id/createButton"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme4"/>
+        </TableRow>
 
     </LinearLayout>
 </RelativeLayout>

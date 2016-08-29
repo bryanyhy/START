@@ -2,12 +2,14 @@ package ambiesoft.start.model.utility;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -79,6 +81,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
+    // TODO: card icon
+
+//    public void setCardIcon(String category){
+//        switch (category){
+//            case "Instruments":
+//                ImageView image  = (ImageView)
+//                Resources res = getResources(); /** from an Activity */
+//                image.setImageDrawable(res.getDrawable(R.drawable.myimage));
+//                break;
+//            case "Singing":
+//
+//                break;
+//            case "Conjuring":
+//
+//                break;
+//            case "Juggling":
+//
+//                break;
+//            case "Puppetry":
+//
+//                break;
+//            case "Miming":
+//
+//                break;
+//            case "Dancing":
+//
+//                break;
+//            case "Drawing":
+//
+//                break;
+//            default:
+//
+//                break;
+//        }
+//    }
 
 //    // Insert a new item to the RecyclerView on a predefined position
 //    public void insert(int position, Performance performance) {

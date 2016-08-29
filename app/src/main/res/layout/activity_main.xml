@@ -17,11 +17,13 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         android:gravity="top">
 
+        <!--TODO:app bar icon-->
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:background="@drawable/appbar"
             app:title="@string/app_name"
             app:expandedTitleTextAppearance="@null"
             app:contentScrim="#605271"

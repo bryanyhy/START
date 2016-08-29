@@ -7,4 +7,18 @@
     <color name="colorBackground">#605271</color>
     <color name="colorTint">#9f90af</color>
 
+    <color name="theme1">#e15951</color>
+    <color name="theme2">#fabc6c</color>
+    <color name="theme3">#74afd1</color>
+    <color name="theme4">#df6295</color>
+    <color name="theme5">#6ed4b4</color>
+
+    <color name="buttonText">#ffffff</color>
+
+
+
+
+
+
+
 </resources>
