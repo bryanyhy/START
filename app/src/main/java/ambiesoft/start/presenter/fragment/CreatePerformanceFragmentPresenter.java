@@ -31,6 +31,7 @@ import java.util.Calendar;
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
+import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentDay;
@@ -168,18 +169,21 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
 
     // Method called when location button is clicked
     public void chooseLocation() {
-//        // show the loading progress dialog
-//        showProgressDialog(view.getContext());
-        // initialise the Google Place API
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            // Start place picker activity on Google Place API
-            view.startActivityForResult(builder.build(view.getActivity()), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
+////        // show the loading progress dialog
+////        showProgressDialog(view.getContext());
+//        // initialise the Google Place API
+//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//        try {
+//            // Start place picker activity on Google Place API
+//            view.startActivityForResult(builder.build(view.getActivity()), PLACE_PICKER_REQUEST);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            e.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            e.printStackTrace();
+//        }
+        FragmentTransaction ft = view.getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame_map, new HeatMapFragment()).addToBackStack(null);
+        ft.commit();
     }
 
     // When a location is selected in Google Place API

@@ -24,7 +24,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/nameInput"
             android:singleLine="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorTint"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +37,8 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/categorySpinner" />
+            android:id="@+id/categorySpinner"
+            android:backgroundTint="@color/colorTint" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +51,9 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/descInput" />
+            android:id="@+id/descInput"
+            android:backgroundTint="@color/colorTint"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:layout_width="wrap_content"

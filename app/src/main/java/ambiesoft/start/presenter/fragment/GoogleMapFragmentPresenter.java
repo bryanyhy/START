@@ -60,7 +60,7 @@ import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDi
  */
 public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
-    private GoogleMapFragment view;
+    private static GoogleMapFragment view;
 
     // ID for this fragment, for fragment transact identification
     private static final int GOOGLE_MAP_FRAGMENT_ID = 1;
@@ -430,7 +430,8 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         bundle.putString("filterDate", selectedDate);
         filterResultFragment.setArguments(bundle);
         // pass the bundle to new FilterResultFragment
-        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+        view.getFragmentManager().beginTransaction().remove(view).replace(R.id.content_frame, filterResultFragment).commit();
+//        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
     }
 
     public void transactToHomeFragment() {
@@ -444,6 +445,10 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         homeFragment.setArguments(bundle);
         // transact to homeFragment with bundle
         view.getFragmentManager().beginTransaction().replace(R.id.content_frame, homeFragment).commit();
+    }
+
+    public static GoogleMapFragment getCurrentGoogleMapFragment() {
+        return view;
     }
 
 

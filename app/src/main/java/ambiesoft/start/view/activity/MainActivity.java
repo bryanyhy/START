@@ -1,11 +1,13 @@
 package ambiesoft.start.view.activity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.presenter.activity.MainActivityPresenter;
+import ambiesoft.start.view.fragment.FilterResultFragment;
 
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public AppBarLayout abl;
     private android.app.FragmentManager fm = getFragmentManager();
     private NavigationTabBar navigationTabBar;
+    private NestedScrollView nsv;
+    private FrameLayout fl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         abl = (AppBarLayout) findViewById(R.id.appbar);
+        nsv = (NestedScrollView) findViewById(R.id.content_frame);
+        fl = (FrameLayout) findViewById(R.id.content_frame_map);
         // collapsing toolbar setting
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setExpandedTitleColor(Color.parseColor("#009F90AF"));
@@ -122,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     public AppBarLayout getAppBarLayout() {
         return abl;
     }
+    public NestedScrollView getNestedScrollView() {return nsv;}
+    public FrameLayout getFrameLayout() {return fl;}
 
     public void navigationTabBarSetting() {
         final String[] tabBarItemName = getResources().getStringArray(R.array.tab_bar_array);
@@ -201,6 +210,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+//        FilterResultFragment fragment = (FilterResultFragment) getFragmentManager().findFragmentByTag("filterFromMap");
+//        if (fragment != null) {
+//            return;
+//        }
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        }
     }
 
 //    @Override

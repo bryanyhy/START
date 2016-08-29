@@ -25,7 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:id="@+id/keywordInput" />
+            android:id="@+id/keywordInput"
+            android:backgroundTint="@color/colorTint"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +38,8 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/categorySpinner" />
+            android:id="@+id/categorySpinner"
+            android:backgroundTint="@color/colorTint" />
 
         <TextView
             android:layout_width="wrap_content"

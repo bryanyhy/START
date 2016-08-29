@@ -163,4 +163,8 @@ public class FilterResultFragmentPresenter {
         }
     }
 
+    public void backToPreviousFragment() {
+
+    }
+
 }
