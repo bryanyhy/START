@@ -6,10 +6,12 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,19 +21,34 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
+import com.google.maps.android.heatmaps.WeightedLatLng;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import ambiesoft.start.R;
+import ambiesoft.start.model.dataclass.Artwork;
+import ambiesoft.start.model.dataclass.PedCount;
+import ambiesoft.start.model.dataclass.PedSensor;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.Firebase.setupFirebase;
+import static ambiesoft.start.model.utility.JSON.loadArtworkJSONFromAsset;
+import static ambiesoft.start.model.utility.JSON.loadPedCountJSONFromAsset;
+import static ambiesoft.start.model.utility.JSON.loadSensorLocationJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
@@ -49,7 +66,12 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     private Marker locationMarker;
     private String locationAddress;
     private Geocoder geocoder;
+    private static ArrayList<PedSensor> pedSensors = new ArrayList<>();
+    private static ArrayList<PedCount> pedCounts = new ArrayList<>();
+    private HeatmapTileProvider mProvider;
+    private TileOverlay mOverlay;
     OnHeadlineSelectedListener mCallback;
+
 
     // Container Activity must implement this interface
     public interface OnHeadlineSelectedListener {
@@ -110,6 +132,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         setMarkerLocation(defaultCenter);
         setMarkerLocationAddress();
         setMarkerDragListener();
+        new SetupSensorLocation().execute();
     }
 
     public void setMarkerLocation(LatLng location) {
@@ -162,6 +185,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         mMap.clear();
         setMarkerLocation(location);
         locationAddress = address;
+        addHeatMap();
         Toast.makeText(view.getActivity(), locationAddress, Toast.LENGTH_LONG).show();
     }
 
@@ -170,7 +194,105 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         view.getFragmentManager().popBackStack();
     }
 
+    // class used for setup the Pedestrian Sensor location in City of Melbourne
+    public class SetupSensorLocation extends AsyncTask<Void, Void, Void> {
 
+        // Achieve the JSON file of sensor location, and get necessary attributes from it
+        // Pass those values to a new Sensor object in an Sensor ArrayList
+        protected Void doInBackground(Void... voids) {
+            try {
+                // create a new JSONObject, by getting the sensor dataset in String format through a method in JSON Class
+                JSONObject jsonObj = new JSONObject(loadSensorLocationJSONFromAsset(view.getActivity()));
+                JSONArray data = jsonObj.getJSONArray("data");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONArray specificSensor = data.getJSONArray(i);
+                    String name = specificSensor.getString(10);
+                    Double lat = specificSensor.getDouble(16);
+                    Double lng = specificSensor.getDouble(17);
+                    PedSensor sensor = new PedSensor(name, lat, lng);
+                    pedSensors.add(sensor);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            Log.i("System.out","Size is " + pedSensors.size());
+            new SetupPedCount().execute();
+        }
+    }
+
+    // class used for setup the Pedestrian Count in City of Melbourne
+    public class SetupPedCount extends AsyncTask<Void, Void, Void> {
+        // Achieve the JSON file of ped count, and get necessary attributes from it
+        // Pass those values to a new PedCount object in an PedCount ArrayList
+        protected Void doInBackground(Void... voids) {
+            try {
+                // create a new JSONObject, by getting the PedCount dataset in String format through a method in JSON Class
+                JSONArray data = new JSONArray(loadPedCountJSONFromAsset(view.getActivity()));
+                for (int i = 0; i < data.length(); i++) {
+                    JSONArray specificSensor = data.getJSONArray(i);
+                    String name = specificSensor.getString(0);
+                    ArrayList<Double> countInPlace = new ArrayList<>();
+                    for (int j = 1; j < 25; j++) {
+                        String countInString = specificSensor.getString(j);
+                        Double countInEveryHour;
+                        if (!countInString.equals("N/A")) {
+                            countInEveryHour = specificSensor.getDouble(j);
+                        } else {
+                            countInEveryHour = 0.0;
+                        }
+                        countInPlace.add(countInEveryHour);
+                    }
+                    PedCount allCountPerPlace = new PedCount(name, countInPlace);
+                    pedCounts.add(allCountPerPlace);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            Log.i("System.out","Size is " + pedCounts.size());
+            addHeatMap();
+
+        }
+    }
+
+    private void addHeatMap() {
+        ArrayList<WeightedLatLng> dataList = new ArrayList<WeightedLatLng>();
+        for (PedSensor sensor: pedSensors) {
+            for (PedCount count: pedCounts) {
+                if (sensor.getName().equals(count.getName())) {
+                    WeightedLatLng data = new WeightedLatLng(new LatLng(sensor.getLat(), sensor.getLng()), count.getCount().get(17) );
+                    dataList.add(data);
+                }
+            }
+        }
+        // Create a heat map tile provider
+        mProvider = new HeatmapTileProvider.Builder()
+                .weightedData(dataList)
+                .radius(50)
+                .build();
+        // Add a tile overlay to the map, using the heat map tile provider.
+        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+        dismissProgressDialog();
+    }
+
+//    // draw the artworks marker on map
+//    public void drawSensorsMarker() {
+//        // ensure there is artwork result
+//        if (pedSensors.size() != 0) {
+//            for (PedSensor sensor: pedSensors) {
+//                LatLng sensorMarker = new LatLng(sensor.getLat(), sensor.getLng());
+//                mMap.addMarker(new MarkerOptions().title(sensor.getName()).position(sensorMarker)
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+//            }
+//        }
+//    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

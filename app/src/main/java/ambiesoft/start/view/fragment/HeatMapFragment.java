@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -25,6 +26,8 @@ import ambiesoft.start.R;
 import ambiesoft.start.presenter.fragment.GoogleMapFragmentPresenter;
 import ambiesoft.start.presenter.fragment.HeatMapFragmentPresenter;
 import ambiesoft.start.view.activity.MainActivity;
+
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Bryanyhy on 28/8/2016.
@@ -39,7 +42,6 @@ public class HeatMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_heatmap, container, false);
         confirmButton = (Button) view.findViewById(R.id.confirmButton);
         return view;

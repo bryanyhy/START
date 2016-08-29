@@ -50,7 +50,7 @@ import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.Firebase.getPerformanceListFromFirebaseByDate;
 import static ambiesoft.start.model.utility.Firebase.setupFirebase;
-import static ambiesoft.start.model.utility.JSON.loadJSONFromAsset;
+import static ambiesoft.start.model.utility.JSON.loadArtworkJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
@@ -338,7 +338,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         protected Void doInBackground(Void... voids) {
             try {
                 // create a new JSONObject, by getting the artwork dataset in String format through a method in JSON Class
-                JSONObject jsonObj = new JSONObject(loadJSONFromAsset(view.getActivity()));
+                JSONObject jsonObj = new JSONObject(loadArtworkJSONFromAsset(view.getActivity()));
                 JSONArray data = jsonObj.getJSONArray("data");
                 for (int i = 0; i < data.length(); i++) {
                     JSONArray specificArtwork = data.getJSONArray(i);

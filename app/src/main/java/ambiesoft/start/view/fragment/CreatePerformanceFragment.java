@@ -122,10 +122,10 @@ public class CreatePerformanceFragment extends Fragment {
         });
     }
 
-    // When a location is selected in Google Place API
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.getLocationLatAndLng(requestCode, resultCode, data);
-    }
+//    // When a location is selected in Google Place API
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        presenter.getLocationLatAndLng(requestCode, resultCode, data);
+//    }
 
     public void updateLocationInfo(String address, Double lat, Double lng) {
         presenter.setLocationInfo(address, lat, lng);
