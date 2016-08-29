@@ -31,15 +31,15 @@ public class BundleItemCheckerTest {
     public BundleItemCheckerTest() {
         emptyBundle = Mockito.mock(Bundle.class);
         fullBundle = Mockito.mock(Bundle.class);
-        Mockito.when(fullBundle.getString("dateFromFilter")).thenReturn("03-09-2016");
-        Mockito.doReturn("03-09-2016").when(fullBundle).getString("dateFromFilter");
+        Mockito.when(fullBundle.getString("dateFromFilter")).thenReturn("03/09/2016");
+        Mockito.doReturn("03/09/2016").when(fullBundle).getString("dateFromFilter");
     }
 
     @Test
     public void testIfCorrectReturnValueIfNoItemsInBundle() {
         // get today's date
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String expectedDateOutput = sdf.format(calendar.getTime());
         // if no filter date is found in bundle, it should return today's date
         assertEquals(expectedDateOutput, getFilterDateFromBundle(emptyBundle));

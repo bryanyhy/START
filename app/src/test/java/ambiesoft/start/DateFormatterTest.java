@@ -24,10 +24,10 @@ public class DateFormatterTest {
         // There are 2 methods for generating the expected output:
         // 1. getting today's date by calendar methods.
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String expectedOutput = sdf.format(calendar.getTime());
         // 2. hard code today's date, and tester have to change it if they test on different date.
-//        String expectedOutput = "21-08-2016";
+//        String expectedOutput = "21/08/2016";
         String actualOutput = getTodayDate();
         assertEquals(expectedOutput, actualOutput);
     }
@@ -35,10 +35,10 @@ public class DateFormatterTest {
     // Test if we can get the correct date, with leading zero if necessary
     @Test
     public void testGetSelectedDateWithLeadingZero() {
-        String expectedOutput1 = "03-09-2016";
-        String expectedOutput2 = "03-10-2016";
-        String expectedOutput3 = "13-09-2016";
-        String expectedOutput4 = "13-10-2016";
+        String expectedOutput1 = "03/09/2016";
+        String expectedOutput2 = "03/10/2016";
+        String expectedOutput3 = "13/09/2016";
+        String expectedOutput4 = "13/10/2016";
         // Date picker only return int, without leading zero,
         // so it is better to add leading zero for better formatting
         // As the int value of month we retrieved from date picker is always (actual month - 1),

@@ -18,7 +18,7 @@ public class DateFormatter {
     public static String getTodayDate() {
         calendar = Calendar.getInstance();
         // specific format of date
-        sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(calendar.getTime());
     }
 
@@ -56,16 +56,16 @@ public class DateFormatter {
     public static String getSelectedDateWithLeadingZero(int selectedDay, int selectedMonth, int selectedYear) {
         if (selectedDay < 10 && (selectedMonth + 1) < 10) {
             // add leading 0 to both day and month
-            return "0" + selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+            return "0" + selectedDay + "/0" + (selectedMonth + 1) + "/" + selectedYear;
         } else if (selectedDay < 10) {
             // add leading 0 to day
-            return "0" + selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+            return "0" + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
         } else if ((selectedMonth + 1) < 10) {
             // add leading 0 to month
-            return selectedDay + "-0" + (selectedMonth + 1) + "-" + selectedYear;
+            return selectedDay + "/0" + (selectedMonth + 1) + "/" + selectedYear;
         } else {
             // no leading 0 is needed
-            return selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+            return selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
         }
     }
 
