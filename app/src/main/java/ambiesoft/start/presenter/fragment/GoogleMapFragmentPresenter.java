@@ -230,43 +230,43 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                 switch (cat){
                     case "Instruments":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_instrument)));
                         break;
                     case "Singing":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_sing)));
                         break;
-                    case "Reciting":
-                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                        break;
+//                    case "Reciting":
+//                        mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
+//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+//                        break;
                     case "Conjuring":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_magic)));
                         break;
                     case "Juggling":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_juggling)));
                         break;
                     case "Puppetry":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_puppetry)));
                         break;
                     case "Miming":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_miming)));
                         break;
                     case "Dancing":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_dancing)));
                         break;
                     case "Drawing":
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_drawing)));
                         break;
                     default:
                         mMap.addMarker(new MarkerOptions().title(performance.getName()).snippet(performance.getDate()).position(googleMapLocations)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_others)));
                         break;
                 }
             }
