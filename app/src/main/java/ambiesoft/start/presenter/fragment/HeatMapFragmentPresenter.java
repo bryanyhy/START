@@ -1,12 +1,9 @@
 package ambiesoft.start.presenter.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,16 +37,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import ambiesoft.start.R;
-import ambiesoft.start.model.dataclass.Artwork;
 import ambiesoft.start.model.dataclass.PedCount;
 import ambiesoft.start.model.dataclass.PedSensor;
 import ambiesoft.start.view.activity.MainActivity;
-import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
-import static ambiesoft.start.model.utility.Firebase.setupFirebase;
-import static ambiesoft.start.model.utility.JSON.loadArtworkJSONFromAsset;
 import static ambiesoft.start.model.utility.JSON.loadPedCountJSONFromAsset;
 import static ambiesoft.start.model.utility.JSON.loadSensorLocationJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -310,7 +303,6 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     }
 
     public void setDaySelected(int day) {
-        Log.i("System.out", "spinner run!!!!");
         showProgressDialog(view.getContext());
         selectedDay = day;
         pedCounts = new ArrayList<>();

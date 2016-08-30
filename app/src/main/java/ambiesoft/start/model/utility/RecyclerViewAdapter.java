@@ -5,9 +5,13 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 
 /**
@@ -24,13 +29,15 @@ import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 // Class to setup the recycler view, which is responsible to hold the cardview
 public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    ArrayList performanceList;
-    Activity activity;
+    public ArrayList performanceList;
+    public Activity activity;
+    public int previousFragmentID;
 
     // Constructor
-    public RecyclerViewAdapter(ArrayList list, Activity activity) {
+    public RecyclerViewAdapter(ArrayList list, Activity activity, int previousFragmentID) {
         this.performanceList = list;
         this.activity = activity;
+        this.previousFragmentID = previousFragmentID;
     }
 
     @Override
@@ -39,7 +46,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout, parent, false);
         ViewHolder holder = new ViewHolder(v);
         return holder;
-
     }
 
     @Override
@@ -59,15 +65,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     // when the cardview is clicked
-                    Log.i("System.out","CV selected");
-                    Fragment performanceDetailFragment = new PerformanceDetailFragment();
-                    // create bundle, with data added into it
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
-                    bundle.putInt("previousFragmentID", 0);
-                    performanceDetailFragment.setArguments(bundle);
-                    // transact to performanceDetailFragment
-                    activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
+                    if (previousFragmentID == 0) {
+                        // if the calling fragment is HomeFragment
+                        Log.i("System.out","CV selected");
+                        Fragment performanceDetailFragment = new PerformanceDetailFragment();
+                        // create bundle, with data added into it
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+                        bundle.putInt("previousFragmentID", previousFragmentID);
+                        performanceDetailFragment.setArguments(bundle);
+                        // transact to performanceDetailFragment
+                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
+                    } else if (previousFragmentID == 2) {
+
+
+
+                        // if the calling fragment is MyBuskingFragment
+                        Log.i("System.out","CV selected");
+                        Fragment createPerformanceFragment = new CreatePerformanceFragment();
+                        // create bundle, with data added into it
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+                        bundle.putInt("previousFragmentID", previousFragmentID);
+                        createPerformanceFragment.setArguments(bundle);
+                        // transact to createPerformanceFragment
+                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+                    } else {
+
+                    }
                 }
             });
         }
@@ -84,8 +109,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
-
-    // TODO: card icon
 
     public void setCardIcon(ViewHolder holder, String category){
         int imageID = 0;
@@ -129,6 +152,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
         holder.cardImg.setImageResource(imageID);
     }
+
+//    private void showPopup(View view, final int position) {
+//        // pass the imageview id
+//        View menuItemView = view.findViewById(R.id.btn_song_list_more);
+//        PopupMenu popup = new PopupMenu(activity, menuItemView);
+//        MenuInflater inflate = popup.getMenuInflater();
+//        inflate.inflate(R.menu.my_busking_popup_menu, popup.getMenu());
+//
+//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.edit:
+//                        // do what you need.
+//                        break;
+//                    case R.id.delete:
+//                        // do what you need .
+//                        break;
+//                    default:
+//                        return false;
+//                }
+//                return false;
+//            }
+//        });
+//        popup.show();
+//    }
 
 //    // Insert a new item to the RecyclerView on a predefined position
 //    public void insert(int position, Performance performance) {

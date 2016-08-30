@@ -17,38 +17,33 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import ambiesoft.start.R;
-import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.model.dataclass.Performance;
-import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
+import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
+import ambiesoft.start.presenter.fragment.MyBuskingFragmentPresenter;
+import ambiesoft.start.view.activity.MainActivity;
 
 /**
- * Class for the Home Fragment, which shows the result in an list of cardview
+ * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class MyBuskingFragment extends Fragment {
 
-    private static final int HOME_FRAGMENT_ID = 0;
-    private HomeFragmentPresenter presenter;
+    private static final int MY_BUSKING_FRAGMENT_ID = 2;
+    private MyBuskingFragmentPresenter presenter;
 
     public RecyclerView recyclerView;
     public RecyclerViewAdapter adapter;
 
-    private FloatingActionButton fab;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_busking, container, false);
         // display menu of the top action bar
         setHasOptionsMenu(true);
         // recycleView to hold all the cardview
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        // setting up the floating action button, to access from home to map fragment
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-
+        // Inflate the layout for this fragment
         return view;
     }
 
@@ -57,21 +52,17 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setRecyclerViewAdapter();
         // show the floating action button in main activity
-        fab = ((MainActivity) getActivity()).getFloatingActionButton();
-        fab.show();
-        fab.setImageResource(R.drawable.ic_floating_map);
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
+        fab.hide();
         if (presenter == null) {
-            Log.i("System.out","Create home presenter");
-            presenter = new HomeFragmentPresenter(this, fab);
+            presenter = new MyBuskingFragmentPresenter(this);
         }
-        presenter.getBundleFromPreviousFragment();
-        presenter.checkNetworkAvailability();
     }
 
     // for setting the recycler view adapter
     public void setRecyclerViewAdapter() {
         // adapter for recycler view, to get all performance result and show them in cardview
-        adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), HOME_FRAGMENT_ID);
+        adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), MY_BUSKING_FRAGMENT_ID);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -81,7 +72,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.home_fragment_menu, menu);
+        inflater.inflate(R.menu.my_busking_fragment_menu, menu);
     }
 
     // action after menu item on top action bar is selected

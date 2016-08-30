@@ -19,7 +19,7 @@ public class FilterResult {
     public static ArrayList<Performance> advancedFilteringOnPerformanceList(ArrayList<Performance> resultList, String filterKeyword, String filterCategory, String filterTime) throws ParseException {
         // initialize the filtered result ArrayList
         filteredPerformances = new ArrayList<>();
-        // for every performance object in the list we retrieved from Firebase
+        // for every performance object in the list we retrieved from FirebaseUtility
         for (Performance performance: resultList) {
             boolean valid = true;
             // check if there is filter keyword

@@ -21,7 +21,7 @@
         <item>Others</item>
     </string-array>
 
-     <string-array name="performance_category_array_for_filter">
+    <string-array name="performance_category_array_for_filter">
         <item>Any</item>
         <item>Instruments</item>
         <item>Singing</item>

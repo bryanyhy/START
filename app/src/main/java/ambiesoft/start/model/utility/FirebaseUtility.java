@@ -11,21 +11,22 @@ import ambiesoft.start.model.dataclass.Performance;
 /**
  * Created by Bryanyhy on 15/8/2016.
  */
-// Class fore Firebase functions
-public class Firebase {
+// Class fore FirebaseUtility functions
+public class FirebaseUtility {
 
     // reference link for the root of the project
     private static final String REF_LINK = "https://start-c9adf.firebaseio.com/";
 
     private static ArrayList<Performance> tempPerformanceList;
+    private static ArrayList<Performance> buskerPerformanceList;
 
-    // setup the Firebase, necessary before calling other function on Firebase
+    // setup the FirebaseUtility, necessary before calling other function on FirebaseUtility
     public static void setupFirebase(Context context) {
-        // initialised Firebase
+        // initialised FirebaseUtility
         com.firebase.client.Firebase.setAndroidContext(context);
     }
 
-    // save the performance to Firebase
+    // save the performance to FirebaseUtility
     public static void savePerformance(Performance performance) {
         // create a firebase reference
         com.firebase.client.Firebase ref = new com.firebase.client.Firebase(REF_LINK);
@@ -35,7 +36,7 @@ public class Firebase {
     }
 
     // get all the performance result that match a specific date, create Performance object accordingly and add them to ArrayList
-    public static ArrayList<Performance> getPerformanceListFromFirebaseByDate (DataSnapshot ds) {
+    public static ArrayList<Performance> getPerformanceListFromFirebase (DataSnapshot ds) {
         // initialize performance ArrayList
         tempPerformanceList = new ArrayList<>();
         // get all performance detail and save them into Performance ArrayList as Performance Object
@@ -46,14 +47,14 @@ public class Firebase {
             String date = dataSnapshot.child("date").getValue().toString();
             String sTime = dataSnapshot.child("sTime").getValue().toString();
             String eTime = dataSnapshot.child("eTime").getValue().toString();
-//            String address = dataSnapshot.child("address").getValue().toString();
+            String address = dataSnapshot.child("address").getValue().toString();
             Double latitude = Double.parseDouble(dataSnapshot.child("lat").getValue().toString());
             Double longitude = Double.parseDouble(dataSnapshot.child("lng").getValue().toString());
             Performance performance;
 //            if (address != null) {
-//                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude, address);
+                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude, address);
 //            } else {
-                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
+//                performance = new Performance(name, category, desc, date, sTime, eTime, latitude, longitude);
 //            }
             tempPerformanceList.add(performance);
         }
