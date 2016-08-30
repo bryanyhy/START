@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
             holder.category.setText(performance.getCategory());
             holder.date.setText(performance.getDate());
             holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
+//            holder.cardImg.setImageIcon(holder, performance.getCategory());
+            setCardIcon(holder, performance.getCategory());
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,39 +87,48 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     // TODO: card icon
 
-//    public void setCardIcon(String category){
-//        switch (category){
-//            case "Instruments":
-//                ImageView image  = (ImageView)
-//                Resources res = getResources(); /** from an Activity */
-//                image.setImageDrawable(res.getDrawable(R.drawable.myimage));
-//                break;
-//            case "Singing":
-//
-//                break;
-//            case "Conjuring":
-//
-//                break;
-//            case "Juggling":
-//
-//                break;
-//            case "Puppetry":
-//
-//                break;
-//            case "Miming":
-//
-//                break;
-//            case "Dancing":
-//
-//                break;
-//            case "Drawing":
-//
-//                break;
-//            default:
-//
-//                break;
-//        }
-//    }
+    public void setCardIcon(ViewHolder holder, String category){
+        int imageID = 0;
+        switch (category){
+            case "Instruments":
+                imageID = R.drawable.ic_card_instrument;
+
+                break;
+            case "Singing":
+                imageID = R.drawable.ic_card_sing;
+
+                break;
+            case "Conjuring":
+                imageID = R.drawable.ic_card_conjuring;
+
+                break;
+            case "Juggling":
+                imageID = R.drawable.ic_card_juggling;
+
+                break;
+            case "Puppetry":
+                imageID = R.drawable.ic_card_puppetry;
+
+                break;
+            case "Miming":
+                imageID = R.drawable.ic_card_miming;
+
+                break;
+            case "Dancing":
+                imageID = R.drawable.ic_card_dancing;
+
+                break;
+            case "Drawing":
+                imageID = R.drawable.ic_card_drawing;
+
+                break;
+            default:
+                imageID = R.drawable.ic_card_other;
+
+                break;
+        }
+        holder.cardImg.setImageResource(imageID);
+    }
 
 //    // Insert a new item to the RecyclerView on a predefined position
 //    public void insert(int position, Performance performance) {

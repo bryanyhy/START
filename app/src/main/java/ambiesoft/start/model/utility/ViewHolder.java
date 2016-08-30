@@ -3,6 +3,7 @@ package ambiesoft.start.model.utility;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ambiesoft.start.R;
@@ -18,6 +19,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView category;
     public TextView date;
     public TextView time;
+    public ImageView cardImg;
 
     public ViewHolder(View itemView) {
         super(itemView);
@@ -26,5 +28,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         category = (TextView) itemView.findViewById(R.id.categoryView);
         date = (TextView) itemView.findViewById(R.id.dateView);
         time = (TextView) itemView.findViewById(R.id.timeView);
+        cardImg = (ImageView) itemView.findViewById(R.id.cardImg);
     }
 }

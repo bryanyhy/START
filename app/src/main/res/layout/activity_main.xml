@@ -115,8 +115,7 @@
         android:layout_marginBottom="76dp"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
-        android:tint="#9f90af"
-        android:background="@drawable/ic_floating_map"
-        app:backgroundTint="#605271"/>
+        android:tint="@color/buttonText"
+        app:backgroundTint="@color/theme1"/>
 
 </android.support.design.widget.CoordinatorLayout>

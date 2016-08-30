@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
         // show the floating action button in main activity
         fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.show();
-        fab.setImageResource(R.drawable.ic_map_white_24px);
+        fab.setImageResource(R.drawable.ic_floating_map);
         if (presenter == null) {
             Log.i("System.out","Create home presenter");
             presenter = new HomeFragmentPresenter(this, fab);
