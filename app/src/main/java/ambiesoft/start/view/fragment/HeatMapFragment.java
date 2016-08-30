@@ -13,9 +13,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -38,12 +41,16 @@ public class HeatMapFragment extends Fragment {
     private PlaceAutocompleteFragment autocompleteFragment;
     private AppBarLayout abl;
     private Button confirmButton;
+    private Spinner daySpinner;
+    private Spinner timeSpinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_heatmap, container, false);
         confirmButton = (Button) view.findViewById(R.id.confirmButton);
+        daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
+        timeSpinner = (Spinner) view.findViewById(R.id.timeSpinner);
         return view;
     }
 
@@ -68,7 +75,6 @@ public class HeatMapFragment extends Fragment {
 
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -78,6 +84,44 @@ public class HeatMapFragment extends Fragment {
             @Override
             public void onError(Status status) {
                 Log.i("System.out", "An error occurred: " + status);
+            }
+        });
+        setDaySpinner();
+        setTimeSpinner();
+    }
+
+    public void setDaySpinner() {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.day_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        daySpinner.setAdapter(adapter);
+        daySpinner.setSelection(0,false);
+        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.setDaySelected(position);
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+    }
+
+    public void setTimeSpinner() {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.time_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        timeSpinner.setAdapter(adapter);
+        timeSpinner.setSelection(0,false);
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.setTimeSelected(position);
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
     }

@@ -126,7 +126,6 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
         // default center location
         LatLng defaultCenter = new LatLng(-37.813243, 144.962762);
         //default center and zoom in

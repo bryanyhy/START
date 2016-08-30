@@ -55,55 +55,6 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
 
-////        mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
-//        mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
-////        if (true) {
-////            mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
-////        } else {
-////            mBottomBar = (BottomBar) findViewById(R.id.bottomBar_normal);
-////        }
-////        mBottomBar.noTopOffset();
-////        mBottomBar.noNavBarGoodness();
-////        mBottomBar.setBackgroundColor(Color.parseColor("#9f90af"));
-//        // set the items in the bottom bar
-////        mBottomBar.setItems(R.menu.bottombar_menu);
-//        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-//            @Override
-//            public void onTabSelected(@IdRes int tabId) {
-//                FrameLayout fl = (FrameLayout) findViewById(R.id.content_frame_map);
-//                fl.removeAllViews();
-////                presenter.checkMenuTabItemSelection(tabId);
-//            }
-//        });
-//        mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {
-//            @Override
-//            public void onTabReSelected(@IdRes int tabId) {
-//            }
-//        });
-//
-//
-////        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-////            // when a menu tab is selected
-////            // By default the first tab button is selected, which shows the HomeFragment
-////            @Override
-////            public void onMenuTabSelected(@IdRes int menuItemId) {
-////                presenter.checkMenuTabItemSelection(menuItemId);
-////            }
-////
-////            // when a menu tab is reselected
-////            @Override
-////            public void onMenuTabReSelected(@IdRes int menuItemId) {
-////            }
-////        });
-//
-//        // Setting colors for different tabs when there's more than three of them.
-////        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
-////        mBottomBar.mapColorForTab(1, 0xFF5D4037);
-////        mBottomBar.mapColorForTab(2, "#7B1FA2");
-////        mBottomBar.mapColorForTab(3, "#FF5252");
-////        mBottomBar.mapColorForTab(4, "#FF9800");
-
-
         abl = (AppBarLayout) findViewById(R.id.appbar);
         nsv = (NestedScrollView) findViewById(R.id.content_frame);
         fl = (FrameLayout) findViewById(R.id.content_frame_map);
@@ -134,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     }
     public NestedScrollView getNestedScrollView() {return nsv;}
     public FrameLayout getFrameLayout() {return fl;}
+    public NavigationTabBar getNavigationTabBar() {return navigationTabBar;}
 
     public void navigationTabBarSetting() {
         final String[] tabBarItemName = getResources().getStringArray(R.array.tab_bar_array);
