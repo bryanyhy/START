@@ -21,93 +21,116 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right">
-
-                <TextView
-                    android:id="@+id/nameView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Name"
-                    android:textSize="18dp"
-                    android:textColor="#9b92b3"
-                    android:textStyle="bold"
-                    android:gravity="left"
-                    android:foregroundGravity="left" />
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/cardImg"
-
-                    android:foregroundGravity="right" />
-
-                <TextView
-                    android:id="@+id/categoryView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/nameView"
-                    android:text="Category"
-                    android:textColor="#9b92b3"
-                    android:textStyle="bold"/>
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/portrait"
+                    android:background="@drawable/portrait_thumb"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="1dp"
+                    />
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/nameView"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date"
-                        android:id="@+id/dateView"
-                        android:layout_below="@+id/categoryView"
-                        android:layout_alignStart="@+id/categoryView"
+                        android:layout_alignParentTop="true"
+                        android:text="Name"
+                        android:textSize="18dp"
                         android:textColor="#9b92b3"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:gravity="left"
+                        android:foregroundGravity="left"
+                        />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="  "
-                        android:id="@+id/space"
-                        android:layout_below="@+id/dateView"
-                        android:layout_alignStart="@+id/dateView"
-                        android:textColor="#9b92b3"
-                        android:textStyle="bold"/>
+                        android:gravity="right"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="3dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/cardImg"
+                            android:foregroundGravity="right"
+                            android:layout_marginRight="5dp"/>
+
+                        <TextView
+                            android:id="@+id/categoryView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/nameView"
+                            android:text="Category"
+                            android:textColor="#9b92b3"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Time"
-                        android:id="@+id/timeView"
-                        android:layout_below="@+id/dateView"
-                        android:layout_alignStart="@+id/dateView"
-                        android:textColor="#9b92b3"
-                        android:textStyle="bold"/>
+                        android:gravity="right"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="3dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date"
+                            android:id="@+id/dateView"
+                            android:layout_below="@+id/categoryView"
+                            android:layout_alignStart="@+id/categoryView"
+                            android:textColor="#9b92b3"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  "
+                            android:id="@+id/space"
+                            android:layout_below="@+id/dateView"
+                            android:layout_alignStart="@+id/dateView"
+                            android:textColor="#9b92b3"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Time"
+                            android:id="@+id/timeView"
+                            android:layout_below="@+id/dateView"
+                            android:layout_alignStart="@+id/dateView"
+                            android:textColor="#9b92b3"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
         <!--TODO:thumbProtriat-->
-
-        <ImageView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:id="@+id/portrait"
-            android:background="@drawable/protrait"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="1dp"
-            />
 
     </RelativeLayout>
 
