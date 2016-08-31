@@ -1,12 +1,10 @@
 package ambiesoft.start.presenter.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,13 +15,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -42,8 +35,8 @@ import static ambiesoft.start.model.utility.DateFormatter.getCurrentYear;
 import static ambiesoft.start.model.utility.DateFormatter.getEndingTimeForPerformance;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedDateWithLeadingZero;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLeadingZero;
-import static ambiesoft.start.model.utility.Firebase.savePerformance;
-import static ambiesoft.start.model.utility.Firebase.setupFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.savePerformance;
+import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
@@ -72,7 +65,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     public CreatePerformanceFragmentPresenter(CreatePerformanceFragment view) {
         this.view = view;
         selectedDuration = 0;
-        // setup Firebase
+        // setup FirebaseUtility
         setupFirebase(view.getContext());
         // Setup Google API Client, used to get the latitude and longitude from user's location selection
         if (mGoogleApiClient == null) {
@@ -184,7 +177,8 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
 //            e.printStackTrace();
 //        }
         showProgressDialog(view.getContext());
-        FragmentTransaction ft = view.getFragmentManager().beginTransaction();
+//        view.getView().setVisibility(View.GONE);
+        FragmentTransaction ft = view.getFragmentManager().beginTransaction().hide(view);
         ft.replace(R.id.content_frame_map, new HeatMapFragment()).addToBackStack(null);
         ft.commit();
     }
@@ -233,7 +227,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
             // create a new performance object
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
                     ,selectedETime, selectedLat, selectedLng, selectedAddress);
-            // save performance into Firebase
+            // save performance into FirebaseUtility
             savePerformance(performance);
             Toast.makeText(view.getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
             // restart the current fragment, clear all input

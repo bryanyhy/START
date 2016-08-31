@@ -48,8 +48,8 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFr
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
-import static ambiesoft.start.model.utility.Firebase.getPerformanceListFromFirebaseByDate;
-import static ambiesoft.start.model.utility.Firebase.setupFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
 import static ambiesoft.start.model.utility.JSON.loadArtworkJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
@@ -64,7 +64,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
 
     // ID for this fragment, for fragment transact identification
     private static final int GOOGLE_MAP_FRAGMENT_ID = 1;
-    // Firebase link for the performance root
+    // FirebaseUtility link for the performance root
     private static final String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private GoogleMap mMap;
@@ -83,7 +83,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
 
     public GoogleMapFragmentPresenter(GoogleMapFragment view) {
         this.view = view;
-        // show the loading progress dialog, when retrieving data from Firebase
+        // show the loading progress dialog, when retrieving data from FirebaseUtility
         showProgressDialog(view.getContext());
         getBundleFromPreviousFragment();
         // setup the firebase
@@ -126,7 +126,6 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
         // default center location
         LatLng defaultCenter = new LatLng(-37.813243, 144.962762);
         //default center and zoom in
@@ -140,28 +139,28 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         }
         // set the info window listener after clicking on the marker
         mMap.setOnInfoWindowClickListener(this);
-        // set the Firebase data listener, and get the performance data
+        // set the FirebaseUtility data listener, and get the performance data
         setFireBaseListener();
     }
 
-    // set the Firebase data listener, and update the data retrieved in the application
+    // set the FirebaseUtility data listener, and update the data retrieved in the application
     public void setFireBaseListener() {
-        // Establish connection with Firebase URL
+        // Establish connection with FirebaseUtility URL
         firebase = new Firebase(DB_URL);
-        // get data that match the specific date from Firebase
+        // get data that match the specific date from FirebaseUtility
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
-        // value event listener that is triggered everytime data in Firebase's Performance root is updated
-        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase
+        // value event listener that is triggered everytime data in FirebaseUtility's Performance root is updated
+        // Retrieve all performance's attributes from each post on FirebaseUtility, when any data is updated in the FirebaseUtility
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
-                Log.i("System.out","Firebase has update");
-                // clear all markers on map if data changed in Firebase
+                Log.i("System.out","FirebaseUtility has update");
+                // clear all markers on map if data changed in FirebaseUtility
                 mMap.clear();
                 // initialize performance ArrayList
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
-                performances = getPerformanceListFromFirebaseByDate(ds);
+                performances = getPerformanceListFromFirebase(ds);
                 // check if any matching result is retrieved
                 if (performances.size() != 0) {
                     // if there is matching result, check if there are any advanced filter option other than date
@@ -182,12 +181,12 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                             e.printStackTrace();
                         }
                     } else {
-                        // if only date is the filter parameters, the final result is what we retrieved from Firebase
+                        // if only date is the filter parameters, the final result is what we retrieved from FirebaseUtility
                         filteredPerformances = performances;
                         drawPerformanceMarker();
                     }
                 } else {
-                    // if no matching result is found from Firebase
+                    // if no matching result is found from FirebaseUtility
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", view.getActivity());
                 }
                 // check if show artwork option is true
@@ -205,7 +204,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                 dismissProgressDialog();
             }
 
-            // Handle Firebase error
+            // Handle FirebaseUtility error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(view.getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);

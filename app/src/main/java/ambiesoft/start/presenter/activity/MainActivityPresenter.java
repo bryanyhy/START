@@ -13,6 +13,7 @@ import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
+import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 /**
  * Created by Bryanyhy on 22/8/2016.
@@ -50,10 +51,10 @@ public class MainActivityPresenter {
         } else if (model.getTitle().matches(tabBarItemName[2])) {
             if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                 view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
-                        .replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
+                        .replace(R.id.content_frame, new MyBuskingFragment()).commit();
             } else {
                 view.getFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
+                        .replace(R.id.content_frame, new MyBuskingFragment()).commit();
             }
         } else if (model.getTitle().matches(tabBarItemName[3])) {
 

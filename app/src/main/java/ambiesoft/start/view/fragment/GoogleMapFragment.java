@@ -49,7 +49,7 @@ public class GoogleMapFragment extends Fragment {
         fab.setImageResource(R.drawable.ic_menu_1);
         // collapse the app bar layout
         abl = ((MainActivity) getActivity()).getAppBarLayout();
-                abl.setExpanded(false);
+        abl.setExpanded(false);
 
         if (presenter == null) {
             presenter = new GoogleMapFragmentPresenter(this);

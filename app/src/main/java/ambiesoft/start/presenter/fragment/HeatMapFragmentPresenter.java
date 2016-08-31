@@ -1,11 +1,9 @@
 package ambiesoft.start.presenter.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
+import android.graphics.Color;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
 
@@ -38,15 +37,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import ambiesoft.start.R;
-import ambiesoft.start.model.dataclass.Artwork;
 import ambiesoft.start.model.dataclass.PedCount;
 import ambiesoft.start.model.dataclass.PedSensor;
-import ambiesoft.start.view.fragment.GoogleMapFragment;
+import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
-import static ambiesoft.start.model.utility.Firebase.setupFirebase;
-import static ambiesoft.start.model.utility.JSON.loadArtworkJSONFromAsset;
 import static ambiesoft.start.model.utility.JSON.loadPedCountJSONFromAsset;
 import static ambiesoft.start.model.utility.JSON.loadSensorLocationJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -70,6 +66,10 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     private static ArrayList<PedCount> pedCounts = new ArrayList<>();
     private HeatmapTileProvider mProvider;
     private TileOverlay mOverlay;
+    private int selectedDay;
+    private int selectedTime;
+
+
     OnHeadlineSelectedListener mCallback;
 
 
@@ -80,6 +80,9 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
 
     public HeatMapFragmentPresenter(HeatMapFragment view) {
         this.view = view;
+        ((MainActivity) view.getActivity()).getNavigationTabBar().hide();
+        selectedDay = 0;
+        selectedTime = 0;
         connectGoogleApiClient();
         geocoder = new Geocoder(view.getContext(), Locale.getDefault());
         loadGoogleMapFragment();
@@ -119,7 +122,6 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(false);
         // enable the current location button if there is permission to access user's location
         if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -139,6 +141,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         locationMarker = mMap.addMarker(new MarkerOptions()
                 .position(location)
                 .title("Drag it to your performance location")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .draggable(true));
         //default center and zoom in
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
@@ -158,7 +161,6 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
                 selectedLat = position.latitude;
                 selectedLng = position.longitude;
                 setMarkerLocationAddress();
-
             }
 
             @Override
@@ -231,7 +233,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         protected Void doInBackground(Void... voids) {
             try {
                 // create a new JSONObject, by getting the PedCount dataset in String format through a method in JSON Class
-                JSONArray data = new JSONArray(loadPedCountJSONFromAsset(view.getActivity()));
+                JSONArray data = new JSONArray(loadPedCountJSONFromAsset(view.getActivity(), selectedDay));
                 for (int i = 0; i < data.length(); i++) {
                     JSONArray specificSensor = data.getJSONArray(i);
                     String name = specificSensor.getString(0);
@@ -258,7 +260,6 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         protected void onPostExecute(Void aVoid) {
             Log.i("System.out","Size is " + pedCounts.size());
             addHeatMap();
-
         }
     }
 
@@ -267,32 +268,54 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         for (PedSensor sensor: pedSensors) {
             for (PedCount count: pedCounts) {
                 if (sensor.getName().equals(count.getName())) {
-                    WeightedLatLng data = new WeightedLatLng(new LatLng(sensor.getLat(), sensor.getLng()), count.getCount().get(17) );
+                    WeightedLatLng data = new WeightedLatLng(new LatLng(sensor.getLat(), sensor.getLng()), count.getCount().get(selectedTime) );
                     dataList.add(data);
                 }
             }
         }
+        // Create the gradient.
+        int[] colors = {
+            Color.argb(0, 0, 255, 255),// transparent
+            Color.argb(255 / 3 * 2, 0, 255, 255),
+            Color.rgb(0, 191, 255),
+            Color.rgb(0, 0, 127),
+            Color.rgb(255, 0, 0)
+        };
+
+        float[] startPoints = {
+            0.0f, 0.10f, 0.20f, 0.60f, 1.0f
+        };
+
+        Gradient gradient = new Gradient(colors, startPoints);
+
         // Create a heat map tile provider
         mProvider = new HeatmapTileProvider.Builder()
                 .weightedData(dataList)
                 .radius(50)
+                .opacity(0.7)
+                .gradient(gradient)
                 .build();
+        mProvider.setRadius(150);
+
         // Add a tile overlay to the map, using the heat map tile provider.
         mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         dismissProgressDialog();
     }
 
-//    // draw the artworks marker on map
-//    public void drawSensorsMarker() {
-//        // ensure there is artwork result
-//        if (pedSensors.size() != 0) {
-//            for (PedSensor sensor: pedSensors) {
-//                LatLng sensorMarker = new LatLng(sensor.getLat(), sensor.getLng());
-//                mMap.addMarker(new MarkerOptions().title(sensor.getName()).position(sensorMarker)
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-//            }
-//        }
-//    }
+    public void setDaySelected(int day) {
+        showProgressDialog(view.getContext());
+        selectedDay = day;
+        pedCounts = new ArrayList<>();
+        mOverlay.remove();
+        new SetupPedCount().execute();
+    }
+
+    public void setTimeSelected(int time) {
+        selectedTime = time;
+        showProgressDialog(view.getContext());
+        mOverlay.remove();
+        addHeatMap();
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

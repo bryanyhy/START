@@ -36,8 +36,8 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFr
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
-import static ambiesoft.start.model.utility.Firebase.getPerformanceListFromFirebaseByDate;
-import static ambiesoft.start.model.utility.Firebase.setupFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
@@ -49,7 +49,7 @@ public class HomeFragmentPresenter {
 
     // ID for this fragment, for fragment transact identification
     private static final int HOME_FRAGMENT_ID = 0;
-    // Firebase link for the performance root
+    // FirebaseUtility link for the performance root
     private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
 
     private HomeFragment view;
@@ -121,23 +121,23 @@ public class HomeFragmentPresenter {
             showAlertBox("Alert", "There is no internet connection.", view.getActivity());
         } else {
             // if network is available
-            // show the loading progress dialog, when retrieving data from Firebase
+            // show the loading progress dialog, when retrieving data from FirebaseUtility
             showProgressDialog(view.getContext());
             // setup the firebase
             setupFirebase(view.getContext());
-            // set the Firebase data listener, and get the performance data
+            // set the FirebaseUtility data listener, and get the performance data
             setFireBaseListener();
         }
     }
 
-    // set the Firebase data listener, and update the data retrieved in the application
+    // set the FirebaseUtility data listener, and update the data retrieved in the application
     public void setFireBaseListener() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
-        // get data that match the specific date from Firebase
+        // get data that match the specific date from FirebaseUtility
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
-        // value event listener that is triggered everytime data in Firebase's Performance root is updated
-        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase
+        // value event listener that is triggered everytime data in FirebaseUtility's Performance root is updated
+        // Retrieve all performance's attributes from each post on FirebaseUtility, when any data is updated in the FirebaseUtility
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
@@ -145,7 +145,7 @@ public class HomeFragmentPresenter {
                 // initialize performance ArrayList
                 performances = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
-                performances = getPerformanceListFromFirebaseByDate(ds);
+                performances = getPerformanceListFromFirebase(ds);
                 // check if any matching result is retrieved
                 if (performances.size() != 0) {
                     // if there is matching result, check if there are any advanced filter option other than date
@@ -163,11 +163,11 @@ public class HomeFragmentPresenter {
                             e.printStackTrace();
                         }
                     } else {
-                        // if only date is the filter parameters, the final result is what we retrieved from Firebase
+                        // if only date is the filter parameters, the final result is what we retrieved from FirebaseUtility
                         filteredPerformances = performances;
                     }
                 } else {
-                    // if no matching result is found from Firebase
+                    // if no matching result is found from FirebaseUtility
                     showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", (Activity) view.getContext());
                 }
                 final Handler handler = new Handler();
@@ -187,7 +187,7 @@ public class HomeFragmentPresenter {
 //                dismissProgressDialog();
             }
 
-            // Handle Firebase error
+            // Handle FirebaseUtility error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(view.getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
@@ -201,7 +201,7 @@ public class HomeFragmentPresenter {
     // for setting the recycler view adapter
     public void setRecyclerViewAdapter() {
         // adapter for recycler view, to get all performance result and show them in cardview
-        view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity());
+        view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity(), HOME_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
