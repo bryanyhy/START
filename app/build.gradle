@@ -42,4 +42,5 @@ dependencies {
     compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.5'
     compile 'com.google.maps.android:android-maps-utils:0.4+'
 
+
 }

@@ -20,6 +20,7 @@ import ambiesoft.start.view.fragment.MyBuskingFragment;
  */
 public class MainActivityPresenter {
 
+
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2;
     private MainActivity view;
