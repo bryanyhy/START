@@ -18,6 +18,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class HomeFragmentPresenter {
     private String filterKeyword;
     private String filterCategory;
     private String filterTime;
+
+
 
     public HomeFragmentPresenter(HomeFragment view, FloatingActionButton fab) {
         this.view = view;
@@ -134,6 +137,7 @@ public class HomeFragmentPresenter {
     public void setFireBaseListener() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
+
         // get data that match the specific date from FirebaseUtility
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
         // value event listener that is triggered everytime data in FirebaseUtility's Performance root is updated

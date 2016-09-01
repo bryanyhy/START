@@ -69,8 +69,8 @@
                         android:layout_marginLeft="3dp">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:id="@+id/cardImg"
                             android:foregroundGravity="right"
                             android:layout_marginRight="5dp"/>

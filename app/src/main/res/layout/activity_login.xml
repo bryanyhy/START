@@ -1,10 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <net.grobas.view.MovingImageView
+            android:id="@+id/imageBg"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:clickable="true"
+            android:onClick="clickImage"
+            android:src="@drawable/anotherworld"
+            app:miv_load_on_create="true"
+            app:miv_max_relative_size="3.0"
+            app:miv_min_relative_offset="0.2"
+            app:miv_repetitions="-1"
+            app:miv_speed="100"
+            app:miv_start_delay="1000" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#80444444"
+            android:clickable="true"
+            android:onClick="clickTitle"
+            android:paddingLeft="25dp"
+            android:text="NExt"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold|italic"
+            android:layout_above="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="clickText"
+            android:padding="16dp"
+            android:text="blah blah"
+            android:id="@+id/textView" />
 
 
-
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>
