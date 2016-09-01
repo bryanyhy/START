@@ -70,7 +70,7 @@ public class ArtworkDetailFragmentPresenter {
             bundle.putString("timeFromFilter", filterTime);
             googleMapFragment.setArguments(bundle);
             // pass the bundle to a new googleMapFragment
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, googleMapFragment).commit();
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, googleMapFragment).remove(view).commit();
         } else {
             // show alertbox if the previous fragment ID is not valid
             showAlertBox("Error", "Unexpected error occurs. Please restart the app.", view.getActivity());

@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     private NestedScrollView nsv;
     private FrameLayout fl;
 
+    private String email = "abc";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     public NestedScrollView getNestedScrollView() {return nsv;}
     public FrameLayout getFrameLayout() {return fl;}
     public NavigationTabBar getNavigationTabBar() {return navigationTabBar;}
+    public String getUserEmail() {return email;}
 
     public void navigationTabBarSetting() {
         final String[] tabBarItemName = getResources().getStringArray(R.array.tab_bar_array);
@@ -190,48 +193,4 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-//
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_map) {
-//            // check if network is available
-//            if (isNetworkAvailable(this) == false) {
-//                // if no network is detected
-//                dismissProgressDialog();
-//                showAlertBox("Alert", "There is no internet connection detected. Map access is disabled.", this);
-//            } else {
-//                // map is selected in navigation bar
-//                fm.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
-//            }
-//
-//        } else if (id == R.id.nav_crePer) {
-//            // check if network is available
-//            if (isNetworkAvailable(this) == false) {
-//                // if no network is detected
-//                dismissProgressDialog();
-//                showAlertBox("Alert", "There is no internet connection detected. Create performance is disabled.", this);
-//            } else {
-//                // create performance is selected in navigation bar
-//                Toast.makeText(this, "Create Performance", Toast.LENGTH_SHORT).show();
-//                fm.beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
-//            }
-//        }
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
 }

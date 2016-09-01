@@ -22,6 +22,8 @@ import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
 
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+
 /**
  * Class for the Home Fragment, which shows the result in an list of cardview
  */

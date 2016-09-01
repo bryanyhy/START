@@ -1,0 +1,150 @@
+package ambiesoft.start.model.utility;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.chauthai.swipereveallayout.ViewBinderHelper;
+
+import java.util.ArrayList;
+
+import ambiesoft.start.R;
+import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.view.fragment.CreatePerformanceFragment;
+import ambiesoft.start.view.fragment.PerformanceDetailFragment;
+
+import static ambiesoft.start.model.utility.FirebaseUtility.deletePerformanceFromFirebase;
+
+/**
+ * Created by Bryanyhy on 31/8/2016.
+ */
+public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolderEditable> {
+
+    public ArrayList performanceList;
+    public Activity activity;
+    public int previousFragmentID;
+    private final ViewBinderHelper binderHelper = new ViewBinderHelper();
+
+    // Constructor
+    public RecyclerViewEditableAdapter(ArrayList list, Activity activity, int previousFragmentID) {
+        this.performanceList = list;
+        this.activity = activity;
+        this.previousFragmentID = previousFragmentID;
+        binderHelper.setOpenOnlyOne(true);
+    }
+
+    @Override
+    public ViewHolderEditable onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout_editable, parent, false);
+        ViewHolderEditable holder = new ViewHolderEditable(v);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolderEditable holder, int position) {
+        // check if there is performance result
+        if (performanceList.size() != 0) {
+            // if there is result
+            // populate the current row with performance's data, on the RecyclerView as a cardview
+            final Performance performance = (Performance) performanceList.get(position);
+            holder.name.setText(performance.getName());
+            holder.category.setText(performance.getCategory());
+            holder.date.setText(performance.getDate());
+            holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
+            setCardIcon(holder, performance.getCategory());
+            binderHelper.bind(holder.swipeLayout, performance.getName());
+            holder.editPer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Log.i("System.out", "Edit is clicked, " + performance.getName());
+                editPerformance(performance);
+                }
+            });
+
+            holder.deletePer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Log.i("System.out", "Delete is clicked");
+//                mDataSet.remove(getAdapterPosition());
+//                notifyItemRemoved(getAdapterPosition());
+                }
+            });
+        }
+    }
+
+    //returns the number of cardview the RecyclerView will display
+    @Override
+    public int getItemCount() {
+        // the number is equal to the number of performance result
+        return performanceList.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void setCardIcon(ViewHolderEditable holder, String category){
+        int imageID = 0;
+        switch (category){
+            case "Instruments":
+                imageID = R.drawable.ic_card_instrument;
+
+                break;
+            case "Singing":
+                imageID = R.drawable.ic_card_sing;
+
+                break;
+            case "Conjuring":
+                imageID = R.drawable.ic_card_conjuring;
+
+                break;
+            case "Juggling":
+                imageID = R.drawable.ic_card_juggling;
+
+                break;
+            case "Puppetry":
+                imageID = R.drawable.ic_card_puppetry;
+
+                break;
+            case "Miming":
+                imageID = R.drawable.ic_card_miming;
+
+                break;
+            case "Dancing":
+                imageID = R.drawable.ic_card_dancing;
+
+                break;
+            case "Drawing":
+                imageID = R.drawable.ic_card_drawing;
+
+                break;
+            default:
+                imageID = R.drawable.ic_card_other;
+
+                break;
+        }
+        holder.cardImg.setImageResource(imageID);
+    }
+
+    public void editPerformance(Performance performance) {
+        Fragment createPerformanceFragment = new CreatePerformanceFragment();
+        // create bundle, add all performance information into it
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+        createPerformanceFragment.setArguments(bundle);
+        // pass bundle to the new performanceDetailFragment
+        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+    }
+
+    public void deletePerformance(Performance performance) {
+        deletePerformanceFromFirebase(performance.getKey());
+    }
+}

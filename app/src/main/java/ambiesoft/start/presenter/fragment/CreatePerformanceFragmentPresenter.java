@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
@@ -23,10 +25,16 @@ import java.util.Calendar;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentDay;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentHour;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentMinute;
@@ -35,8 +43,10 @@ import static ambiesoft.start.model.utility.DateFormatter.getCurrentYear;
 import static ambiesoft.start.model.utility.DateFormatter.getEndingTimeForPerformance;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedDateWithLeadingZero;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLeadingZero;
+import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.model.utility.FirebaseUtility.savePerformance;
 import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.updatePerformance;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
@@ -61,10 +71,12 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     private String selectedSTime;
     private String selectedETime;
     private int selectedDuration;
+    private Performance performanceFromPreviousFragment;
 
     public CreatePerformanceFragmentPresenter(CreatePerformanceFragment view) {
         this.view = view;
         selectedDuration = 0;
+        getBundleFromPreviousFragment();
         // setup FirebaseUtility
         setupFirebase(view.getContext());
         // Setup Google API Client, used to get the latitude and longitude from user's location selection
@@ -77,6 +89,21 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         }
         // connect to google API client
         mGoogleApiClient.connect();
+        if (performanceFromPreviousFragment != null) {
+            setViewDetailsFromPerformance();
+            view.createButton.setText("Update");
+            Log.i("System.out", performanceFromPreviousFragment.getKey());
+        }
+    }
+
+    public void getBundleFromPreviousFragment() {
+        // get bundle from previous fragment
+        Bundle bundle = view.getArguments();
+        if (bundle != null) {
+            // if bundle exists, get the filter values
+            performanceFromPreviousFragment = getSelectedPerformanceFromBundle(bundle);
+        } else {
+        }
     }
 
     // Method called when user click on the date button
@@ -226,14 +253,19 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
             selectedETime = getEndingTimeForPerformance(selectedSTime, selectedDuration);
             // create a new performance object
             Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
-                    ,selectedETime, selectedLat, selectedLng, selectedAddress);
-            // save performance into FirebaseUtility
-            savePerformance(performance);
-            Toast.makeText(view.getActivity(), "Saved.", Toast.LENGTH_SHORT).show();
-            // restart the current fragment, clear all input
-            FragmentTransaction ft = view.getFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new CreatePerformanceFragment());
-            ft.commit();
+                    ,selectedETime, selectedDuration, selectedLat, selectedLng, selectedAddress, ((MainActivity) view.getActivity()).getUserEmail());
+            if (performanceFromPreviousFragment == null) {
+                // save performance into Firebase Utility
+                savePerformance(performance);
+                Toast.makeText(view.getActivity(), "Performance is created.", Toast.LENGTH_SHORT).show();
+            } else {
+                // update performance into Firebase Utility
+                updatePerformance(performance, performanceFromPreviousFragment.getKey());
+                Toast.makeText(view.getActivity(), "Performance is updated.", Toast.LENGTH_SHORT).show();
+            }
+            // back to MyBuskingFragment
+            view.getFragmentManager().popBackStack();
+//            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
         } else {
             // if input is not valid, show alertbox
             showAlertBox("Alert", "No empty field is allowed.", view.getActivity());
@@ -264,5 +296,35 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         selectedLng = lng;
         view.locationButton.setText(selectedAddress);
         Toast.makeText(view.getActivity(), selectedAddress + " is selected.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void setViewDetailsFromPerformance() {
+        name = performanceFromPreviousFragment.getName();
+        view.nameInput.setText(name);
+
+        desc = performanceFromPreviousFragment.getDesc();
+        view.descInput.setText(desc);
+
+        selectedCategory = performanceFromPreviousFragment.getCategory();
+        ArrayAdapter myAdap = (ArrayAdapter) view.categorySpinner.getAdapter();
+        int spinnerPosition = myAdap.getPosition(selectedCategory);
+        view.categorySpinner.setSelection(spinnerPosition);
+
+        selectedLat = performanceFromPreviousFragment.getLat();
+        selectedLng = performanceFromPreviousFragment.getLng();
+        selectedAddress = performanceFromPreviousFragment.getAddress();
+        view.locationButton.setText(selectedAddress);
+
+        selectedDate = performanceFromPreviousFragment.getDate();
+        view.dateButton.setText(selectedDate);
+
+        selectedSTime = performanceFromPreviousFragment.getsTime();
+        view.sTimeButton.setText(selectedSTime);
+
+        selectedETime = performanceFromPreviousFragment.geteTime();
+
+        selectedDuration = performanceFromPreviousFragment.getDuration();
+        view.durationButton.setText(String.valueOf(selectedDuration));
+
     }
 }

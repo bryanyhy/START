@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:background="@drawable/appbar"
+
             app:title="@string/app_name"
             app:expandedTitleTextAppearance="@null"
             app:contentScrim="#605271"
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:background="@drawable/bg_banner"
+                android:background="@drawable/ic_card_conjuring"
 
                 android:tint="#9f90af"
                 android:padding="32dp"

@@ -296,7 +296,6 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                 performanceDetailFragment.setArguments(bundle);
                 // pass bundle to the new performanceDetailFragment
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
-
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -325,6 +324,15 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
                 artworkDetailFragment.setArguments(bundle);
                 // pass bundle to the new performanceDetailFragment
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, artworkDetailFragment).commit();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        FrameLayout fl = (FrameLayout) view.getActivity().findViewById(R.id.content_frame_map);
+                        fl.removeAllViews();
+                    }
+                }, 100);
                 break;
             }
         }
@@ -443,7 +451,7 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         bundle.putString("timeFromFilter", filterTime);
         homeFragment.setArguments(bundle);
         // transact to homeFragment with bundle
-        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, homeFragment).commit();
+        view.getFragmentManager().beginTransaction().remove(view).replace(R.id.content_frame, homeFragment).commit();
     }
 
     public static GoogleMapFragment getCurrentGoogleMapFragment() {

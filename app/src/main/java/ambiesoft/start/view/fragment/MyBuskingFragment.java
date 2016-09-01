@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
+import ambiesoft.start.model.utility.RecyclerViewEditableAdapter;
 import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
 import ambiesoft.start.presenter.fragment.MyBuskingFragmentPresenter;
 import ambiesoft.start.view.activity.MainActivity;
@@ -32,7 +33,7 @@ public class MyBuskingFragment extends Fragment {
     private MyBuskingFragmentPresenter presenter;
 
     public RecyclerView recyclerView;
-    public RecyclerViewAdapter adapter;
+    public RecyclerViewEditableAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,19 +51,21 @@ public class MyBuskingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setRecyclerViewAdapter();
+        setRecyclerViewEditableAdapter();
         // show the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();
         if (presenter == null) {
             presenter = new MyBuskingFragmentPresenter(this);
+        } else {
+            presenter.setRecyclerViewEditableAdapter();
         }
     }
 
     // for setting the recycler view adapter
-    public void setRecyclerViewAdapter() {
+    public void setRecyclerViewEditableAdapter() {
         // adapter for recycler view, to get all performance result and show them in cardview
-        adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), MY_BUSKING_FRAGMENT_ID);
+        adapter = new RecyclerViewEditableAdapter(new ArrayList<Performance>(), getActivity(), MY_BUSKING_FRAGMENT_ID);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

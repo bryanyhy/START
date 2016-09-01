@@ -34,7 +34,7 @@ public class CreatePerformanceFragment extends Fragment {
 
     public EditText nameInput;
     public EditText descInput;
-    private Spinner categorySpinner;
+    public Spinner categorySpinner;
     public Button createButton;
     public Button locationButton;
     public Button dateButton;
@@ -64,6 +64,22 @@ public class CreatePerformanceFragment extends Fragment {
         // hide the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.category_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        categorySpinner.setAdapter(adapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.setSelectedCategory(parent, position);
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
         if (presenter == null) {
             presenter = new CreatePerformanceFragmentPresenter(this);
         }
@@ -105,21 +121,6 @@ public class CreatePerformanceFragment extends Fragment {
                 presenter.chooseDuration();
             }
         });
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.category_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        categorySpinner.setAdapter(adapter);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                presenter.setSelectedCategory(parent, position);
-            }
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
     }
 
 //    // When a location is selected in Google Place API
@@ -130,4 +131,6 @@ public class CreatePerformanceFragment extends Fragment {
     public void updateLocationInfo(String address, Double lat, Double lng) {
         presenter.setLocationInfo(address, lat, lng);
     }
+
+
 }

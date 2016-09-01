@@ -6,7 +6,9 @@ import android.util.Log;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
+import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
@@ -33,6 +35,7 @@ public class PerformanceDetailFragmentPresenter {
 
     public PerformanceDetailFragmentPresenter(PerformanceDetailFragment view) {
         this.view = view;
+        ((MainActivity) view.getActivity()).getNavigationTabBar().hide();
     }
 
     public void getBundleFromPreviousFragment() {
@@ -60,7 +63,16 @@ public class PerformanceDetailFragmentPresenter {
         // check the previous fragment ID
         if (previousFragmentID == 0) {
             // back to HomeFragment if it is the previous one
-            view.getFragmentManager().popBackStack();
+//            view.getFragmentManager().popBackStack();
+            Fragment homeFragment = new HomeFragment();
+            // create the bundle with previous filter settings
+            Bundle bundle = new Bundle();
+            bundle.putString("dateFromFilter", filterDate);
+            bundle.putString("keywordFromFilter", filterKeyword);
+            bundle.putString("categoryFromFilter", filterCategory);
+            bundle.putString("timeFromFilter", filterTime);
+            homeFragment.setArguments(bundle);
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, homeFragment).remove(view).commit();
         } else if (previousFragmentID == 1) {
             // if it is GoogleMapFragment, pop back will call errors
             // so we have to restart the googleMapFragment
@@ -73,7 +85,7 @@ public class PerformanceDetailFragmentPresenter {
             bundle.putString("timeFromFilter", filterTime);
             googleMapFragment.setArguments(bundle);
             // pass the bundle to a new googleMapFragment
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, googleMapFragment).commit();
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, googleMapFragment).remove(view).commit();
         } else {
             // show alertbox if the previous fragment ID is not valid
             showAlertBox("Error", "Unexpected error occurs. Please restart the app.", view.getActivity());

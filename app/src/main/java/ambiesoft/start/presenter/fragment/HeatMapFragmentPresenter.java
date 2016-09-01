@@ -172,6 +172,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
 
     public void setMarkerLocationAddress() {
         try {
+            Toast.makeText(view.getActivity(), "Getting address...", Toast.LENGTH_LONG).show();
             locationAddress = geocoder.getFromLocation(selectedLat, selectedLng, 1).get(0).getAddressLine(0) + ", "
                     + geocoder.getFromLocation(selectedLat, selectedLng, 1).get(0).getLocality() + " "
                     + geocoder.getFromLocation(selectedLat, selectedLng, 1).get(0).getAdminArea() + " "
@@ -180,14 +181,19 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
             Toast.makeText(view.getActivity(), locationAddress, Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(view.getActivity(), "Map Server is busy. Please try again.", Toast.LENGTH_LONG).show();
         }
     }
 
     public void setMarkerOnSearchedPlace(LatLng location, String address) {
+        showProgressDialog(view.getContext());
         mMap.clear();
         setMarkerLocation(location);
         locationAddress = address;
+        selectedLat = location.latitude;
+        selectedLng = location.longitude;
         addHeatMap();
+        dismissProgressDialog();
         Toast.makeText(view.getActivity(), locationAddress, Toast.LENGTH_LONG).show();
     }
 
