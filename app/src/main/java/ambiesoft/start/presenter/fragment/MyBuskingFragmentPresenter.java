@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
+import ambiesoft.start.model.utility.RecyclerViewEditableAdapter;
+import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
@@ -43,7 +45,6 @@ public class MyBuskingFragmentPresenter {
     private MyBuskingFragment view;
     private ArrayList<Performance> performances;
     private Firebase firebase;
-    private String userEmail = "abc";
 
     public MyBuskingFragmentPresenter(MyBuskingFragment view) {
         this.view = view;
@@ -57,7 +58,7 @@ public class MyBuskingFragmentPresenter {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
         // get data that match the specific date from FirebaseUtility
-        Query queryRef = firebase.orderByChild("email").equalTo(userEmail);
+        Query queryRef = firebase.orderByChild("email").equalTo(((MainActivity) view.getActivity()).getUserEmail());
         // value event listener that is triggered everytime data in FirebaseUtility's Performance root is updated
         // Retrieve all performance's attributes from each post on FirebaseUtility, when any data is updated in the FirebaseUtility
         queryRef.addValueEventListener(new ValueEventListener() {
@@ -80,7 +81,7 @@ public class MyBuskingFragmentPresenter {
                     public void run() {
                         //Do something after 100ms
                         // update the recyclerView
-                        setRecyclerViewAdapter();
+                        setRecyclerViewEditableAdapter();
                         // dismiss the progress dialog after all the updates
                         dismissProgressDialog();
                     }
@@ -99,9 +100,9 @@ public class MyBuskingFragmentPresenter {
     }
 
     // for setting the recycler view adapter
-    public void setRecyclerViewAdapter() {
+    public void setRecyclerViewEditableAdapter() {
         // adapter for recycler view, to get all performance result and show them in cardview
-        view.adapter = new RecyclerViewAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
+        view.adapter = new RecyclerViewEditableAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
@@ -113,6 +114,7 @@ public class MyBuskingFragmentPresenter {
             view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).addToBackStack(null).commit();
         }
     }
+
 
 
 }

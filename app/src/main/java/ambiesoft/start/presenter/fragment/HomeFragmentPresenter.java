@@ -76,6 +76,7 @@ public class HomeFragmentPresenter {
     }
 
     public void setFloatingActionButton() {
+        final HomeFragment fragView = this.view;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +94,7 @@ public class HomeFragmentPresenter {
                     bundle.putString("timeFromFilter", filterTime);
                     googleMapFragment.setArguments(bundle);
                     // transact to GoogleMapFragment with bundle
-                    fm.beginTransaction().replace(R.id.content_frame_map, googleMapFragment).commit();
+                    fm.beginTransaction().remove(fragView).replace(R.id.content_frame_map, googleMapFragment).commit();
                 }
             }
         });
@@ -177,10 +178,10 @@ public class HomeFragmentPresenter {
                         //Do something after 100ms
                         // update the recyclerView
                         setRecyclerViewAdapter();
-                        // dismiss the progress dialog after all the updates
-                        dismissProgressDialog();
                     }
                 }, 100);
+                // dismiss the progress dialog after all the updates
+                dismissProgressDialog();
 //                // update the recyclerView
 //                setRecyclerViewAdapter();
 //                // dismiss the progress dialog after all the updates

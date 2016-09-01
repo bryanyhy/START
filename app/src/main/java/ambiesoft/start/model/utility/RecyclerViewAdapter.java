@@ -75,23 +75,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                         bundle.putInt("previousFragmentID", previousFragmentID);
                         performanceDetailFragment.setArguments(bundle);
                         // transact to performanceDetailFragment
-                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).addToBackStack(null).commit();
-                    } else if (previousFragmentID == 2) {
-
-
-
-                        // if the calling fragment is MyBuskingFragment
-                        Log.i("System.out","CV selected");
-                        Fragment createPerformanceFragment = new CreatePerformanceFragment();
-                        // create bundle, with data added into it
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
-                        bundle.putInt("previousFragmentID", previousFragmentID);
-                        createPerformanceFragment.setArguments(bundle);
-                        // transact to createPerformanceFragment
-                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
                     } else {
-
                     }
                 }
             });

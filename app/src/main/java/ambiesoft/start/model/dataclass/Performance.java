@@ -9,6 +9,7 @@ import android.os.Parcelable;
 // Storing all attributes for a performance
 public class Performance implements Parcelable {
 
+    private String key;
     private String name;
     private String category;
     private String desc;
@@ -18,21 +19,13 @@ public class Performance implements Parcelable {
     private Double lat;
     private Double lng;
     private String address;
+    private int duration;
+    private String email;
 
     public Performance() {}
 
-    public Performance(String name, String category, String desc, String date, String sTime, String eTime, Double lat, Double lng) {
-        this.name = name;
-        this.category = category;
-        this.desc = desc;
-        this.date = date;
-        this.sTime = sTime;
-        this.eTime = eTime;
-        this.lat = lat;
-        this.lng = lng;
-    }
-
-    public Performance(String name, String category, String desc, String date, String sTime, String eTime, Double lat, Double lng, String address) {
+    public Performance(String key, String name, String category, String desc, String date, String sTime, String eTime, int duration, Double lat, Double lng, String address, String email) {
+        this.key = key;
         this.name = name;
         this.category = category;
         this.desc = desc;
@@ -42,6 +35,30 @@ public class Performance implements Parcelable {
         this.lat = lat;
         this.lng = lng;
         this.address = address;
+        this.duration = duration;
+        this.email = email;
+    }
+
+    public Performance(String name, String category, String desc, String date, String sTime, String eTime, int duration, Double lat, Double lng, String address, String email) {
+        this.name = name;
+        this.category = category;
+        this.desc = desc;
+        this.date = date;
+        this.sTime = sTime;
+        this.eTime = eTime;
+        this.duration = duration;
+        this.lat = lat;
+        this.lng = lng;
+        this.address = address;
+        this.email = email;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {
@@ -92,6 +109,14 @@ public class Performance implements Parcelable {
         this.eTime = eTime;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public Double getLat() {
         return lat;
     }
@@ -116,7 +141,16 @@ public class Performance implements Parcelable {
         this.address = address;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     protected Performance(Parcel in) {
+        key = in.readString();
         name = in.readString();
         category = in.readString();
         desc = in.readString();
@@ -126,6 +160,8 @@ public class Performance implements Parcelable {
         lat = in.readByte() == 0x00 ? null : in.readDouble();
         lng = in.readByte() == 0x00 ? null : in.readDouble();
         address = in.readString();
+        duration = in.readInt();
+        email = in.readString();
     }
 
     @Override
@@ -135,6 +171,7 @@ public class Performance implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(key);
         dest.writeString(name);
         dest.writeString(category);
         dest.writeString(desc);
@@ -154,6 +191,8 @@ public class Performance implements Parcelable {
             dest.writeDouble(lng);
         }
         dest.writeString(address);
+        dest.writeInt(duration);
+        dest.writeString(email);
     }
 
     @SuppressWarnings("unused")

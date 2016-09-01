@@ -49,6 +49,7 @@ public class MainActivityPresenter {
             view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (model.getTitle().matches(tabBarItemName[1])) {
 
+
         } else if (model.getTitle().matches(tabBarItemName[2])) {
             if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                 view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
