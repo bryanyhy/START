@@ -43,6 +43,9 @@ import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLatFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLngFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 import static ambiesoft.start.model.utility.JSON.loadPedCountJSONFromAsset;
 import static ambiesoft.start.model.utility.JSON.loadSensorLocationJSONFromAsset;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -69,9 +72,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     private int selectedDay;
     private int selectedTime;
 
-
     OnHeadlineSelectedListener mCallback;
-
 
     // Container Activity must implement this interface
     public interface OnHeadlineSelectedListener {
@@ -80,6 +81,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
 
     public HeatMapFragmentPresenter(HeatMapFragment view) {
         this.view = view;
+        getLatAndLngBundleFromPreviousFragment();
         ((MainActivity) view.getActivity()).getNavigationTabBar().hide();
         selectedDay = 0;
         selectedTime = 0;
@@ -91,6 +93,20 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         } catch (ClassCastException e) {
             throw new ClassCastException(view.getActivity().toString()
                     + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public void getLatAndLngBundleFromPreviousFragment() {
+        // get bundle from previous fragment
+        Bundle bundle = view.getArguments();
+        if (bundle != null) {
+            // if bundle exists, get the filter values
+            selectedLat = getSelectedLatFromBundle(bundle);
+            selectedLng = getSelectedLngFromBundle(bundle);
+        } else {
+            // default center location
+            selectedLat = -37.813243;
+            selectedLng = 144.962762;
         }
     }
 
@@ -127,9 +143,6 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
                 && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
-        // default center location
-        selectedLat = -37.813243;
-        selectedLng = 144.962762;
         LatLng defaultCenter = new LatLng(selectedLat, selectedLng);
         setMarkerLocation(defaultCenter);
         setMarkerLocationAddress();

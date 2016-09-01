@@ -90,4 +90,26 @@ public class BundleItemChecker {
         }
     }
 
+    // check if there is latitude in bundle
+    public static Double getSelectedLatFromBundle(Bundle bundle) {
+        if (bundle.containsKey("latFromPreviousFragment")) {
+            // return the object from bundle
+            return bundle.getDouble("latFromPreviousFragment");
+        } else {
+            // return null if no object in bundle
+            return null;
+        }
+    }
+
+    // check if there is longitude in bundle
+    public static Double getSelectedLngFromBundle(Bundle bundle) {
+        if (bundle.containsKey("lngFromPreviousFragment")) {
+            // return the object from bundle
+            return bundle.getDouble("lngFromPreviousFragment");
+        } else {
+            // return null if no object in bundle
+            return null;
+        }
+    }
+
 }

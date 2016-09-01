@@ -57,8 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:layout_marginBottom="76dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <!--android:layout_marginBottom="76dp"-->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -68,15 +68,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/content_frame_map">
     </FrameLayout>
-
-    <!--<com.roughike.bottombar.BottomBar-->
-        <!--android:id="@+id/bottomBar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="60dp"-->
-        <!--app:bb_tabXmlResource="@xml/bottombar_tabs"-->
-        <!--app:bb_inActiveTabColor="@color/colorTint"-->
-        <!--app:bb_activeTabColor="@color/colorPrimary"-->
-        <!--android:layout_gravity="bottom" />-->
 
     <com.gigamole.navigationtabbar.ntb.NavigationTabBar
         android:id="@+id/bottomBar"
@@ -89,23 +80,7 @@
         app:ntb_badge_position="left"
         app:ntb_badge_title_color="#ffffffff"
         app:ntb_badge_use_typeface="true"
-        app:ntb_badged="true"
-        app:ntb_typeface="fonts/agency.ttf"/>
-
-
-    <!--<com.gigamole.navigationtabbar.ntb.NavigationTabBar-->
-        <!--android:id="@+id/tab_bar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="60dp"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--app:ntb_badge_size="12sp"-->
-        <!--app:ntb_badge_bg_color="#ffff0000"-->
-        <!--app:ntb_badge_gravity="top"-->
-        <!--app:ntb_badge_position="left"-->
-        <!--app:ntb_badge_title_color="#ffffffff"-->
-        <!--app:ntb_badge_use_typeface="true"-->
-        <!--app:ntb_badged="true"-->
-        <!--app:ntb_typeface="fonts/agency.ttf"/>-->
+        app:ntb_badged="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

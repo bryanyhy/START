@@ -25,26 +25,30 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import ambiesoft.start.R;
 
+import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+
 /**
  * Created by Zelta on 31/08/16.
  */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "RegisterActivity";
+    private static final int NON_REG_USER = 0;
+    private static final int REG_USER = 1;
+
     public EditText etEmail, etPwd;
     public TextView tvLogon, tvSkip;
     public Button btRegister;
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-    final static String DB_URL = "https://start-c9adf.firebaseio.com/";
-
+    private Intent intent;
+    private int userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-//        firebase.setAndroidContext(this);
 
         etEmail = (EditText) findViewById(R.id.registerEmailInput);
         etPwd = (EditText) findViewById(R.id.registerPwdInput);
@@ -55,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                skipSignIn();
             }
         });
 
@@ -66,78 +70,64 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
-
-
-
-
-        mAuth = FirebaseAuth.getInstance();
-
-
-        // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-
+                    Log.i("System.out", "onAuthStateChanged:signed_in:" + user.getUid());
+                    setupBundleToMainActivity(user, userType);
+                    // Pass intent to MainActivity
+                    startActivity(intent);
                 } else {
                     // User is signed out
-
+                    Log.i("System.out", "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
+                // ...
             }
         };
-        // [END auth_state_listener]
-
-
         btRegister.setOnClickListener(this);
-
+        // For passing bundle from activity to activity
+        intent = new Intent(RegisterActivity.this, MainActivity.class);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
     private void createAccount(String email, String password) {
-
-
-
-        //TODO: 09-01 15:11:34.165 2915-2928/ambiesoft.start W/DynamiteModule: Local module descriptor class for com.google.firebase.auth not found.
-
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(RegisterActivity.this, LogOnActivity.class));
-
+        if (email.trim().matches("") || password.trim().matches("")) {
+            showAlertBox("Error", "Email or password cannot be empty.", this);
+        } else {
+            userType = REG_USER;
+            mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Registration is failed.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
+                            }
                         }
-
-
-                    }
-                });
-        // [END create_user_with_email]
+                    });
+        }
     }
 
     @Override
@@ -145,6 +135,41 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.registerButton:
                 createAccount(etEmail.getText().toString(),etPwd.getText().toString());
+        }
+    }
+
+    public void skipSignIn() {
+        userType = NON_REG_USER;
+        mFirebaseAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInAnonymously", task.getException());
+                            Toast.makeText(RegisterActivity.this, "Skip Sign In failed.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Anonymous Login Success.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    // setup the content in intent send to MainActivity
+    public void setupBundleToMainActivity(FirebaseUser user, int userType) {
+        if (user != null) {
+            Bundle bundle = new Bundle();
+            if (userType == REG_USER) {
+                String email = user.getEmail();
+                bundle.putString("email", email);
+            } else {
+                bundle.putString("email", "Anonymous");
+            }
+            bundle.putInt("userType", userType);
+            intent.putExtras(bundle);
         }
     }
 

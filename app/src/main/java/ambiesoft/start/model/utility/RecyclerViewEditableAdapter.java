@@ -2,7 +2,9 @@ package ambiesoft.start.model.utility;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 
@@ -63,15 +66,16 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
             holder.editPer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Log.i("System.out", "Edit is clicked, " + performance.getName());
-                editPerformance(performance);
+                    Log.i("System.out", "Edit is clicked, " + performance.getName());
+                    editPerformance(performance);
                 }
             });
 
             holder.deletePer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Log.i("System.out", "Delete is clicked");
+                    Log.i("System.out", "Delete is clicked");
+                    deletePerformance(performance);
 //                mDataSet.remove(getAdapterPosition());
 //                notifyItemRemoved(getAdapterPosition());
                 }
@@ -96,39 +100,30 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
         switch (category){
             case "Instruments":
                 imageID = R.drawable.ic_card_instrument;
-
                 break;
             case "Singing":
                 imageID = R.drawable.ic_card_sing;
-
                 break;
             case "Conjuring":
                 imageID = R.drawable.ic_card_conjuring;
-
                 break;
             case "Juggling":
                 imageID = R.drawable.ic_card_juggling;
-
                 break;
             case "Puppetry":
                 imageID = R.drawable.ic_card_puppetry;
-
                 break;
             case "Miming":
                 imageID = R.drawable.ic_card_miming;
-
                 break;
             case "Dancing":
                 imageID = R.drawable.ic_card_dancing;
-
                 break;
             case "Drawing":
                 imageID = R.drawable.ic_card_drawing;
-
                 break;
             default:
                 imageID = R.drawable.ic_card_other;
-
                 break;
         }
         holder.cardImg.setImageResource(imageID);
@@ -144,7 +139,24 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
         activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
     }
 
-    public void deletePerformance(Performance performance) {
-        deletePerformanceFromFirebase(performance.getKey());
+    public void deletePerformance(final Performance performance) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Confirmation");
+        alert.setMessage("Are you sure to delete performance?");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                deletePerformanceFromFirebase(performance.getKey());
+                Toast.makeText(activity, "Performance is deleted.", Toast.LENGTH_SHORT);
+            }
+        });
+        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 }

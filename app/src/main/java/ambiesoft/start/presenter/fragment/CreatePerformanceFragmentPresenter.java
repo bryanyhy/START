@@ -2,6 +2,7 @@ package ambiesoft.start.presenter.fragment;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -206,7 +207,18 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         showProgressDialog(view.getContext());
 //        view.getView().setVisibility(View.GONE);
         FragmentTransaction ft = view.getFragmentManager().beginTransaction().hide(view);
-        ft.replace(R.id.content_frame_map, new HeatMapFragment()).addToBackStack(null);
+
+        if (performanceFromPreviousFragment != null) {
+            Fragment heatMapFragment = new HeatMapFragment();
+            Bundle bundle = new Bundle();
+            bundle.putDouble("latFromPreviousFragment", selectedLat);
+            bundle.putDouble("lngFromPreviousFragment", selectedLng);
+            heatMapFragment.setArguments(bundle);
+
+            ft.replace(R.id.content_frame_map, heatMapFragment).addToBackStack(null);
+        } else {
+            ft.replace(R.id.content_frame_map, new HeatMapFragment()).addToBackStack(null);
+        }
         ft.commit();
     }
 

@@ -2,10 +2,14 @@ package ambiesoft.start.presenter.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ambiesoft.start.R;
 import ambiesoft.start.presenter.fragment.GoogleMapFragmentPresenter;

@@ -11,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 
@@ -28,6 +29,9 @@ import ambiesoft.start.view.fragment.HeatMapFragment;
  */
 public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener {
 
+    private static final int NON_REG_USER = 0;
+    private static final int REG_USER = 1;
+
     private MainActivityPresenter presenter;
 
     public FloatingActionButton fab;
@@ -37,13 +41,25 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     private NestedScrollView nsv;
     private FrameLayout fl;
 
-    private String email = "abc";
+    private String email;
+    private int userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey("email")) {
+                email = extras.getString("email");
+            }
+            if (extras.containsKey("userType")) {
+                userType = extras.getInt("userType");
+            }
+        }
+        Toast.makeText(getApplicationContext(), "Welcome, " + email, Toast.LENGTH_LONG).show();
+
         // setting up the bottom navigation bar
         navigationTabBarSetting();
 
@@ -97,43 +113,66 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
 //        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.bottomBar);
         navigationTabBar = (NavigationTabBar) findViewById(R.id.bottomBar);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_1),
-                        Color.parseColor(colors[0]))
-                        .title(tabBarItemName[0])
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_2),
-                        Color.parseColor(colors[1]))
-                        .title(tabBarItemName[1])
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_3),
-                        Color.parseColor(colors[2]))
-                        .title(tabBarItemName[2])
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_4),
-                        Color.parseColor(colors[3]))
-                        .title(tabBarItemName[3])
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_5),
-                        Color.parseColor(colors[4]))
-                        .title(tabBarItemName[4])
-                        .build()
-        );
+        if (userType == NON_REG_USER) {
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_1),
+                            Color.parseColor(colors[0]))
+                            .title(tabBarItemName[0])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_4),
+                            Color.parseColor(colors[3]))
+                            .title(tabBarItemName[3])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_5),
+                            Color.parseColor(colors[4]))
+                            .title(tabBarItemName[4])
+                            .build()
+            );
+        } else {
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_1),
+                            Color.parseColor(colors[0]))
+                            .title(tabBarItemName[0])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_2),
+                            Color.parseColor(colors[1]))
+                            .title(tabBarItemName[1])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_3),
+                            Color.parseColor(colors[2]))
+                            .title(tabBarItemName[2])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_4),
+                            Color.parseColor(colors[3]))
+                            .title(tabBarItemName[3])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_5),
+                            Color.parseColor(colors[4]))
+                            .title(tabBarItemName[4])
+                            .build()
+            );
+        }
         navigationTabBar.setModels(models);
-//        navigationTabBar.setViewPager(viewPager, 2);
 
         //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
         navigationTabBar.setBehaviorEnabled(true);

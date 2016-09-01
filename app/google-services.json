@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "760441206701-f8l3eohuldpmvddl1v5jjp3rkn5r6kgi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ambiesoft.start",
+            "certificate_hash": "94029815BBE4623213698E9D22841FBE5591B71A"
+          }
+        },
+        {
+          "client_id": "760441206701-8a6ht0jdusd4oqd5imq93a9kcnvh6bpf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ambiesoft.start",
+            "certificate_hash": "8BAA705F70514A25A1537338C59A96BBB8F81F67"
+          }
+        },
+        {
           "client_id": "760441206701-535ck755jach7gfmh2eu48mc8nki4l29.apps.googleusercontent.com",
           "client_type": 3
         }

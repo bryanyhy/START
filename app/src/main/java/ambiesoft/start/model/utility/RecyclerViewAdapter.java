@@ -100,39 +100,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         switch (category){
             case "Instruments":
                 imageID = R.drawable.ic_card_instrument;
-
                 break;
             case "Singing":
                 imageID = R.drawable.ic_card_sing;
-
                 break;
             case "Conjuring":
                 imageID = R.drawable.ic_card_conjuring;
-
                 break;
             case "Juggling":
                 imageID = R.drawable.ic_card_juggling;
-
                 break;
             case "Puppetry":
                 imageID = R.drawable.ic_card_puppetry;
-
                 break;
             case "Miming":
                 imageID = R.drawable.ic_card_miming;
-
                 break;
             case "Dancing":
                 imageID = R.drawable.ic_card_dancing;
-
                 break;
             case "Drawing":
                 imageID = R.drawable.ic_card_drawing;
-
                 break;
             default:
                 imageID = R.drawable.ic_card_other;
-
                 break;
         }
         holder.cardImg.setImageResource(imageID);

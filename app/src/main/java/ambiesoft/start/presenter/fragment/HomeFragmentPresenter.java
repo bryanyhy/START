@@ -18,6 +18,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
@@ -184,6 +186,13 @@ public class HomeFragmentPresenter {
                         setRecyclerViewAdapter();
                     }
                 }, 100);
+
+//                final NavigationTabBar.Model model = ((MainActivity) view.getActivity()).getNavigationTabBar().getModels().get(0);
+//                if (!model.isBadgeShowed()) {
+//                    model.setBadgeTitle("New");
+//                    model.showBadge();
+//                } else model.updateBadgeTitle("New");
+
                 // dismiss the progress dialog after all the updates
                 dismissProgressDialog();
 //                // update the recyclerView
