@@ -1,5 +1,7 @@
 package ambiesoft.start.model.utility;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -95,4 +97,64 @@ public class DateFormatter {
         calendar.add(Calendar.MINUTE, selectedDuration);
         return sdf.format(calendar.getTime());
     }
+
+    public static boolean checkIfTimeIsInBetween(String cDate, String csTime, String ceTime, String sDate, String sTime, String eTime) throws ParseException {
+
+        // Check Start Time
+        java.util.Date checkSTime = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                .parse(cDate + " " + csTime);
+        Calendar checkSCalendar = Calendar.getInstance();
+        checkSCalendar.setTime(checkSTime);
+
+        // Check End Time
+        java.util.Date checkETime = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                .parse(cDate + " " + ceTime);
+        Calendar checkECalendar = Calendar.getInstance();
+        checkECalendar.setTime(checkETime);
+
+        // Start Time
+        java.util.Date startTime = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                .parse(sDate + " " + sTime);
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(startTime);
+
+        // End Time
+        java.util.Date endTime = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                .parse(sDate + " " + eTime);
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endTime);
+
+        if (checkETime.compareTo(checkSTime) < 0) {
+            checkECalendar.add(Calendar.DATE, 1);
+            checkETime = checkECalendar.getTime();
+            Log.i("System.out", "Check End time changed to: " + endTime);
+        }
+
+        if (endTime.compareTo(startTime) < 0) {
+            endCalendar.add(Calendar.DATE, 1);
+            endTime = endCalendar.getTime();
+            Log.i("System.out", "End time changed to: " + endTime);
+        }
+
+        Log.i("System.out", "1. " + checkSTime);
+        Log.i("System.out", "2. " + checkETime);
+        Log.i("System.out", "3. " + startTime);
+        Log.i("System.out", "4. " + endTime);
+
+        if (checkSTime.compareTo(startTime) == 0 || checkSTime.compareTo(endTime) == 0
+                || checkETime.compareTo(startTime) == 0 || checkETime.compareTo(endTime) == 0) {
+            Log.i("System.out", "Time is same");
+            return true;
+        } else if (checkSTime.before(startTime) && checkETime.before(startTime)) {
+            Log.i("System.out", "Both time is before starting time");
+            return false;
+        } else if (checkSTime.after(endTime) && checkETime.after(endTime)) {
+            Log.i("System.out", "Both time is after starting time");
+            return false;
+        } else {
+            Log.i("System.out", "Time is clashed");
+            return true;
+        }
+    }
 }
+

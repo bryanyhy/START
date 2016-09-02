@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import ambiesoft.start.R;
@@ -35,7 +36,9 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryF
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getPerformanceListFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
+import static ambiesoft.start.model.utility.DateFormatter.checkIfTimeIsInBetween;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentDay;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentHour;
 import static ambiesoft.start.model.utility.DateFormatter.getCurrentMinute;
@@ -73,6 +76,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     private String selectedETime;
     private int selectedDuration;
     private Performance performanceFromPreviousFragment;
+    private ArrayList<Performance> performanceListFromPreviousFragment;
 
     public CreatePerformanceFragmentPresenter() {    }
 
@@ -105,7 +109,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         if (bundle != null) {
             // if bundle exists, get the filter values
             performanceFromPreviousFragment = getSelectedPerformanceFromBundle(bundle);
-        } else {
+            performanceListFromPreviousFragment = getPerformanceListFromBundle(bundle);
         }
     }
 
@@ -262,41 +266,62 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         desc = view.descInput.getText().toString().trim();
         // valid the input, to see if there are any empty input
         if (validInput()) {
-            //if input is valid
+            // if input is valid
             // get the ending time by using start time and duration
             selectedETime = getEndingTimeForPerformance(selectedSTime, selectedDuration);
-            // create a new performance object
-            Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
-                    ,selectedETime, selectedDuration, selectedLat, selectedLng, selectedAddress, ((MainActivity) view.getActivity()).getUserEmail());
-            if (performanceFromPreviousFragment == null) {
-                // save performance into Firebase Utility
-                savePerformance(performance);
-                Toast.makeText(view.getActivity(), "Performance is created.", Toast.LENGTH_SHORT).show();
+            if (performanceListFromPreviousFragment != null) {
+                if (validPerformanceClash()) {
+                    savePerformanceChange();
+                } else {
+                    // if performance time is clashed, show alertbox
+                    showAlertBox("Alert", "There is a time clash with yours existing performance.", view.getActivity());
+                }
             } else {
-                // update performance into Firebase Utility
-                updatePerformance(performance, performanceFromPreviousFragment.getKey());
-                Toast.makeText(view.getActivity(), "Performance is updated.", Toast.LENGTH_SHORT).show();
+                savePerformanceChange();
             }
-            // back to MyBuskingFragment
-            view.getFragmentManager().popBackStack();
-//            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).commit();
         } else {
             // if input is not valid, show alertbox
             showAlertBox("Alert", "No empty field is allowed.", view.getActivity());
         }
     }
 
+    public void savePerformanceChange() {
+        // create a new performance object
+        Performance performance = new Performance(name, selectedCategory, desc, selectedDate, selectedSTime
+                ,selectedETime, selectedDuration, selectedLat, selectedLng, selectedAddress, ((MainActivity) view.getActivity()).getUserEmail());
+        if (performanceFromPreviousFragment == null) {
+            // save performance into Firebase Utility
+            savePerformance(performance);
+            Toast.makeText(view.getActivity(), "Performance is created.", Toast.LENGTH_SHORT).show();
+        } else {
+            // update performance into Firebase Utility
+            updatePerformance(performance, performanceFromPreviousFragment.getKey());
+            Toast.makeText(view.getActivity(), "Performance is updated.", Toast.LENGTH_SHORT).show();
+        }
+        // back to MyBuskingFragment
+        view.getFragmentManager().popBackStack();
+    }
+
     // validate if the user input is correct
     public boolean validInput() {
         // check on empty input
         if (getName() == null || getName().trim().matches("") || getDesc() == null || getDesc().trim().matches("") || getSelectedLat() == null || getSelectedLng() == null
-                || getSelectedDate() == null || getSelectedSTime() == null || getSelectedDuration() == 0) {
+                || getSelectedDate() == null || getSelectedSTime() == null || getSelectedDuration() == 0 || getSelectedAddress() == null) {
             // if there is empty input
             return false;
         } else {
             // if no empty input
             return true;
         }
+    }
+
+    public boolean validPerformanceClash() throws ParseException {
+        for (Performance performance: performanceListFromPreviousFragment) {
+            if (checkIfTimeIsInBetween(getSelectedDate(), getSelectedSTime(), getSelectedETime(),performance.getDate(), performance.getsTime(), performance.geteTime())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void setSelectedCategory(AdapterView<?> parent, int position) {

@@ -31,6 +31,7 @@ import static ambiesoft.start.model.utility.FirebaseUtility.deletePerformanceFro
 public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolderEditable> {
 
     public ArrayList performanceList;
+    public ArrayList performanceListForValidation;
     public Activity activity;
     public int previousFragmentID;
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
@@ -38,6 +39,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
     // Constructor
     public RecyclerViewEditableAdapter(ArrayList list, Activity activity, int previousFragmentID) {
         this.performanceList = list;
+        this.performanceListForValidation = new ArrayList<Performance>(this.performanceList);
         this.activity = activity;
         this.previousFragmentID = previousFragmentID;
         binderHelper.setOpenOnlyOne(true);
@@ -51,7 +53,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderEditable holder, int position) {
+    public void onBindViewHolder(ViewHolderEditable holder, final int position) {
         // check if there is performance result
         if (performanceList.size() != 0) {
             // if there is result
@@ -67,7 +69,8 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
                 @Override
                 public void onClick(View v) {
                     Log.i("System.out", "Edit is clicked, " + performance.getName());
-                    editPerformance(performance);
+                    performanceListForValidation.remove(position);
+                    editPerformance(performance, performanceListForValidation);
                 }
             });
 
@@ -129,13 +132,14 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
         holder.cardImg.setImageResource(imageID);
     }
 
-    public void editPerformance(Performance performance) {
+    public void editPerformance(Performance performance, ArrayList pList) {
         Fragment createPerformanceFragment = new CreatePerformanceFragment();
         // create bundle, add all performance information into it
         Bundle bundle = new Bundle();
         bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+        bundle.putParcelableArrayList("performanceListFromPreviousFragment", pList);
         createPerformanceFragment.setArguments(bundle);
-        // pass bundle to the new performanceDetailFragment
+        // pass bundle to the new createPerformanceFragment
         activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
     }
 

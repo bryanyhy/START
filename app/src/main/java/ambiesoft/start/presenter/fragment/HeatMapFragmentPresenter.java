@@ -1,6 +1,7 @@
 package ambiesoft.start.presenter.fragment;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Geocoder;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +42,7 @@ import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.PedCount;
 import ambiesoft.start.model.dataclass.PedSensor;
 import ambiesoft.start.view.activity.MainActivity;
+import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
@@ -349,5 +352,18 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void actionBarItemSelection(MenuItem item) {
+        int id = item.getItemId();
+        // if search button is clicked
+         if (id == R.id.action_info) {
+            showAlertBox("Info", "There are 2 methods on setting the performance location: \n" +
+                    "1. Type in and search the location address. \n" +
+                    "2. Drag and drop the blue marker on the map. \n" +
+                    "*Option 2 may not always work due to map server's busyness. \n\n" +
+                    "Heat map data is based on the average pedestrian count of past 52 weeks. \n" +
+                    "Access the preferred data by changing the day and time.", view.getActivity());
+        }
     }
 }

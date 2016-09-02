@@ -10,6 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +51,7 @@ public class HeatMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_heatmap, container, false);
+        setHasOptionsMenu(true);
         confirmButton = (Button) view.findViewById(R.id.confirmButton);
         daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
         timeSpinner = (Spinner) view.findViewById(R.id.timeSpinner);
@@ -124,6 +128,21 @@ public class HeatMapFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+    }
+
+    // setup the menu items on the top action bar
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.heat_map_fragment_menu, menu);
+    }
+
+    // action after menu item on top action bar is selected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        presenter.actionBarItemSelection(item);
+        return super.onOptionsItemSelected(item);
     }
 
 }

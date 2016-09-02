@@ -2,6 +2,8 @@ package ambiesoft.start.model.utility;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 import ambiesoft.start.model.dataclass.Artwork;
 import ambiesoft.start.model.dataclass.Performance;
 
@@ -106,6 +108,16 @@ public class BundleItemChecker {
         if (bundle.containsKey("lngFromPreviousFragment")) {
             // return the object from bundle
             return bundle.getDouble("lngFromPreviousFragment");
+        } else {
+            // return null if no object in bundle
+            return null;
+        }
+    }
+
+    public static ArrayList getPerformanceListFromBundle(Bundle bundle) {
+        if (bundle.containsKey("performanceListFromPreviousFragment")) {
+            // return the object from bundle
+            return bundle.getParcelableArrayList("performanceListFromPreviousFragment");
         } else {
             // return null if no object in bundle
             return null;
