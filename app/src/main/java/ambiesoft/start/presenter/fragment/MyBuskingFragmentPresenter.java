@@ -73,7 +73,7 @@ public class MyBuskingFragmentPresenter {
                 if (performances.size() != 0) {
                 } else {
                     // if no matching result is found from FirebaseUtility
-                    showAlertBox("Sorry", "There is no performance created by you yet.", (Activity) view.getContext());
+                    showAlertBox("Sorry", "There is no performance created yet.", (Activity) view.getContext());
                 }
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -112,6 +112,8 @@ public class MyBuskingFragmentPresenter {
         // if search button is clicked
         if (id == R.id.action_create_per) {
             view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new CreatePerformanceFragment()).addToBackStack(null).commit();
+        } else if (id == R.id.action_info) {
+            showAlertBox("Info", "Click on the icon on top right corner to create a performance. \n\nSwipe on the performance list item to edit or delete.", view.getActivity());
         }
     }
 

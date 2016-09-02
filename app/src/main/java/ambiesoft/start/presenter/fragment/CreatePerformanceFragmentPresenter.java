@@ -74,6 +74,8 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     private int selectedDuration;
     private Performance performanceFromPreviousFragment;
 
+    public CreatePerformanceFragmentPresenter() {    }
+
     public CreatePerformanceFragmentPresenter(CreatePerformanceFragment view) {
         this.view = view;
         selectedDuration = 0;
@@ -287,8 +289,8 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
     // validate if the user input is correct
     public boolean validInput() {
         // check on empty input
-        if (name.matches("") || desc.matches("") || selectedLat == null || selectedLng == null
-                || selectedDate == null || selectedSTime == null || selectedDuration == 0) {
+        if (getName() == null || getName().trim().matches("") || getDesc() == null || getDesc().trim().matches("") || getSelectedLat() == null || getSelectedLng() == null
+                || getSelectedDate() == null || getSelectedSTime() == null || getSelectedDuration() == 0) {
             // if there is empty input
             return false;
         } else {
@@ -337,6 +339,85 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
 
         selectedDuration = performanceFromPreviousFragment.getDuration();
         view.durationButton.setText(String.valueOf(selectedDuration));
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public void setSelectedCategory(String selectedCategory) {
+        this.selectedCategory = selectedCategory;
+    }
+
+    public String getSelectedAddress() {
+        return selectedAddress;
+    }
+
+    public void setSelectedAddress(String selectedAddress) {
+        this.selectedAddress = selectedAddress;
+    }
+
+    public Double getSelectedLat() {
+        return selectedLat;
+    }
+
+    public void setSelectedLat(Double selectedLat) {
+        this.selectedLat = selectedLat;
+    }
+
+    public Double getSelectedLng() {
+        return selectedLng;
+    }
+
+    public void setSelectedLng(Double selectedLng) {
+        this.selectedLng = selectedLng;
+    }
+
+    public String getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(String selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+
+    public String getSelectedSTime() {
+        return selectedSTime;
+    }
+
+    public void setSelectedSTime(String selectedSTime) {
+        this.selectedSTime = selectedSTime;
+    }
+
+    public String getSelectedETime() {
+        return selectedETime;
+    }
+
+    public void setSelectedETime(String selectedETime) {
+        this.selectedETime = selectedETime;
+    }
+
+    public int getSelectedDuration() {
+        return selectedDuration;
+    }
+
+    public void setSelectedDuration(int selectedDuration) {
+        this.selectedDuration = selectedDuration;
     }
 }

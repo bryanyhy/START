@@ -28,6 +28,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import ambiesoft.start.R;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Zelta on 31/08/16.
@@ -146,6 +148,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         if (email.trim().matches("") || password.trim().matches("")) {
             showAlertBox("Error", "Email or password cannot be empty.", this);
         } else {
+            showProgressDialog(LogOnActivity.this);
             mFirebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -160,6 +163,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                             } else {
                                 Toast.makeText(getApplicationContext(), "Normal Login Success.", Toast.LENGTH_LONG).show();
                             }
+                            dismissProgressDialog();
                         }
                     });
         }
@@ -167,6 +171,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void skipSignIn() {
         userType = NON_REG_USER;
+        showProgressDialog(LogOnActivity.this);
         mFirebaseAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -181,6 +186,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                         } else {
                             Toast.makeText(getApplicationContext(), "Anonymous Login Success.", Toast.LENGTH_LONG).show();
                         }
+                        dismissProgressDialog();
                     }
                 });
     }
@@ -226,6 +232,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         userType = REG_USER;
+        showProgressDialog(LogOnActivity.this);
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
@@ -242,6 +249,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                         } else {
                             Toast.makeText(getApplicationContext(), "Google Login Success.", Toast.LENGTH_LONG).show();
                         }
+                        dismissProgressDialog();
                     }
                 });
     }

@@ -19,6 +19,9 @@ import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
 
+import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
+
 /**
  * Created by Bryanyhy on 22/8/2016.
  */
@@ -49,23 +52,27 @@ public class MainActivityPresenter {
     public void checkMenuTabItemSelection(NavigationTabBar.Model model) {
         final String[] tabBarItemName = view.getResources().getStringArray(R.array.tab_bar_array);
 
-        if (model.getTitle().matches(tabBarItemName[0])) {
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
-        } else if (model.getTitle().matches(tabBarItemName[1])) {
+        if (isNetworkAvailable(view)) {
+            if (model.getTitle().matches(tabBarItemName[0])) {
+                view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            } else if (model.getTitle().matches(tabBarItemName[1])) {
 
 
-        } else if (model.getTitle().matches(tabBarItemName[2])) {
-            if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
-                view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
-                        .replace(R.id.content_frame, new MyBuskingFragment()).commit();
-            } else {
-                view.getFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, new MyBuskingFragment()).commit();
+            } else if (model.getTitle().matches(tabBarItemName[2])) {
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new MyBuskingFragment()).commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new MyBuskingFragment()).commit();
+                }
+            } else if (model.getTitle().matches(tabBarItemName[3])) {
+
+            } else if (model.getTitle().matches(tabBarItemName[4])) {
+
             }
-        } else if (model.getTitle().matches(tabBarItemName[3])) {
-
-        } else if (model.getTitle().matches(tabBarItemName[4])) {
-
+        } else {
+            showAlertBox("Alert", "There is no internet connection. All functions are disabled.", view);
         }
     }
 

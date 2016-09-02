@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import ambiesoft.start.R;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Zelta on 31/08/16.
@@ -113,6 +115,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             showAlertBox("Error", "Email or password cannot be empty.", this);
         } else {
             userType = REG_USER;
+            showProgressDialog(RegisterActivity.this);
             mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -125,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             } else {
                                 Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
                             }
+                            dismissProgressDialog();
                         }
                     });
         }
@@ -140,6 +144,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void skipSignIn() {
         userType = NON_REG_USER;
+        showProgressDialog(RegisterActivity.this);
         mFirebaseAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -154,6 +159,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         } else {
                             Toast.makeText(getApplicationContext(), "Anonymous Login Success.", Toast.LENGTH_LONG).show();
                         }
+                        dismissProgressDialog();
                     }
                 });
     }
