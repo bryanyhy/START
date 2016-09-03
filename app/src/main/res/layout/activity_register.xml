@@ -12,7 +12,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerEmailInput" />
+        android:id="@+id/registerEmailInput"
+        android:singleLine="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +24,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerPwdInput" />
+        android:id="@+id/registerPwdInput"
+        android:singleLine="true" />
 
     <Button
         android:layout_width="wrap_content"

@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Keywords"
+            android:text="Keywords in performance&apos;s name"
             android:id="@+id/textView5" />
 
         <EditText

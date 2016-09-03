@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLatFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLngFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
@@ -358,12 +360,14 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         int id = item.getItemId();
         // if search button is clicked
          if (id == R.id.action_info) {
-            showAlertBox("Info", "There are 2 methods on setting the performance location: \n" +
-                    "1. Type in and search the location address. \n" +
-                    "2. Drag and drop the blue marker on the map. \n" +
-                    "*Option 2 may not always work due to map server's busyness. \n\n" +
-                    "Heat map data is based on the average pedestrian count of past 52 weeks. \n" +
-                    "Access the preferred data by changing the day and time.", view.getActivity());
+             String title1 = "<b><u>Setting location</u></b>";
+             String title2 = "<b><u>Heat Map</u></b>";
+             showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>There are 2 methods on setting the performance location: <br>" +
+                     "1. Type in and search the location address. <br>" +
+                     "2. Drag and drop the blue marker on the map. <br>" +
+                     "*Option 2 may not always work due to map server's busyness. <br><br>" +
+                     title2 + "<br>Heat map data is based on the average pedestrian count of past 52 weeks. <br>" +
+                     "Access the preferred data by changing the day and time."), view.getActivity());
         }
     }
 }

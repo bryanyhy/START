@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -119,7 +121,10 @@ public class MyBuskingFragmentPresenter {
             // pass bundle to the new createPerformanceFragment
             view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
         } else if (id == R.id.action_info) {
-            showAlertBox("Info", "Click on the icon on top right corner to create a performance. \n\nSwipe on the performance list item to edit or delete.", view.getActivity());
+            String title1 = "<b><u>Create Performance</u></b>";
+            String title2 = "<b><u>Edit/Delete Performance</u></b>";
+            showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the icon on top right corner to create a performance. <br><br>" +
+                    title2 + "<br>Swipe on the performance list item to edit or delete."), view.getActivity());
         }
     }
 }

@@ -101,15 +101,16 @@ public class GoogleMapFragment extends Fragment {
                 }
             } else {
             }
-        }
-        // if search button is clicked
-        if (id == R.id.action_search) {
+        } else if (id == R.id.action_search) {
+            // if search button is clicked
             if (presenter.checkIfNetworkIsAvailable()) {
                 FrameLayout fl = (FrameLayout) getActivity().findViewById(R.id.content_frame_map);
                 fl.removeAllViews();
                 presenter.transactToFilterFragment();
             } else {
             }
+        } else if (id == R.id.action_info) {
+            presenter.showInfoBox();
         }
         return super.onOptionsItemSelected(item);
     }

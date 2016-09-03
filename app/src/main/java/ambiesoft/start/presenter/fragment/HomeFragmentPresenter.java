@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
@@ -238,6 +240,11 @@ public class HomeFragmentPresenter {
                 // pass the bundle to new FilterResultFragment
                 fm.beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
             }
+        } else if (id == R.id.action_info) {
+            String title1 = "<b><u>Performance Detail</u></b>";
+            String title2 = "<b><u>Filter Result</u></b>";
+            showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the performance list item for more detail. <br><br>" +
+                    title2 + "<br>Click on the icon on top right corner to filter the result."), view.getActivity());
         }
     }
 

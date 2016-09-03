@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -42,6 +45,7 @@ import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
@@ -452,6 +456,16 @@ public class GoogleMapFragmentPresenter implements OnMapReadyCallback, GoogleMap
         homeFragment.setArguments(bundle);
         // transact to homeFragment with bundle
         view.getFragmentManager().beginTransaction().remove(view).replace(R.id.content_frame, homeFragment).commit();
+    }
+
+    public void showInfoBox() {
+        String title1 = "<b><u>Performance Detail</u></b>";
+        String title2 = "<b><u>Filter Result</u></b>";
+        String title3 = "<b><u>Artworks</u></b>";
+        showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the marker and a info box will be popped out. Click on the info box for more performance's detail. <br><br>" +
+                title2 + "<br>Click on the filter icon on the upper toolbar to filter the result. <br><br>" +
+                title3 + "<br>Choose to show/hide artworks on map through the upper toolbar. <br>" +
+                "Click on the info box popped out from marker for artwork's detail."), view.getActivity());
     }
 
     public static GoogleMapFragment getCurrentGoogleMapFragment() {

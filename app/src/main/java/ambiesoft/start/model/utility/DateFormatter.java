@@ -98,6 +98,7 @@ public class DateFormatter {
         return sdf.format(calendar.getTime());
     }
 
+    // check if the input starting and ending time is same or in between the existing performance's time
     public static boolean checkIfTimeIsInBetween(String cDate, String csTime, String ceTime, String sDate, String sTime, String eTime) throws ParseException {
 
         // Check Start Time
@@ -125,34 +126,29 @@ public class DateFormatter {
         endCalendar.setTime(endTime);
 
         if (checkETime.compareTo(checkSTime) < 0) {
+            // add one more calendar date for the ending time we want to check
             checkECalendar.add(Calendar.DATE, 1);
             checkETime = checkECalendar.getTime();
-            Log.i("System.out", "Check End time changed to: " + endTime);
         }
 
         if (endTime.compareTo(startTime) < 0) {
+            // add one more calendar date for the existing performance's ending time
             endCalendar.add(Calendar.DATE, 1);
             endTime = endCalendar.getTime();
-            Log.i("System.out", "End time changed to: " + endTime);
         }
-
-        Log.i("System.out", "1. " + checkSTime);
-        Log.i("System.out", "2. " + checkETime);
-        Log.i("System.out", "3. " + startTime);
-        Log.i("System.out", "4. " + endTime);
 
         if (checkSTime.compareTo(startTime) == 0 || checkSTime.compareTo(endTime) == 0
                 || checkETime.compareTo(startTime) == 0 || checkETime.compareTo(endTime) == 0) {
-            Log.i("System.out", "Time is same");
+            // Time is same
             return true;
         } else if (checkSTime.before(startTime) && checkETime.before(startTime)) {
-            Log.i("System.out", "Both time is before starting time");
+            // Both time is before starting time
             return false;
         } else if (checkSTime.after(endTime) && checkETime.after(endTime)) {
-            Log.i("System.out", "Both time is after starting time");
+            // Both time is after starting time
             return false;
         } else {
-            Log.i("System.out", "Time is clashed");
+            // In all other case, time is clashed
             return true;
         }
     }

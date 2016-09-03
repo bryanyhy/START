@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static ambiesoft.start.model.utility.DateFormatter.checkIfTimeIsInBetween;
 import static ambiesoft.start.model.utility.DateFormatter.getEndingTimeForPerformance;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedDateWithLeadingZero;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLeadingZero;
@@ -79,5 +80,53 @@ public class DateFormatterTest {
         // First input parameter is starting time, second is the duration in minutes
         String actualOutput1 = getEndingTimeForPerformance("21:30", 95);
         assertEquals(expectedOutput1, actualOutput1);
+    }
+
+    // return false if the desired time is not in between or same as existing performance's time
+    @Test
+    public void testIfPerformanceTimeIsNotInBetweenShouldReturnFalse() throws ParseException {
+        // six parameters for input: date, start and end time we want to check, and date, start and end time on existing performance
+        // test on different date
+        boolean expectedOutput1 = checkIfTimeIsInBetween("03/09/2016", "17:00", "18:00", "04/09/2016", "17:00", "18:00");
+        boolean expectedOutput2 = checkIfTimeIsInBetween("03/09/2016", "17:00", "18:00", "02/09/2016", "17:00", "18:00");
+        // test on different time period
+        boolean expectedOutput3 = checkIfTimeIsInBetween("03/09/2016", "16:00", "16:59", "03/09/2016", "17:00", "18:00");
+        boolean expectedOutput4 = checkIfTimeIsInBetween("03/09/2016", "18:01", "19:00", "03/09/2016", "17:00", "18:00");
+        // test on date and time involving 2 dates
+        boolean expectedOutput5 = checkIfTimeIsInBetween("04/09/2016", "00:31", "00:40", "03/09/2016", "23:00", "00:30");
+        boolean expectedOutput6 = checkIfTimeIsInBetween("03/09/2016", "23:00", "00:30", "04/09/2016", "00:31", "00:40");
+        assertEquals(expectedOutput1, false);
+        assertEquals(expectedOutput2, false);
+        assertEquals(expectedOutput3, false);
+        assertEquals(expectedOutput4, false);
+        assertEquals(expectedOutput5, false);
+        assertEquals(expectedOutput6, false);
+    }
+
+    // return true if the desired time is in between or same as existing performance's time
+    @Test
+    public void testIfPerformanceTimeIsInBetweenShouldReturnTrue() throws ParseException {
+        // test on same starting or ending time
+        boolean expectedOutput1 = checkIfTimeIsInBetween("03/09/2016", "16:00", "16:59", "03/09/2016", "16:59", "18:00");
+        boolean expectedOutput2 = checkIfTimeIsInBetween("03/09/2016", "18:01", "19:00", "03/09/2016", "17:00", "18:01");
+        // test on time in between on same date
+        boolean expectedOutput3 = checkIfTimeIsInBetween("03/09/2016", "16:00", "16:59", "03/09/2016", "15:00", "17:00");
+        boolean expectedOutput4 = checkIfTimeIsInBetween("03/09/2016", "14:00", "15:30", "03/09/2016", "15:00", "17:00");
+        boolean expectedOutput5 = checkIfTimeIsInBetween("03/09/2016", "16:30", "17:30", "03/09/2016", "15:00", "17:00");
+        // test on date and time involving 2 dates, and having same starting or ending time
+        boolean expectedOutput6 = checkIfTimeIsInBetween("04/09/2016", "00:30", "00:40", "03/09/2016", "23:00", "00:30");
+        boolean expectedOutput7 = checkIfTimeIsInBetween("03/09/2016", "23:50", "00:50", "04/09/2016", "00:50", "01:00");
+        // test on date and time involving 2 dates, and is in between starting and ending time
+        boolean expectedOutput8 = checkIfTimeIsInBetween("04/09/2016", "00:30", "00:40", "03/09/2016", "23:00", "01:00");
+        boolean expectedOutput9 = checkIfTimeIsInBetween("03/09/2016", "23:50", "00:50", "03/09/2016", "23:00", "01:00");
+        assertEquals(expectedOutput1, true);
+        assertEquals(expectedOutput2, true);
+        assertEquals(expectedOutput3, true);
+        assertEquals(expectedOutput4, true);
+        assertEquals(expectedOutput5, true);
+        assertEquals(expectedOutput6, true);
+        assertEquals(expectedOutput7, true);
+        assertEquals(expectedOutput8, true);
+        assertEquals(expectedOutput9, true);
     }
 }
