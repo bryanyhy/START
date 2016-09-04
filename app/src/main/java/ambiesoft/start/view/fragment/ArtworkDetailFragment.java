@@ -31,7 +31,7 @@ public class ArtworkDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_artwork_detail, container, false);
-        nameText = (TextView) view.findViewById(R.id.nameText);
+        nameText = (TextView) view.findViewById(R.id.nameInput);
         assetText = (TextView) view.findViewById(R.id.assetText);
         creatorText = (TextView) view.findViewById(R.id.creatorText);
         yearText = (TextView) view.findViewById(R.id.yearText);

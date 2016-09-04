@@ -1,16 +1,32 @@
 package ambiesoft.start.model.utility;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
+import ambiesoft.start.view.activity.RegisterActivity;
+
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 
 /**
  * Created by Bryanyhy on 15/8/2016.
@@ -22,7 +38,7 @@ public class FirebaseUtility {
     private static final String REF_LINK = "https://start-c9adf.firebaseio.com/";
 
     private static ArrayList<Performance> tempPerformanceList;
-    private static ArrayList<Performance> buskerPerformanceList;
+    private static ArrayList<User> tempUserList;
 
     // setup the FirebaseUtility, necessary before calling other function on FirebaseUtility
     public static void setupFirebase(Context context) {
@@ -85,4 +101,64 @@ public class FirebaseUtility {
         return tempPerformanceList;
     }
 
+    public static void saveUser(User user) {
+        // create a firebase reference
+        com.firebase.client.Firebase ref = new com.firebase.client.Firebase(REF_LINK);
+        // the child of the root is performance
+        com.firebase.client.Firebase userRef = ref.child("user");
+        userRef.push().setValue(user);
+    }
+
+    // upload the portrait onto Firebase storage
+    public static void uploadUserPortrait(Uri uri, String emailInput, final Activity activity) {
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference userImagePortraitStorage = mStorage.child(emailInput).child("image").child("portrait");
+        userImagePortraitStorage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(activity, "Image upload done.", Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(activity, "Image upload fail.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public static void setUserPortraitUri(String email, final Context context, final ImageView imageView) {
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference userImagePortraitStorage = mStorage.child(email).child("image").child("portrait");
+        userImagePortraitStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for Firebase
+                Picasso.with(context).load(uri).into(imageView);
+                Log.i("System.out", "Can get image");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Picasso.with(context).load(R.drawable.portrait_thumb).into(imageView);
+                Log.i("System.out", "Can't get image");
+            }
+        });
+    }
+
+    // get all the performance result that match a specific date, create Performance object accordingly and add them to ArrayList
+    public static ArrayList<User> getUserListFromFirebase (DataSnapshot ds) {
+        // initialize performance ArrayList
+        tempUserList = new ArrayList<>();
+        // get all performance detail and save them into Performance ArrayList as Performance Object
+        for (DataSnapshot dataSnapshot : ds.getChildren()) {
+            String username = dataSnapshot.child("username").getValue().toString();
+            String email = dataSnapshot.child("email").getValue().toString();
+            User user;
+            user = new User(email, username);
+            tempUserList.add(user);
+        }
+        // return the ArrayList
+        return tempUserList;
+    }
 }

@@ -2,6 +2,7 @@ package ambiesoft.start.model.utility;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 
 import static ambiesoft.start.model.utility.FirebaseUtility.deletePerformanceFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.setUserPortraitUri;
 
 /**
  * Created by Bryanyhy on 31/8/2016.
@@ -35,6 +37,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
     public Activity activity;
     public int previousFragmentID;
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
+    public Context context;
 
     // Constructor
     public RecyclerViewEditableAdapter(ArrayList list, Activity activity, int previousFragmentID) {
@@ -49,6 +52,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
     public ViewHolderEditable onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout_editable, parent, false);
         ViewHolderEditable holder = new ViewHolderEditable(v);
+        context = parent.getContext();
         return holder;
     }
 
@@ -59,6 +63,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
             // if there is result
             // populate the current row with performance's data, on the RecyclerView as a cardview
             final Performance performance = (Performance) performanceList.get(position);
+            setUserPortraitUri(performance.getEmail(), context, holder.portrait);
             holder.name.setText(performance.getName());
             holder.category.setText(performance.getCategory());
             holder.date.setText(performance.getDate());
