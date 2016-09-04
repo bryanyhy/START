@@ -1,11 +1,25 @@
 package ambiesoft.start.presenter.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
@@ -18,13 +32,22 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFr
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
+import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
+import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.getUserListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.setUserPortraitUri;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 
 /**
  * Created by Bryanyhy on 23/8/2016.
  */
 public class PerformanceDetailFragmentPresenter {
 
+    private final static String DB_URL = "https://start-c9adf.firebaseio.com/user";
+
     private PerformanceDetailFragment view;
+    private Firebase firebase;
+    private ArrayList<User> users;
 
     private Performance selectedPerformance;
     private int previousFragmentID;
@@ -55,6 +78,8 @@ public class PerformanceDetailFragmentPresenter {
             view.timeText.setText(selectedPerformance.getsTime() + " - " + selectedPerformance.geteTime());
             view.descText.setText(selectedPerformance.getDesc());
             view.locText.setText(selectedPerformance.getAddress());
+            setUserPortraitUri(selectedPerformance.getEmail(), view.getContext(), view.portrait);
+            setFireBaseListenerOnUser();
         }
     }
 
@@ -91,5 +116,35 @@ public class PerformanceDetailFragmentPresenter {
             // show alertbox if the previous fragment ID is not valid
             showAlertBox("Error", "Unexpected error occurs. Please restart the app.", view.getActivity());
         }
+    }
+
+    // set the FirebaseUtility data listener, and update the data retrieved in the application
+    public void setFireBaseListenerOnUser() {
+        //establish connection to firebase
+        firebase = new Firebase(DB_URL);
+        // get data that match the specific email from Firebase
+        Query queryRef = firebase.orderByChild("email").equalTo(selectedPerformance.getEmail());
+        // value event listener that is triggered everytime data in Firebase's Performance root is updated
+        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the FirebaseUtility
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
+                Log.i("System.out", "Firebase has update");
+                // initialize performance ArrayList
+                users = new ArrayList<>();
+                // get all performance detail and save them into Performance ArrayList as Performance Object
+                users = getUserListFromFirebase(ds);
+                // check if any matching result is retrieved
+                if (users.size() != 0) {
+                    view.buskerName.setText(users.get(0).getUsername());
+                } else {
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

@@ -56,8 +56,7 @@ public class MainActivityPresenter {
             if (model.getTitle().matches(tabBarItemName[0])) {
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
             } else if (model.getTitle().matches(tabBarItemName[1])) {
-
-
+                showAlertBox("Sorry", "Functions will be added in next version.", view);
             } else if (model.getTitle().matches(tabBarItemName[2])) {
                 if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                     view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
@@ -67,9 +66,9 @@ public class MainActivityPresenter {
                             .replace(R.id.content_frame, new MyBuskingFragment()).commit();
                 }
             } else if (model.getTitle().matches(tabBarItemName[3])) {
-
+                showAlertBox("Sorry", "Functions will be added in next version.", view);
             } else if (model.getTitle().matches(tabBarItemName[4])) {
-
+                showAlertBox("Sorry", "Functions will be added in next version.", view);
             }
         } else {
             showAlertBox("Alert", "There is no internet connection. All functions are disabled.", view);

@@ -2,6 +2,7 @@ package ambiesoft.start.model.utility;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -16,12 +17,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
+
+import static ambiesoft.start.model.utility.FirebaseUtility.setUserPortraitUri;
 
 /**
  * Created by Bryanyhy on 17/8/2016.
@@ -32,6 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ArrayList performanceList;
     public Activity activity;
     public int previousFragmentID;
+    public Context context;
 
     // Constructor
     public RecyclerViewAdapter(ArrayList list, Activity activity, int previousFragmentID) {
@@ -45,21 +53,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         //Inflate the layout, initialize the View Holder
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout, parent, false);
         ViewHolder holder = new ViewHolder(v);
+        context = parent.getContext();
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // check if there is performance result
         if (performanceList.size() != 0) {
             // if there is result
             // populate the current row with performance's data, on the RecyclerView as a cardview
             final Performance performance = (Performance) performanceList.get(position);
+            setUserPortraitUri(performance.getEmail(), context, holder.portrait);
             holder.name.setText(performance.getName());
             holder.category.setText(performance.getCategory());
             holder.date.setText(performance.getDate());
             holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
-//            holder.cardImg.setImageIcon(holder, performance.getCategory());
             setCardIcon(holder, performance.getCategory());
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override

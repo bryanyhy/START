@@ -142,10 +142,10 @@ public class HomeFragmentPresenter {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
 
-        // get data that match the specific date from FirebaseUtility
+        // get data that match the specific date from Firebase
         Query queryRef = firebase.orderByChild("date").equalTo(selectedDate);
-        // value event listener that is triggered everytime data in FirebaseUtility's Performance root is updated
-        // Retrieve all performance's attributes from each post on FirebaseUtility, when any data is updated in the FirebaseUtility
+        // value event listener that is triggered everytime data in Firebase's Performance root is updated
+        // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the FirebaseUtility
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
@@ -202,7 +202,7 @@ public class HomeFragmentPresenter {
 //                dismissProgressDialog();
             }
 
-            // Handle FirebaseUtility error
+            // Handle Firebase error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(view.getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);
@@ -219,6 +219,14 @@ public class HomeFragmentPresenter {
         view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity(), HOME_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+//        Handler handler = new Handler();
+//        final Runnable r = new Runnable() {
+//            public void run() {
+//                Log.i("System.out","Adapter 2 updated.");
+//                view.adapter.notifyDataSetChanged();
+//            }
+//        };
+//        handler.post(r);
     }
 
     public void actionBarItemSelection(MenuItem item) {

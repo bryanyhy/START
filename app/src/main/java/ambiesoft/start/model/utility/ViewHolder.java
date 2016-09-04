@@ -20,6 +20,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public TextView time;
     public ImageView cardImg;
+    public ImageView portrait;
 
     public ViewHolder(View itemView) {
         super(itemView);
@@ -29,5 +30,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         date = (TextView) itemView.findViewById(R.id.dateView);
         time = (TextView) itemView.findViewById(R.id.timeView);
         cardImg = (ImageView) itemView.findViewById(R.id.cardImg);
+        portrait = (ImageView) itemView.findViewById(R.id.portrait);
     }
 }

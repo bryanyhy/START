@@ -3,6 +3,7 @@ package ambiesoft.start.view.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,6 +77,14 @@ public class HomeFragment extends Fragment {
         adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), HOME_FRAGMENT_ID);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        Handler handler = new Handler();
+//        final Runnable r = new Runnable() {
+//            public void run() {
+//                Log.i("System.out","Adapter 1 updated.");
+//                adapter.notifyDataSetChanged();
+//            }
+//        };
+//        handler.post(r);
     }
 
     // setup the menu items on the top action bar

@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ambiesoft.start.R;
@@ -24,24 +25,28 @@ public class PerformanceDetailFragment extends Fragment {
     private PerformanceDetailFragmentPresenter presenter;
 
     public TextView nameText;
+    public TextView buskerName;
     public TextView categoryText;
     public TextView dateText;
     public TextView timeText;
     public TextView descText;
     public TextView locText;
     private Button backButton;
+    public ImageView portrait;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_performance_detail, container, false);
-        nameText = (TextView) view.findViewById(R.id.nameText);
+        nameText = (TextView) view.findViewById(R.id.nameInput);
+        buskerName = (TextView) view.findViewById(R.id.buskerName);
         categoryText = (TextView) view.findViewById(R.id.categoryText);
         dateText = (TextView) view.findViewById(R.id.dateText);
         timeText = (TextView) view.findViewById(R.id.timeText);
         descText = (TextView) view.findViewById(R.id.descText);
         locText = (TextView) view.findViewById(R.id.locText);
+        portrait = (ImageView) view.findViewById(R.id.portrait);
         backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

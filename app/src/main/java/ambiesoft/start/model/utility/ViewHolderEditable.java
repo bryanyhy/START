@@ -29,6 +29,7 @@ public class ViewHolderEditable extends RecyclerView.ViewHolder {
     public LinearLayout deleteLayout;
     public TextView editPer;
     public TextView deletePer;
+    public ImageView portrait;
 
     public ViewHolderEditable(View itemView) {
         super(itemView);
@@ -42,5 +43,6 @@ public class ViewHolderEditable extends RecyclerView.ViewHolder {
         deleteLayout = (LinearLayout) itemView.findViewById(R.id.delete_layout);
         editPer = (TextView) itemView.findViewById(R.id.editPer);
         deletePer = (TextView) itemView.findViewById(R.id.deletePer);
+        portrait = (ImageView) itemView.findViewById(R.id.portrait);
     }
 }
