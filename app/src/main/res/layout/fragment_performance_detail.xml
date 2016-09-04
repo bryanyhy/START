@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="210dp"
             android:id="@+id/imageView9"
-            android:background="@drawable/ic_card_conjuring"/>
+            android:background="@drawable/bg_banner"/>
 
         <!--TODO:get busker info-->
 

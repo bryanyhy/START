@@ -33,7 +33,8 @@
 
         </activity>
 
-        <activity android:name=".view.activity.LogOnActivity" />
+        <activity android:name=".view.activity.LogOnActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".view.activity.RegisterActivity" />
 

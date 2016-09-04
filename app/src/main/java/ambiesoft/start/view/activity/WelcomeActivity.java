@@ -22,7 +22,7 @@ public class WelcomeActivity extends Activity {
 
     private Handler handler;
 
-    private long delay = 5000;
+    private long delay = 3000;
     private int i = 0;
 
     // Firebase instance variables

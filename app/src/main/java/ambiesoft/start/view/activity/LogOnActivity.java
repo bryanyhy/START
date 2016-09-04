@@ -1,20 +1,25 @@
 package ambiesoft.start.view.activity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.proxy.ProxyApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +31,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import ambiesoft.start.R;
+import ambiesoft.start.model.utility.MovingImageView;
+import ambiesoft.start.model.utility.ProgressGenerator;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
@@ -35,13 +42,12 @@ import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
 /**
  * Created by Zelta on 31/08/16.
  */
-public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, ProgressGenerator.OnCompleteListener {
 
     private static final String TAG = "LogOnActivity";
     private static final int RC_SIGN_IN = 9001;
     private static final int NON_REG_USER = 0;
     private static final int REG_USER = 1;
-
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -65,7 +71,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         tvRegister = (TextView) findViewById(R.id.tvTurnToRegister);
         tvSkip = (TextView) findViewById(R.id.tvLoginSkip);
         tvRegister = (TextView) findViewById(R.id.tvTurnToRegister);
-        normalSignInButton = (Button) findViewById(R.id.normalSignInButton);
+//        normalSignInButton = (Button) findViewById(R.id.normalSignInButton);
         googleSignInButton = (Button) findViewById(R.id.googleSignInButton);
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +90,23 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        normalSignInButton.setOnClickListener(new View.OnClickListener() {
+        //Use PorgressGenerator and android process generator library
+        //Initial login button
+        final ProgressGenerator progressGenerator = new ProgressGenerator(this);
+        final ActionProcessButton normalSignInButtonAction = (ActionProcessButton) findViewById(R.id.normalSignInButton);
+
+        //Set process model as endless modle
+        normalSignInButtonAction.setMode(ActionProcessButton.Mode.ENDLESS);
+
+        normalSignInButtonAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideSoftKeyboard(LogOnActivity.this);
+
+                //When auth success, start progress bar with sign in button
+
+                progressGenerator.start(normalSignInButtonAction);
+                normalSignInButtonAction.setEnabled(true);
                 normalSignIn(etEmail.getText().toString(),etPwd.getText().toString());
             }
         });
@@ -131,6 +150,8 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         };
         // For passing bundle from activity to activity
         intent = new Intent(LogOnActivity.this, MainActivity.class);
+
+
     }
 
     @Override
@@ -167,6 +188,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                                 Toast.makeText(LogOnActivity.this, "Normal Login failed.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Normal Login Success.", Toast.LENGTH_LONG).show();
+
                             }
                             dismissProgressDialog();
                         }
@@ -266,6 +288,8 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+    @Override
+    public void onComplete() {
 
-
+    }
 }

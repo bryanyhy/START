@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:background="@drawable/ic_card_conjuring"
+                android:background="@drawable/bg_banner"
 
                 android:tint="#9f90af"
                 android:padding="32dp"

@@ -1,55 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Email"
-        android:id="@+id/textView2" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="250dp"
+        app:mtf_cardCollapsedHeight="4dp"
+        app:mtf_image="@drawable/ic_mail"
+        >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginEmail"
-        android:singleLine="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:singleLine="true"
+            android:textColor="@color/theme1"
+            android:textColorHint="@color/buttonText"
+            android:textSize="15sp"
+            android:id="@+id/loginEmail"
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Password"
-        android:id="@+id/textView3" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="10dp"
+        app:mtf_cardCollapsedHeight="4dp"
+        app:mtf_image="@drawable/ic_pwd"
+        >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginPwd"
-        android:singleLine="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:singleLine="true"
+            android:textColor="@color/theme1"
+            android:textColorHint="@color/buttonText"
+            android:textSize="15sp"
+            android:id="@+id/loginPwd"
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="300dp"-->
+        <!--android:text="Email"-->
+        <!--android:id="@+id/textView2"-->
+        <!--/>-->
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/loginEmail"-->
+        <!--android:singleLine="true" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Password"-->
+        <!--android:id="@+id/textView3" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/loginPwd"-->
+        <!--android:singleLine="true" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Sign In"-->
+        <!--android:id="@+id/normalSignInButton" />-->
+
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/normalSignInButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
         android:text="Sign In"
-        android:id="@+id/normalSignInButton" />
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        custom:pb_colorComplete="@color/green_complete"
+        custom:pb_colorNormal="@color/blue_normal"
+        custom:pb_colorPressed="@color/blue_pressed"
+        custom:pb_colorProgress="@color/purple_progress"
+        custom:pb_textComplete="@string/Success"
+        custom:pb_textProgress="@string/Loading" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Google Sign in"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/logingoogle"
         android:id="@+id/googleSignInButton"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/tvTurnToRegister" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skip"
-        android:id="@+id/tvLoginSkip" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Register"
+            android:textColor="@color/buttonText"
+            android:id="@+id/tvTurnToRegister"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Skip as normal user"
+            android:textColor="@color/buttonText"
+            android:id="@+id/tvLoginSkip"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
 
 </LinearLayout>
