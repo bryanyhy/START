@@ -28,6 +28,7 @@ public class PerformanceDetailFragment extends Fragment {
     public TextView dateText;
     public TextView timeText;
     public TextView descText;
+    public TextView locText;
     private Button backButton;
 
     @Override
@@ -40,6 +41,7 @@ public class PerformanceDetailFragment extends Fragment {
         dateText = (TextView) view.findViewById(R.id.dateText);
         timeText = (TextView) view.findViewById(R.id.timeText);
         descText = (TextView) view.findViewById(R.id.descText);
+        locText = (TextView) view.findViewById(R.id.locText);
         backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

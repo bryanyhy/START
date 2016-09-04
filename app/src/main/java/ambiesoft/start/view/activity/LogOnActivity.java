@@ -30,6 +30,7 @@ import ambiesoft.start.R;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
+import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
 
 /**
  * Created by Zelta on 31/08/16.
@@ -70,6 +71,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(LogOnActivity.this);
                 startActivity(new Intent(LogOnActivity.this, RegisterActivity.class));
             }
         });
@@ -77,6 +79,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(LogOnActivity.this);
                 skipSignIn();
             }
         });
@@ -84,6 +87,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         normalSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(LogOnActivity.this);
                 normalSignIn(etEmail.getText().toString(),etPwd.getText().toString());
             }
         });
@@ -91,6 +95,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(LogOnActivity.this);
                 googleSignIn();
             }
         });

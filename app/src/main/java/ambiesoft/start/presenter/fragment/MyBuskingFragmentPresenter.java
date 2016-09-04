@@ -33,8 +33,10 @@ import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Bryanyhy on 30/8/2016.
@@ -52,7 +54,25 @@ public class MyBuskingFragmentPresenter {
         this.view = view;
         // initialize performance ArrayList
         performances = new ArrayList<>();
-        setFireBaseListener();
+        ((MainActivity) view.getActivity()).getNavigationTabBar().show();
+        checkNetworkAvailability();
+    }
+
+    public void checkNetworkAvailability() {
+        // check if there is network connection
+        if (isNetworkAvailable(view.getContext()) == false) {
+            // if no network is detected, dismiss the progress dialog and show alertbox to user
+            dismissProgressDialog();
+            showAlertBox("Alert", "There is no internet connection. All functions are disabled.", view.getActivity());
+        } else {
+            // if network is available
+            // show the loading progress dialog, when retrieving data from Firebase
+            showProgressDialog(view.getContext());
+            // setup the firebase
+            setupFirebase(view.getContext());
+            // set the FirebaseUtility data listener, and get the performance data
+            setFireBaseListener();
+        }
     }
 
     // set the FirebaseUtility data listener, and update the data retrieved in the application

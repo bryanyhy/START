@@ -23,6 +23,8 @@ import ambiesoft.start.R;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.presenter.fragment.FilterResultFragmentPresenter;
 
+import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
+
 /**
  * Class for filtering performance result
  */
@@ -69,6 +71,7 @@ public class FilterResultFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 try {
+                    hideSoftKeyboard(getActivity());
                     presenter.submit();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -80,6 +83,7 @@ public class FilterResultFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 try {
+                    hideSoftKeyboard(getActivity());
                     presenter.chooseDate();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -90,6 +94,7 @@ public class FilterResultFragment extends Fragment {
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                hideSoftKeyboard(getActivity());
                 presenter.chooseTime();
             }
         });

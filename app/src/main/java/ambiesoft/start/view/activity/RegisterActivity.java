@@ -28,6 +28,7 @@ import ambiesoft.start.R;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
+import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
 
 /**
  * Created by Zelta on 31/08/16.
@@ -61,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(RegisterActivity.this);
                 skipSignIn();
             }
         });
@@ -68,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         tvLogon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(RegisterActivity.this);
                 startActivity(new Intent(RegisterActivity.this, LogOnActivity.class));
             }
         });
@@ -138,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public  void onClick(View view) {
         switch (view.getId()) {
             case R.id.registerButton:
+                hideSoftKeyboard(RegisterActivity.this);
                 createAccount(etEmail.getText().toString(),etPwd.getText().toString());
         }
     }

@@ -1,6 +1,7 @@
 package ambiesoft.start.view.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,7 +49,6 @@ public class CreatePerformanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_performance, container, false);
         nameInput = (EditText) view.findViewById(R.id.nameInput);
-        hideSoftKeyboard(getActivity(), nameInput.getWindowToken());
         descInput = (EditText) view.findViewById(R.id.descInput);
         categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
         createButton = (Button) view.findViewById(R.id.createButton);
@@ -87,6 +88,7 @@ public class CreatePerformanceFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 try {
+                    hideSoftKeyboard(getActivity());
                     presenter.submit();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -96,6 +98,7 @@ public class CreatePerformanceFragment extends Fragment {
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                hideSoftKeyboard(getActivity());
                 presenter.chooseLocation();
             }
         });
@@ -103,6 +106,7 @@ public class CreatePerformanceFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 try {
+                    hideSoftKeyboard(getActivity());
                     presenter.chooseDate();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -112,12 +116,14 @@ public class CreatePerformanceFragment extends Fragment {
         sTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                hideSoftKeyboard(getActivity());
                 presenter.chooseStartTime();
             }
         });
         durationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                hideSoftKeyboard(getActivity());
                 presenter.chooseDuration();
             }
         });

@@ -1,6 +1,7 @@
 package ambiesoft.start.view.activity;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -10,6 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -27,7 +31,7 @@ import ambiesoft.start.view.fragment.HeatMapFragment;
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
  */
-public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener {
+public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener, View.OnTouchListener {
 
     private static final int NON_REG_USER = 0;
     private static final int REG_USER = 1;
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        // disable the screen orientation sensor, so the whole activity will be in Portrait mode
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -75,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
 
         abl = (AppBarLayout) findViewById(R.id.appbar);
         nsv = (NestedScrollView) findViewById(R.id.content_frame);
+        // set on click listener for hiding soft keyboard
+        nsv.setOnTouchListener(this);
         fl = (FrameLayout) findViewById(R.id.content_frame_map);
         // collapsing toolbar setting
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -82,8 +91,14 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         collapsingToolbar.setCollapsedTitleTextColor(Color.parseColor("#9f90af"));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // default selection on the NTB, once application starts
-        navigationTabBar.setModelIndex(0, true);
+        if (userType == NON_REG_USER) {
+            // default selection on the NTB, once application starts
+            navigationTabBar.setModelIndex(0, true);
+        } else if (userType == REG_USER) {
+            // default selection on the NTB, once application starts
+            navigationTabBar.setModelIndex(2, true);
+        } else {
+        }
     }
 
     @Override
@@ -232,4 +247,12 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         }
     }
 
+    // hide soft keyboard when clicking blank space
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow((null == getCurrentFocus()) ?
+                null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        return false;
+    }
 }

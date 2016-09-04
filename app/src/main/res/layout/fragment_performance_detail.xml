@@ -131,9 +131,25 @@
                 android:id="@+id/descText" />
         </TableRow>
 
-        <!--TODO:duration-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-        <!--TODO:location-->
+            <!--TODO:location image-->
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/locImg"
+                android:background="@drawable/ic_create_des"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/locText" />
+        </TableRow>
+
+        <!--TODO:duration-->
 
         <Button
             android:layout_width="match_parent"

@@ -54,6 +54,7 @@ public class PerformanceDetailFragmentPresenter {
             view.dateText.setText(selectedPerformance.getDate());
             view.timeText.setText(selectedPerformance.getsTime() + " - " + selectedPerformance.geteTime());
             view.descText.setText(selectedPerformance.getDesc());
+            view.locText.setText(selectedPerformance.getAddress());
         }
     }
 

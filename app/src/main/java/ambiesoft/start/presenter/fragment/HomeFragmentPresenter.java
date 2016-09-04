@@ -70,8 +70,6 @@ public class HomeFragmentPresenter {
     private String filterCategory;
     private String filterTime;
 
-
-
     public HomeFragmentPresenter(HomeFragment view, FloatingActionButton fab) {
         this.view = view;
         this.fm = view.getActivity().getFragmentManager();
@@ -80,6 +78,7 @@ public class HomeFragmentPresenter {
         performances = new ArrayList<>();
         filteredPerformances = new ArrayList<>();
         setFloatingActionButton();
+        ((MainActivity) view.getActivity()).getNavigationTabBar().show();
     }
 
     public void setFloatingActionButton() {
