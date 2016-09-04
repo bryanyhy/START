@@ -43,6 +43,10 @@ dependencies {
     compile ('com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0') {
         exclude module: 'support-v4';
     }
+
+    compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+
+    compile 'com.github.florent37:materialtextfield:1.0.5'
     compile 'com.google.firebase:firebase-auth:9.4.0'
 }
 
