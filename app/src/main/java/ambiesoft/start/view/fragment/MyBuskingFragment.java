@@ -1,6 +1,7 @@
 package ambiesoft.start.view.fragment;
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,7 @@ public class MyBuskingFragment extends Fragment {
 
     public RecyclerView recyclerView;
     public RecyclerViewEditableAdapter adapter;
+    public ImageButton createNew, heatMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +48,9 @@ public class MyBuskingFragment extends Fragment {
         setHasOptionsMenu(true);
         // recycleView to hold all the cardview
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        createNew = (ImageButton) view.findViewById(R.id.createNewButton);
+        heatMap = (ImageButton) view.findViewById(R.id.heatMapButton);
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -60,6 +67,13 @@ public class MyBuskingFragment extends Fragment {
         } else {
             presenter.setRecyclerViewEditableAdapter();
         }
+        createNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.imageButtonSelection(createNew);
+
+            }
+        });
     }
 
     // for setting the recycler view adapter

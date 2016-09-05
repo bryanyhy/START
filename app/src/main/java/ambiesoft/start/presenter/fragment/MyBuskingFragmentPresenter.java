@@ -2,6 +2,7 @@ package ambiesoft.start.presenter.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -48,10 +50,12 @@ public class MyBuskingFragmentPresenter {
 
     private MyBuskingFragment view;
     private ArrayList<Performance> performances;
+    private FragmentManager fm;
     private Firebase firebase;
 
     public MyBuskingFragmentPresenter(MyBuskingFragment view) {
         this.view = view;
+        this.fm = view.getActivity().getFragmentManager();
         // initialize performance ArrayList
         performances = new ArrayList<>();
         ((MainActivity) view.getActivity()).getNavigationTabBar().show();
@@ -127,6 +131,20 @@ public class MyBuskingFragmentPresenter {
         view.adapter = new RecyclerViewEditableAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+    }
+
+    public void imageButtonSelection(ImageButton imageButton){
+        int id = imageButton.getId();
+
+        if (id == R.id.createNewButton) {
+            Fragment createPerformanceFragment = new CreatePerformanceFragment();
+            // create bundle, add all performance information into it
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("performanceListFromPreviousFragment", performances);
+            createPerformanceFragment.setArguments(bundle);
+            // pass bundle to the new createPerformanceFragment
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+        }
     }
 
     public void actionBarItemSelection(MenuItem item) {

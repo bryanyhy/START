@@ -250,7 +250,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_MEDIA);
         } else {
             imageButton.setEnabled(true);
-            imageButton.setText("Select Image");
+
         }
     }
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragment.PerformanceDetailFragment"
-    android:padding="15dp">
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,145 +21,153 @@
 
         <!--TODO:get busker info-->
 
-        <TableRow
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="15dp">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/detailImg1"
-                android:background="@drawable/ic_create_name"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:id="@+id/nameInput"
-                android:layout_below="@+id/textView10"
-                android:layout_alignParentStart="true"
-                android:textSize="30dp" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/detailImg1"
+                    android:background="@drawable/ic_create_name"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:id="@+id/nameInput"
+                    android:layout_below="@+id/textView10"
+                    android:layout_alignParentStart="true"
+                    android:textSize="30dp" />
+            </TableRow>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/portrait" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Busker Name"
-                android:id="@+id/buskerName"
-                android:layout_below="@+id/textView10"
-                android:layout_alignParentStart="true"
-                android:textSize="30dp" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/portrait" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Busker Name"
+                    android:id="@+id/buskerName"
+                    android:layout_below="@+id/textView10"
+                    android:layout_alignParentStart="true"
+                    android:textSize="30dp" />
+            </TableRow>
 
-            <!--TODO:different cat-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/detailImg2"
-                android:background="@drawable/ic_create_category"/>
+                <!--TODO:different cat-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/categoryText" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/detailImg2"
+                    android:background="@drawable/ic_create_category"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/categoryText" />
+            </TableRow>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/detailImg3"
-                android:background="@drawable/ic_create_date"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/dateText" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/detailImg3"
+                    android:background="@drawable/ic_create_date"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/dateText" />
+            </TableRow>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/detailImg4"
-                android:background="@drawable/ic_create_time"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/timeText" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/detailImg4"
+                    android:background="@drawable/ic_create_time"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/timeText" />
+            </TableRow>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/detailImg5"
-                android:background="@drawable/ic_create_des"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/descText" />
-        </TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/detailImg5"
+                    android:background="@drawable/ic_create_des"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/descText" />
+            </TableRow>
 
-            <!--TODO:location image-->
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/locImg"
-                android:background="@drawable/ic_create_des"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/locText" />
-        </TableRow>
+                <!--TODO:location image-->
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/locImg"
+                    android:background="@drawable/ic_create_location"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/locText" />
+            </TableRow>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Back"
+                android:id="@+id/backButton"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme1"/>
+        </LinearLayout>
 
         <!--TODO:duration-->
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Back"
-            android:id="@+id/backButton"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/buttonText"
-            android:background="@color/theme1"/>
 
     </LinearLayout>
 

@@ -12,6 +12,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -52,6 +53,8 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:9.4.0'
     compile 'com.google.firebase:firebase-database:9.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'com.android.support:multidex:1.0.0'
 }
 
 

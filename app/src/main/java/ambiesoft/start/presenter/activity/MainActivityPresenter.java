@@ -17,6 +17,7 @@ import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
+import ambiesoft.start.view.fragment.MoreFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
@@ -68,7 +69,9 @@ public class MainActivityPresenter {
             } else if (model.getTitle().matches(tabBarItemName[3])) {
                 showAlertBox("Sorry", "Functions will be added in next version.", view);
             } else if (model.getTitle().matches(tabBarItemName[4])) {
-                showAlertBox("Sorry", "Functions will be added in next version.", view);
+//                showAlertBox("Sorry", "Functions will be added in next version.", view);
+                view.getFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, new MoreFragment()).commit();
             }
         } else {
             showAlertBox("Alert", "There is no internet connection. All functions are disabled.", view);
