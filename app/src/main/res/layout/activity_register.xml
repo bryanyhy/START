@@ -1,78 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        android:id="@+id/textView7" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerEmailInput"
-        android:singleLine="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:id="@+id/textView8" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerPwdInput"
-        android:singleLine="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Display Name"
-        android:id="@+id/textView6" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/nameInput"
-        android:singleLine="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Portfolio Picture"
-        android:id="@+id/textView4" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select Image"
-        android:id="@+id/imageButton" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/portraitView"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/registerButton" />
+        android:layout_height="200dp"
+        android:id="@+id/imageView10"
+        android:background="@drawable/register_banner"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Already Have account"
-        android:id="@+id/tvTurnToLogOn" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skip"
-        android:id="@+id/tvRegisterSkip" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent">
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="5dp"
+                app:mtf_labelColor="@color/theme1"
+                app:mtf_cardCollapsedHeight="4dp"
+                app:mtf_image="@drawable/ic_mail"
+                >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:singleLine="true"
+                    android:textColor="@color/theme1"
+                    android:textColorHint="@color/buttonText"
+                    android:textSize="15sp"
+                    android:id="@+id/registerEmailInput"
+                    />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="5dp"
+                app:mtf_cardCollapsedHeight="4dp"
+                app:mtf_labelColor="@color/theme2"
+                app:mtf_image="@drawable/ic_pwd"
+                >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:singleLine="true"
+                    android:textColor="@color/theme2"
+                    android:textColorHint="@color/buttonText"
+                    android:textSize="15sp"
+                    android:id="@+id/registerPwdInput"
+                    />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="5dp"
+                app:mtf_cardCollapsedHeight="4dp"
+                app:mtf_labelColor="@color/theme3"
+                app:mtf_image="@drawable/ic_name"
+                >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="User Name"
+                    android:singleLine="true"
+                    android:textColor="@color/theme3"
+                    android:textColorHint="@color/buttonText"
+                    android:textSize="15sp"
+                    android:id="@+id/nameInput"
+                    />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Choose Profile Picture             "
+                    android:textColor="@color/theme4"
+                    android:id="@+id/textView4"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_choosepic"
+                    android:id="@+id/imageButton" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/portraitView"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="310dp"
+                android:layout_height="50dp"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme5"
+                android:text="Register"
+                android:id="@+id/registerButton" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Already Have account?"
+                android:textColor="@color/buttonText"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/tvTurnToLogOn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:text="Skip"
+                android:textColor="@color/buttonText"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/tvRegisterSkip" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Email"-->
+        <!--android:id="@+id/textView7" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/registerEmailInput"-->
+        <!--android:singleLine="true" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Password"-->
+        <!--android:id="@+id/textView8" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/registerPwdInput"-->
+        <!--android:singleLine="true" />-->
+
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Display Name"-->
+        <!--android:id="@+id/textView6" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/nameInput"-->
+        <!--android:singleLine="true" />-->
+
 
 </LinearLayout>

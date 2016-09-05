@@ -9,6 +9,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -34,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:background="@drawable/bg_banner"
+                android:background="@drawable/home_banner"
 
                 android:tint="#9f90af"
                 android:padding="32dp"

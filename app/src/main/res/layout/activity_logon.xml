@@ -122,7 +122,8 @@
             android:text="Register"
             android:textColor="@color/buttonText"
             android:id="@+id/tvTurnToRegister"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,7 +132,8 @@
             android:text="Skip as normal user"
             android:textColor="@color/buttonText"
             android:id="@+id/tvLoginSkip"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp" />
     </LinearLayout>
 
 </LinearLayout>
