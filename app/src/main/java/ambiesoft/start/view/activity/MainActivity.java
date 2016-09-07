@@ -3,6 +3,7 @@ package ambiesoft.start.view.activity;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
 
     private MainActivityPresenter presenter;
 
+    public ImageView backdrop;
     public FloatingActionButton fab;
     public AppBarLayout abl;
     private android.app.FragmentManager fm = getFragmentManager();
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         presenter.askForLocationPermission();
         // set the floating action button and hide it
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        backdrop = (ImageView) findViewById(R.id.backdrop);
         fab.hide();
 
         abl = (AppBarLayout) findViewById(R.id.appbar);
@@ -118,7 +122,11 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     }
     public NestedScrollView getNestedScrollView() {return nsv;}
     public FrameLayout getFrameLayout() {return fl;}
+    public ImageView getBackdrop (){
+        return backdrop;
+    }
     public NavigationTabBar getNavigationTabBar() {return navigationTabBar;}
+    //TODO
     public String getUserEmail() {return email;}
 
     public void navigationTabBarSetting() {

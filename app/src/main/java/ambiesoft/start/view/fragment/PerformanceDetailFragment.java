@@ -3,6 +3,7 @@ package ambiesoft.start.view.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +35,8 @@ public class PerformanceDetailFragment extends Fragment {
     private Button backButton;
     public ImageView portrait;
 
+    private AppBarLayout abl;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +64,16 @@ public class PerformanceDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // extend the app bar layout
+        abl = ((MainActivity) getActivity()).getAppBarLayout();
+        abl.setExpanded(true, true);
+        abl.setActivated(true);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.banner_performancelist);
+
         // hide the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();

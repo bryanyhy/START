@@ -33,18 +33,30 @@
         android:layout_alignParentStart="true"
         android:layout_above="@+id/daySpinner"></fragment>
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="40dp"
+        android:foregroundGravity="center"
+        android:background="@drawable/map_indicator"
+        android:id="@+id/imageView12" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm"
+        android:textColor="@color/buttonText"
+        android:background="@color/theme4"
         android:id="@+id/confirmButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="center"
+        android:background="@color/theme3"
         android:id="@+id/daySpinner"
         android:layout_above="@+id/timeSpinner"
         android:layout_alignParentStart="true"
@@ -52,8 +64,9 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="center"
+        android:background="@color/theme5"
         android:id="@+id/timeSpinner"
         android:layout_above="@+id/confirmButton"
         android:layout_alignParentStart="true" />

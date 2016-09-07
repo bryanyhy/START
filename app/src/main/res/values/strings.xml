@@ -43,7 +43,7 @@
 
     <string-array name="tab_bar_array">
         <item>Busking</item>
-        <item>Portfolio</item>
+        <item>Profile</item>
         <item>My Busking</item>
         <item>Buskers</item>
         <item>More</item>

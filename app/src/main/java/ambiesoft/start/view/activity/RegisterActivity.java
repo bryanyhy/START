@@ -123,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btRegister.setOnClickListener(this);
         imageButton.setOnClickListener(this);
         imageButton.setEnabled(false);
-        imageButton.setText("Disabled");
         askForReadExternalPermission();
         // For passing bundle from activity to activity
         intent = new Intent(RegisterActivity.this, MainActivity.class);

@@ -4,6 +4,7 @@ package ambiesoft.start.view.fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,8 @@ public class MyBuskingFragment extends Fragment {
     public RecyclerViewEditableAdapter adapter;
     public ImageButton createNew, heatMap;
 
+    private AppBarLayout abl;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +62,16 @@ public class MyBuskingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // extend the app bar layout
+        abl = ((MainActivity) getActivity()).getAppBarLayout();
+        abl.setExpanded(true, true);
+        abl.setActivated(true);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.banner_busking);
+
         setRecyclerViewEditableAdapter();
         // show the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();

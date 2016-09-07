@@ -4,6 +4,7 @@ package ambiesoft.start.view.fragment;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class HomeFragment extends Fragment {
     public RecyclerViewAdapter adapter;
 
     private FloatingActionButton fab;
+
+    private AppBarLayout abl;
 
 
 
@@ -62,6 +66,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // extend the app bar layout
+        abl = ((MainActivity) getActivity()).getAppBarLayout();
+        abl.setExpanded(true, true);
+        abl.setActivated(true);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.home_banner);
+
         setRecyclerViewAdapter();
         // show the floating action button in main activity
         fab = ((MainActivity) getActivity()).getFloatingActionButton();
