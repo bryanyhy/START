@@ -77,6 +77,7 @@ public class PerformanceDetailFragment extends Fragment {
         // hide the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();
+
         if (presenter == null) {
             presenter = new PerformanceDetailFragmentPresenter(this);
         }

@@ -19,6 +19,7 @@ import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.MoreFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
+import ambiesoft.start.view.fragment.ProfileFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -57,7 +58,13 @@ public class MainActivityPresenter {
             if (model.getTitle().matches(tabBarItemName[0])) {
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
             } else if (model.getTitle().matches(tabBarItemName[1])) {
-                showAlertBox("Sorry", "Functions will be added in next version.", view);
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+                }
             } else if (model.getTitle().matches(tabBarItemName[2])) {
                 if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                     view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
