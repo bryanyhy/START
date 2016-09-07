@@ -84,3 +84,9 @@ Presenter: Connection between Model and View. It retrieves data from Model, and 
 View: Responsible for display the data from model to user, and directly interact with the user.
 
 ![alt tag](https://upload.wikimedia.org/wikipedia/commons/d/dc/Model_View_Presenter_GUI_Design_Pattern.png)
+
+For example, when the user want to view a performance detail:
+1. View class named "PerformanceDetailFragment" will be initialised, and setup the view for the fragment.
+2. Presenter class called "PerformanceDetailFragmentPresenter" will be initialised after the view is created. Methods are called, like getting the values passed from the previous calling fragment, and update the view's Text Fields with the value accordingly.
+3. The presenter also responsible for handling the user events, like back to previous fragment when user clicks the "back" button.
+4. Model class like FirebaseUtility or User data class will be called by the presenter also, as we have to retrieve the Firebase for grabbing and matching the creator of that particular performance, and get the creator's nickname and profile picture from Firebase, finally sending these information to view and display to user.
