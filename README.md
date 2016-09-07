@@ -19,12 +19,12 @@ Save performance into Firebase;
 Show performance as markers on map;  
 Implement the function on showing all Artworks  
   
-1.2
+1.2  
 16 Aug 2016  
 Implement Bottom Bar;  
 Add floating action button for switching between list/map view  
   
-1.3
+1.3  
 17 Aug 2016  
 Implement list to show the Performance stored in Firebase;  
 Add filter performance function based on date  
