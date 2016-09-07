@@ -83,4 +83,4 @@ Model: Defining the data that will be displayed to user, and also actions involv
 Presenter: Connection between Model and View. It retrieves data from Model, and formats it for display in the view. It also accepts user events, which update models or perform methods in model afterwards.
 View: Responsible for display the data from model to user, and directly interact with the user.
 
-![]({{site.baseurl}}/https://upload.wikimedia.org/wikipedia/commons/d/dc/Model_View_Presenter_GUI_Design_Pattern.png)
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/d/dc/Model_View_Presenter_GUI_Design_Pattern.png)
