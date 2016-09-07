@@ -71,9 +71,9 @@ public class MyBuskingFragment extends Fragment {
         abl.setExpanded(true);
 //        abl.setActivated(true);
 
-//        navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
-//        navigationTabBar.show();
-//        navigationTabBar.setBehaviorEnabled(true);
+        navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
+        navigationTabBar.show();
+        navigationTabBar.setBehaviorEnabled(true);
 
         //set backdrop image
         ImageView banner = ((MainActivity) getActivity()).getBackdrop();
