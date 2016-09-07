@@ -75,3 +75,9 @@ Implement photo uploading functions on user registration
 5 Sep 2016
 Improve UI and fixing bugs on user registration and login system;
 Improve UI layout on all functions
+
+
+This application are designed based on the Model-View-Presenter (MVP) architectual pattern.
+Model: Defining the data that will be displayed to user, and also actions involving other external connections like API.
+Presenter: Connection between Model and View. It retrieves data from Model, and formats it for display in the view. It also accepts user events, which update models or perform methods in model afterwards.
+View: Responsible for display the data from model to user, and directly interact with the user.
