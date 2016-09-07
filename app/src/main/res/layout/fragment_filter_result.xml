@@ -19,6 +19,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/buttonText"
             android:text="Keywords in performance&apos;s name"
             android:id="@+id/textView5" />
 
@@ -26,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:hint="Like: Guitar/Busker Name/Location"
             android:id="@+id/keywordInput"
             android:backgroundTint="@color/colorTint"
             android:textColor="@color/textColor" />
@@ -34,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Category"
+            android:textColor="@color/buttonText"
             android:id="@+id/textView9" />
 
         <Spinner
@@ -46,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date"
+            android:textColor="@color/buttonText"
             android:id="@+id/textView11" />
 
         <Button
@@ -54,13 +59,14 @@
             android:text="Choose a date"
             android:id="@+id/dateButton"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/textColor"
-            android:background="@color/colorPrimaryDark"/>
+            android:textColor="@color/buttonText"
+            android:background="@color/theme2"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time Period"
+            android:textColor="@color/buttonText"
             android:id="@+id/textView12" />
 
         <LinearLayout
@@ -75,18 +81,18 @@
                 android:text="Choose a Time"
                 android:id="@+id/timeButton"
                 android:layout_weight="0.6"
-                android:textColor="@color/textColor"
-                android:background="@color/colorPrimaryDark"/>
+                android:textColor="@color/buttonText"
+                android:background="@color/theme1"/>
 
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Filter"
+            android:layout_marginTop="10dp"
+            android:text="Search your busking!"
             android:id="@+id/filterButton"
-            android:backgroundTint="#22d640"
-            android:textColor="@color/textColor"
-            android:background="@color/colorPrimaryDark"/>
+            android:textColor="@color/buttonText"
+            android:background="@color/theme5"/>
     </LinearLayout>
 </RelativeLayout>

@@ -3,6 +3,7 @@
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
+
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
@@ -85,5 +86,172 @@
         <item>22:00</item>
         <item>23:00</item>
     </string-array>
+
+    <string name="about_us">“ST.ART” Street Artist Finder is a product of AmbieSoft.
+
+\n Copyright © 2016 AmbieSoft.
+
+\n Product Support
+
+\n support@ambiesoft.com
+
+\n Android Development:
+
+\n Ho Yeung Yuen
+
+\n Muxuan Wang
+
+\n Graphic Design:
+
+\n Muxuan Wang
+
+\n Administrative Support:
+
+\n Tiantian Li
+
+\n UX Expert:
+
+\n Abdul Ghony
+
+\n Honorary Mentions:
+
+\n Gail Bourne
+
+\n Livia Mammarella
+
+\n Weng Long Pang</string>
+
+    <string name="privacy">
+        AmbieSoft ("Ambiesoft," the "Company," "we," "us," and "our,") respect your privacy. We are committed to protecting it through our compliance with this privacy policy.
+\n
+\n <b>This policy explains:</b>
+\n the types of information that we may collect from you when you create an account in our application (further called "Services"); and
+another option is available for you as an anonymous user with limited access to more functionalities of the Services.
+our practices for collecting, using, maintaining, protecting and disclosing that information.
+\n
+\n This policy applies only to information we collect through our Services, in email, text and other electronic communications sent through or in connection with our Services.
+\n
+\n Please read this policy carefully to understand our policies and practices regarding your information and how we will treat it. If you do not agree with our policies and practices, your choice is becoming an unregistered user or not to use our Services. By accessing or using our Services, you agree to this privacy policy. This policy may change from time to time, your continued use of our Services after we make changes is deemed to be acceptance of those changes, so please check the policy periodically for updates.
+\n
+\n
+\n The information we collect and how we use it
+\n
+\n The information we collect on or through our Services may include:
+\n
+\n Your account information: Your email address, other information you may provide with your account. Your profile picture that will be publicly displayed as part of your account profile. You may optionally provide us with this information through third-party sign-in services such as Google Plus. In such cases, we fetch and store whatever information is made available to us by you through these sign-in services.
+\n Your Internet connection: Acceptance from you to use the Internet connection.
+\n Your location: Collect and process information about your mobile device’s GPS location (including the latitude, longitude or altitude of your mobile device) and the time the location information is recorded to customize the Services with location-based information and features (for example, to inform you about artworks in your area).
+\n Your Internal and External Storage: Write and read your phone storage.
+\n
+\n We use the information you provide to us to enhance the functionality and improve the quality of our Services.
+\n
+\n Compliance with Australia Computer Society (ACS) Code of Professional Conduct.
+\n
+\n The information we obtain from or about you may be processed various servers located across the globe, which may provide for different data protection rules than the country in which you reside. We comply with Australia Computer Society (ACS) code of professional conduct which consider endeavor to preserve the confidentiality and privacy of the information of others as stated in Point 1.2.1. The Primacy of the Public Interest. Each location may provide for different data protection rules than the country in which you reside. By using the Services, you consent to the collection, transfer, use, storage and disclosure of your information as described in this Privacy Policy, including to the transfer of your information outside of your country of residence.
+\n
+\n Changes to this privacy policy
+We reserve the right to amend this Privacy Policy from time to time to reflect changes in the law, our data collection and use practices, the features of our services, or advances in technology. Please check this page periodically for changes. Use of information we collect is subject to the Privacy Policy in effect at the time such information is used. If we make any material changes to this Privacy Policy, we will post the changes here. Please review the changes carefully. Your continued use of the Services following the posting of changes to this Privacy Policy will constitute your consent and acceptance of those changes.
+
+    </string>
+    
+    <string name="version">
+\n        Version History
+
+\n V0.0 	Mobile application basic functions:
+\n Display today’s performances in a list
+\n Display today’s performances in a map
+\n Display/Hide artworks
+\n Display artworks detail information
+\n Create performance with desired name
+\n Choose different category of performance
+\n Add information about the performance
+\n Set the date of performance
+\n Set performance duration
+\n Set performance location on map
+
+
+\n V0.1	More features:
+\n Filter on keywords of performance name, category, date and time
+\n Display detailed information of performance from the list
+\n Display detailed information of performance by clicking the icon on the map
+
+\n V0.2	New modifications:
+\n More intuitive icons and UI design
+\n New colour schemes
+
+\n V0.3	More features:
+\n Create account menu option for user registration
+\n User can sign-in after creating an account
+\n Display pedestrian map by default day
+
+\n V0.4	More features:
+\n Edit the performance date, time, duration and location
+\n Delete a performance
+\n Display pedestrian heat-map by choosing day
+\n Display pedestrian heat-map by choosing different time
+
+\n V0.5	More features:
+\n Artist can create portfolio
+\n User can logout from the app
+
+
+    </string>
+
+    <string name="help">
+\n        Melbourne is one of the most culture-rich cities in the world with many talented street artists as its iconic symbols. There are a number of street artists in Melbourne, whether they are for music, dance, magic, art performance, poetry, and legal graffiti. However, their activities are not well acknowledged as a potential resource to gain more benefits from their existence by City of Melbourne.
+
+\n The Street Artist Finder, ST.ART, is an Android Application that acts as a platform for interactions between buskers and tourists. Buskers can create and manage their portfolio and performance event, with a specific location, date and time. Reputation can be gained as tourists can find the event and its details around the City of Melbourne through the same application, meanwhile giving reviews and scores to the buskers.
+
+        \n User Instruction
+
+\n Create account:
+\n Step 1: Open the ST.ART application.
+\n Step 2: Click “Register”
+\n Step 3: Input e-mail address, password and preferred username
+\n Step 4: Click on the Register button
+
+\n View all / filter performance:
+\n Step 1: Open the ST.ART application.
+\n Step 2A: Performance for today are listed by default. Click on the particular performance to get more detailed information: Name, Category, Date, Time, Description.
+\n Step 2B: Click the map icon to view the performances in map view. Click the marker on the map and an information window will popup. Click on the information window to view the details of performances: Name, Category, Date, Time, Description.
+\n Step 3: Click on the search button on the top right-hand corner on either list or map, to do a filter on the result. Keywords in performance name, category, date and performance after a specific time can be set. Click on the filter button and the result will be filtered.
+
+\n Switch show/hide artwork.
+\n Step 1: Open the ST.ART application.
+\n Step 2: Go to map view.
+\n Step 4: Click more icon on the top right corner
+\n Step 5: Select ‘Show artworks’.
+\n Step 6: Click the marker to view the name of the artwork, and click the info window for more detail.
+\n Step 7: If the user does not want to view artworks, select ‘Hide artworks’.
+
+\n Create performance:
+\n Step 1: Open the ST.ART application.
+\n Step 2: Sign in as registered user
+\n Step 2: Click the New Busking icon
+\n Step 3: Enter the name of the performance.
+\n Step 4: Choose the category of performance.
+\n Step 5: Enter the performance description.
+\n Step 6: Choose a date to perform.
+\n Step 7: Choose a specific start time of performance.
+\n Step 8: Choose a duration of performance.
+\n Step 9: Choose a location on the map and click ‘Select this location’.
+\n Step 10: Confirm the selection and create the performance.
+\n Step 11: Performance will be created and saved onto the database, if all inputs are valid.
+
+\n Edit performance:
+\n Step 1: Open the ST.ART application.
+\n Step 2: Sign in as registered user
+\n Step 3: Slide to the left on a performance
+\n Step 4: Click Edit button
+\n Step 5: Enter the updated information about the performance
+\n Step 6: Click Update button
+
+\n Delete performance:
+\n Step 1: Open the ST.ART application.
+\n Step 2: Sign in as registered user
+\n Step 3: Slide to the left on a performance
+\n Step 4: Click Delete button
+
+    </string>
 
 </resources>

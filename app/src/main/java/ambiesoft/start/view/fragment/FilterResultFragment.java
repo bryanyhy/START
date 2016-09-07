@@ -4,6 +4,7 @@ package ambiesoft.start.view.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.text.ParseException;
@@ -36,6 +38,7 @@ public class FilterResultFragment extends Fragment {
     private static final int MAP_FRAGMENT = 1;
 
     private FilterResultFragmentPresenter presenter;
+    private AppBarLayout abl;
 
     public EditText keywordInput;
     private Spinner categorySpinner;
@@ -60,6 +63,16 @@ public class FilterResultFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // extend the app bar layout
+        abl = ((MainActivity) getActivity()).getAppBarLayout();
+        abl.setExpanded(true, true);
+        abl.setActivated(true);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.banner_searching);
+
         // hide the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();
