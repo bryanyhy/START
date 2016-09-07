@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
                 userType = extras.getInt("userType");
             }
         }
-        Toast.makeText(getApplicationContext(), "Welcome, " + email, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_LONG).show();
 
         // setting up the bottom navigation bar
         navigationTabBarSetting();

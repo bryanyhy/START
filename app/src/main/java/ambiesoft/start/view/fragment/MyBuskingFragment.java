@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+
 import java.util.ArrayList;
 
 import ambiesoft.start.R;
@@ -42,6 +44,7 @@ public class MyBuskingFragment extends Fragment {
     public ImageButton createNew, heatMap;
 
     private AppBarLayout abl;
+    private NavigationTabBar navigationTabBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,15 +68,19 @@ public class MyBuskingFragment extends Fragment {
 
         // extend the app bar layout
         abl = ((MainActivity) getActivity()).getAppBarLayout();
-        abl.setExpanded(true, true);
-        abl.setActivated(true);
+        abl.setExpanded(true);
+//        abl.setActivated(true);
+
+//        navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
+//        navigationTabBar.show();
+//        navigationTabBar.setBehaviorEnabled(true);
 
         //set backdrop image
         ImageView banner = ((MainActivity) getActivity()).getBackdrop();
         banner.setBackgroundResource(R.drawable.banner_busking);
 
         setRecyclerViewEditableAdapter();
-        // show the floating action button in main activity
+        // hide the floating action button in main activity
         FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
         fab.hide();
         if (presenter == null) {

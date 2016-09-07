@@ -2,14 +2,19 @@ package ambiesoft.start.view.activity;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +47,7 @@ import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
 /**
  * Created by Zelta on 31/08/16.
  */
-public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, ProgressGenerator.OnCompleteListener {
+public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, ProgressGenerator.OnCompleteListener, View.OnTouchListener {
 
     private static final String TAG = "LogOnActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -65,6 +70,9 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
+
+        // disable the screen orientation sensor, so the whole activity will be in Portrait mode
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         etEmail = (EditText) findViewById(R.id.loginEmail);
         etPwd = (EditText) findViewById(R.id.loginPwd);
@@ -148,10 +156,13 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                 // ...
             }
         };
+
+        LinearLayout linearLay = (LinearLayout) findViewById(R.id.linearLay);
+        // set on click listener for hiding soft keyboard
+        linearLay.setOnTouchListener(this);
+
         // For passing bundle from activity to activity
         intent = new Intent(LogOnActivity.this, MainActivity.class);
-
-
     }
 
     @Override
@@ -291,5 +302,14 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onComplete() {
 
+    }
+
+    // hide soft keyboard when clicking blank space
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow((null == getCurrentFocus()) ?
+                null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        return false;
     }
 }

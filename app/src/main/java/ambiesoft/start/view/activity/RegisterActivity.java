@@ -2,6 +2,7 @@ package ambiesoft.start.view.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +53,7 @@ import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
 /**
  * Created by Zelta on 31/08/16.
  */
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_MEDIA = 3;
     private static final int GALLERY_INTENT = 2;
@@ -76,6 +80,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // disable the screen orientation sensor, so the whole activity will be in Portrait mode
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         etEmail = (EditText) findViewById(R.id.registerEmailInput);
         etPwd = (EditText) findViewById(R.id.registerPwdInput);
@@ -124,6 +131,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         imageButton.setOnClickListener(this);
         imageButton.setEnabled(false);
         askForReadExternalPermission();
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView2);
+        // set on click listener for hiding soft keyboard
+        scrollView.setOnTouchListener(this);
         // For passing bundle from activity to activity
         intent = new Intent(RegisterActivity.this, MainActivity.class);
     }
@@ -201,7 +211,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
             portraitUri = data.getData();
-            imageButton.setText(portraitUri.toString());
             portraitView.setImageURI(portraitUri);
         }
     }
@@ -259,12 +268,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case MY_PERMISSIONS_REQUEST_READ_MEDIA:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     imageButton.setEnabled(true);
-                    imageButton.setText("Select Image");
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    // hide soft keyboard when clicking blank space
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow((null == getCurrentFocus()) ?
+                null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        return false;
     }
 
 }

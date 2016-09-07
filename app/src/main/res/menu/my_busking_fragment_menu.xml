@@ -9,11 +9,4 @@
         android:title="More Information"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_create_per"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_create_white_24px"
-        android:title="Create Performance"
-        app:showAsAction="always" />
-
 </menu>

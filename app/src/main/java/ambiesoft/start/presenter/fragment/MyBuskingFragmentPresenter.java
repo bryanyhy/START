@@ -150,18 +150,10 @@ public class MyBuskingFragmentPresenter {
     public void actionBarItemSelection(MenuItem item) {
         int id = item.getItemId();
         // if search button is clicked
-        if (id == R.id.action_create_per) {
-            Fragment createPerformanceFragment = new CreatePerformanceFragment();
-            // create bundle, add all performance information into it
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("performanceListFromPreviousFragment", performances);
-            createPerformanceFragment.setArguments(bundle);
-            // pass bundle to the new createPerformanceFragment
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
-        } else if (id == R.id.action_info) {
+        if (id == R.id.action_info) {
             String title1 = "<b><u>Create Performance</u></b>";
             String title2 = "<b><u>Edit/Delete Performance</u></b>";
-            showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the icon on top right corner to create a performance. <br><br>" +
+            showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the New Busking button to create a performance. <br><br>" +
                     title2 + "<br>Swipe on the performance list item to edit or delete."), view.getActivity());
         }
     }
