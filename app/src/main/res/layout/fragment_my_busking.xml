@@ -44,27 +44,27 @@
                     android:id="@+id/textView2" />
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginRight="100dp">
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="right"-->
+                <!--android:layout_marginRight="100dp">-->
 
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/heatMapButton"
-                    android:background="@drawable/ic_heatmap"
-                    android:layout_marginRight="10dp"/>
+                <!--<ImageButton-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:id="@+id/heatMapButton"-->
+                    <!--android:background="@drawable/ic_heatmap"-->
+                    <!--android:layout_marginRight="10dp"/>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="HeatMap"
-                    android:id="@+id/textView3"
-                    android:textColor="@color/buttonText"/>
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="HeatMap"-->
+                    <!--android:id="@+id/textView3"-->
+                    <!--android:textColor="@color/buttonText"/>-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
