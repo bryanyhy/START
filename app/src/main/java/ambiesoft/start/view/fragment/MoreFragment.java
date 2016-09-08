@@ -122,6 +122,7 @@ public class MoreFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), LogOnActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
     }

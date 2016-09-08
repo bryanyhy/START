@@ -87,6 +87,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 hideSoftKeyboard(LogOnActivity.this);
                 startActivity(new Intent(LogOnActivity.this, RegisterActivity.class));
+                finish();
             }
         });
 
@@ -95,6 +96,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 hideSoftKeyboard(LogOnActivity.this);
                 skipSignIn();
+                finish();
             }
         });
 
@@ -149,6 +151,7 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                     setupBundleToMainActivity(user, userType);
                     // Pass intent to MainActivity
                     startActivity(intent);
+                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -311,5 +314,10 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
         imm.hideSoftInputFromWindow((null == getCurrentFocus()) ?
                 null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
