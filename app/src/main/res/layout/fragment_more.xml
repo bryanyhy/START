@@ -28,7 +28,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="My Account"
                 android:layout_marginLeft="8dp"
@@ -55,7 +55,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Help and Support"
                 android:layout_marginLeft="8dp"
@@ -82,7 +82,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Version History"
                 android:layout_marginLeft="8dp"
@@ -108,7 +108,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Privacy Policy"
                 android:layout_marginLeft="8dp"
@@ -134,7 +134,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="About Us"
                 android:layout_marginLeft="8dp"
@@ -155,7 +155,7 @@
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Log Out"
                 android:layout_marginLeft="8dp"
