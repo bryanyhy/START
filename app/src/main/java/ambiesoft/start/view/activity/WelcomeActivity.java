@@ -74,4 +74,9 @@ public class WelcomeActivity extends Activity {
         }
     };
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
 }

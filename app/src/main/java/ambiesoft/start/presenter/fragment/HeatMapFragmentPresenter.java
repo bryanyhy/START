@@ -151,39 +151,55 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         LatLng defaultCenter = new LatLng(selectedLat, selectedLng);
         setMarkerLocation(defaultCenter);
         setMarkerLocationAddress();
-        setMarkerDragListener();
+        setMapClickListenerForChangingMarkerLocation();
+//        setMarkerDragListener();
+        //default center and zoom in
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultCenter, 15));
         new SetupSensorLocation().execute();
     }
 
     public void setMarkerLocation(LatLng location) {
-        locationMarker = mMap.addMarker(new MarkerOptions()
+        this.locationMarker = mMap.addMarker(new MarkerOptions()
                 .position(location)
                 .title("Drag it to your performance location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .draggable(true));
-        //default center and zoom in
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
     }
 
-    public void setMarkerDragListener() {
-        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+//    public void setMarkerDragListener() {
+//        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+//
+//            @Override
+//            public void onMarkerDragStart(Marker marker) {
+//                Toast.makeText(view.getActivity(), "Dragging Start", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onMarkerDragEnd(Marker marker) {
+//                LatLng position = marker.getPosition();
+//                selectedLat = position.latitude;
+//                selectedLng = position.longitude;
+//                setMarkerLocationAddress();
+//            }
+//
+//            @Override
+//            public void onMarkerDrag(Marker marker) {
+//                System.out.println("Dragging");
+//            }
+//        });
+//    }
 
+    public void setMapClickListenerForChangingMarkerLocation() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMarkerDragStart(Marker marker) {
-                Toast.makeText(view.getActivity(), "Dragging Start", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                LatLng position = marker.getPosition();
-                selectedLat = position.latitude;
-                selectedLng = position.longitude;
+            public void onMapClick(LatLng latLng) {
+                if (locationMarker != null) {
+                    locationMarker.remove();
+                }
+                setMarkerLocation(latLng);
+                selectedLat = latLng.latitude;
+                selectedLng = latLng.longitude;
                 setMarkerLocationAddress();
-            }
-
-            @Override
-            public void onMarkerDrag(Marker marker) {
-                System.out.println("Dragging");
             }
         });
     }
@@ -364,7 +380,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
              String title2 = "<b><u>Heat Map</u></b>";
              showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>There are 2 methods on setting the performance location: <br>" +
                      "1. Type in and search the location address. <br>" +
-                     "2. Long press the blue marker, then drag and drop the blue marker on the map. <br>" +
+                     "2. Touch your desired location on map, wait for the marker to be created. <br>" +
                      "*Option 2 may not always work due to map server's busyness. <br><br>" +
                      title2 + "<br>Heat map data is based on the average pedestrian count of past 52 weeks. <br>" +
                      "Access the preferred data by changing the day and time."), view.getActivity());
