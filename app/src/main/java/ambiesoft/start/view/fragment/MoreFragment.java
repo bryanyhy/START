@@ -13,19 +13,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ambiesoft.start.R;
 import ambiesoft.start.view.activity.LogOnActivity;
 import ambiesoft.start.view.activity.MainActivity;
 
+import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MoreFragment extends Fragment {
 
-    public TextView logout,about,privacy,version,help;
+    public TextView logout,about,privacy,version,help,account;
     private AppBarLayout abl;
+    private NavigationTabBar navigationTabBar;
     //private FragmentManager fm;
 
 
@@ -46,6 +50,7 @@ public class MoreFragment extends Fragment {
         privacy = (TextView) view.findViewById(R.id.tvPrivacy);
         version = (TextView) view.findViewById(R.id.tvVersion);
         help = (TextView) view.findViewById(R.id.tvHelp);
+        account = (TextView) view.findViewById(R.id.tvMyAccount);
         return view;
     }
 
@@ -65,6 +70,17 @@ public class MoreFragment extends Fragment {
         //set backdrop image
         ImageView banner = ((MainActivity) getActivity()).getBackdrop();
         banner.setBackgroundResource(R.drawable.register_banner);
+
+        navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
+        navigationTabBar.show();
+        navigationTabBar.setBehaviorEnabled(true);
+
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertBox("Sorry", "Functions will be added in next version.", MoreFragment.this.getActivity());
+            }
+        });
 
         help.setOnClickListener(new View.OnClickListener() {
             @Override

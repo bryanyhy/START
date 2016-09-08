@@ -364,7 +364,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
              String title2 = "<b><u>Heat Map</u></b>";
              showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>There are 2 methods on setting the performance location: <br>" +
                      "1. Type in and search the location address. <br>" +
-                     "2. Drag and drop the blue marker on the map. <br>" +
+                     "2. Long press the blue marker, then drag and drop the blue marker on the map. <br>" +
                      "*Option 2 may not always work due to map server's busyness. <br><br>" +
                      title2 + "<br>Heat map data is based on the average pedestrian count of past 52 weeks. <br>" +
                      "Access the preferred data by changing the day and time."), view.getActivity());

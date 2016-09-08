@@ -31,6 +31,8 @@ import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
 import ambiesoft.start.presenter.fragment.MyBuskingFragmentPresenter;
 import ambiesoft.start.view.activity.MainActivity;
 
+import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -92,6 +94,13 @@ public class MyBuskingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 presenter.imageButtonSelection(createNew);
+
+            }
+        });
+        heatMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertBox("Sorry", "Functions will be added in next version.", MyBuskingFragment.this.getActivity());
 
             }
         });

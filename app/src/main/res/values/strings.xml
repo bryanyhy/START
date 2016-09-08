@@ -90,29 +90,29 @@
     <string name="about_us">“ST.ART” Street Artist Finder is a product of AmbieSoft.
 
 \n Copyright © 2016 AmbieSoft.
-
+\n
 \n Product Support
 
 \n support@ambiesoft.com
-
+\n
 \n Android Development:
 
 \n Ho Yeung Yuen
 
 \n Muxuan Wang
-
+\n
 \n Graphic Design:
 
 \n Muxuan Wang
-
+\n
 \n Administrative Support:
 
 \n Tiantian Li
-
+\n
 \n UX Expert:
 
 \n Abdul Ghony
-
+\n
 \n Honorary Mentions:
 
 \n Gail Bourne
@@ -156,7 +156,7 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
     
     <string name="version">
 \n        Version History
-
+\n
 \n V0.0 	Mobile application basic functions:
 \n Display today’s performances in a list
 \n Display today’s performances in a map
@@ -169,27 +169,27 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 \n Set performance duration
 \n Set performance location on map
 
-
+\n
 \n V0.1	More features:
 \n Filter on keywords of performance name, category, date and time
 \n Display detailed information of performance from the list
 \n Display detailed information of performance by clicking the icon on the map
-
+\n
 \n V0.2	New modifications:
 \n More intuitive icons and UI design
 \n New colour schemes
-
+\n
 \n V0.3	More features:
 \n Create account menu option for user registration
 \n User can sign-in after creating an account
 \n Display pedestrian map by default day
-
+\n
 \n V0.4	More features:
 \n Edit the performance date, time, duration and location
 \n Delete a performance
 \n Display pedestrian heat-map by choosing day
 \n Display pedestrian heat-map by choosing different time
-
+\n
 \n V0.5	More features:
 \n Artist can create portfolio
 \n User can logout from the app
@@ -201,21 +201,21 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 \n        Melbourne is one of the most culture-rich cities in the world with many talented street artists as its iconic symbols. There are a number of street artists in Melbourne, whether they are for music, dance, magic, art performance, poetry, and legal graffiti. However, their activities are not well acknowledged as a potential resource to gain more benefits from their existence by City of Melbourne.
 
 \n The Street Artist Finder, ST.ART, is an Android Application that acts as a platform for interactions between buskers and tourists. Buskers can create and manage their portfolio and performance event, with a specific location, date and time. Reputation can be gained as tourists can find the event and its details around the City of Melbourne through the same application, meanwhile giving reviews and scores to the buskers.
-
+\n
         \n User Instruction
-
+\n
 \n Create account:
 \n Step 1: Open the ST.ART application.
 \n Step 2: Click “Register”
 \n Step 3: Input e-mail address, password and preferred username
 \n Step 4: Click on the Register button
-
+\n
 \n View all / filter performance:
 \n Step 1: Open the ST.ART application.
 \n Step 2A: Performance for today are listed by default. Click on the particular performance to get more detailed information: Name, Category, Date, Time, Description.
 \n Step 2B: Click the map icon to view the performances in map view. Click the marker on the map and an information window will popup. Click on the information window to view the details of performances: Name, Category, Date, Time, Description.
 \n Step 3: Click on the search button on the top right-hand corner on either list or map, to do a filter on the result. Keywords in performance name, category, date and performance after a specific time can be set. Click on the filter button and the result will be filtered.
-
+\n
 \n Switch show/hide artwork.
 \n Step 1: Open the ST.ART application.
 \n Step 2: Go to map view.
@@ -223,7 +223,7 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 \n Step 5: Select ‘Show artworks’.
 \n Step 6: Click the marker to view the name of the artwork, and click the info window for more detail.
 \n Step 7: If the user does not want to view artworks, select ‘Hide artworks’.
-
+\n
 \n Create performance:
 \n Step 1: Open the ST.ART application.
 \n Step 2: Sign in as registered user
@@ -237,7 +237,7 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 \n Step 9: Choose a location on the map and click ‘Select this location’.
 \n Step 10: Confirm the selection and create the performance.
 \n Step 11: Performance will be created and saved onto the database, if all inputs are valid.
-
+\n
 \n Edit performance:
 \n Step 1: Open the ST.ART application.
 \n Step 2: Sign in as registered user
@@ -245,7 +245,7 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 \n Step 4: Click Edit button
 \n Step 5: Enter the updated information about the performance
 \n Step 6: Click Update button
-
+\n
 \n Delete performance:
 \n Step 1: Open the ST.ART application.
 \n Step 2: Sign in as registered user
