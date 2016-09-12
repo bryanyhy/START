@@ -96,7 +96,6 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 hideSoftKeyboard(LogOnActivity.this);
                 skipSignIn();
-                finish();
             }
         });
 
