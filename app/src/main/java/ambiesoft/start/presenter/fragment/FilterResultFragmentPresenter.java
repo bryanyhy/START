@@ -139,14 +139,31 @@ public class FilterResultFragmentPresenter {
             bundle.putString("categoryFromFilter", selectedCategory);
             Log.i("System.out","Category added to bundle");
         }
-        // Get the keyword from user input
-        String keyword = view.keywordInput.getText().toString().trim();
+        // Get the name keyword from user input
+        String nameKeyword = view.keywordInput.getText().toString().trim();
         // Check if input is empty
-        if (!keyword.matches("")) {
+        if (!nameKeyword.matches("")) {
             // Put keyword into bundle if not empty
-            bundle.putString("keywordFromFilter", keyword);
-            Log.i("System.out","Keyword added to bundle");
+            bundle.putString("nameKeywordFromFilter", nameKeyword);
+            Log.i("System.out","Name Keyword added to bundle");
         }
+        // Get the desc keyword from user input
+        String descKeyword = view.descInput.getText().toString().trim();
+        // Check if input is empty
+        if (!descKeyword.matches("")) {
+            // Put keyword into bundle if not empty
+            bundle.putString("descKeywordFromFilter", descKeyword);
+            Log.i("System.out","Desc Keyword added to bundle");
+        }
+        // Get the loc keyword from user input
+        String locKeyword = view.locInput.getText().toString().trim();
+        // Check if input is empty
+        if (!locKeyword.matches("")) {
+            // Put keyword into bundle if not empty
+            bundle.putString("locKeywordFromFilter", locKeyword);
+            Log.i("System.out","Loc Keyword added to bundle");
+        }
+
         // Add selected time into bundle if there is any
         if (selectedTime != null) {
             bundle.putString("timeFromFilter", selectedTime);

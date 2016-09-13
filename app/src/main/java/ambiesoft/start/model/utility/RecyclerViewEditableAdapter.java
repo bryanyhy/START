@@ -70,6 +70,15 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
             holder.time.setText(performance.getsTime() + " - " + performance.geteTime());
             setCardIcon(holder, performance.getCategory());
             binderHelper.bind(holder.swipeLayout, performance.getName());
+            holder.cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // when the cardview is clicked
+                    Log.i("System.out", "Edit is clicked, " + performance.getName());
+                    performanceListForValidation.remove(position);
+                    editPerformance(performance, performanceListForValidation);
+                }
+            });
             holder.editPer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

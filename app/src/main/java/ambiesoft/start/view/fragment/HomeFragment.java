@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+
 import java.util.ArrayList;
 
 import ambiesoft.start.R;
@@ -39,7 +41,7 @@ public class HomeFragment extends Fragment {
     public RecyclerViewAdapter adapter;
 
     private FloatingActionButton fab;
-
+    private NavigationTabBar ntb;
     private AppBarLayout abl;
 
 
@@ -48,9 +50,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // display menu of the top action bar
@@ -72,6 +71,9 @@ public class HomeFragment extends Fragment {
         abl.setExpanded(true, true);
         abl.setActivated(true);
 
+        ntb = ((MainActivity) getActivity()).getNavigationTabBar();
+        ntb.show();
+        
         //set backdrop image
         ImageView banner = ((MainActivity) getActivity()).getBackdrop();
         banner.setBackgroundResource(R.drawable.home_banner);
@@ -91,6 +93,9 @@ public class HomeFragment extends Fragment {
 
     // for setting the recycler view adapter
     public void setRecyclerViewAdapter() {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
         adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), HOME_FRAGMENT_ID);
         recyclerView.setAdapter(adapter);

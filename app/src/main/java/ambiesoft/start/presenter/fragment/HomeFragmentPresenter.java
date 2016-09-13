@@ -37,7 +37,10 @@ import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDescKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterLocKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterNameKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
@@ -66,7 +69,9 @@ public class HomeFragmentPresenter {
     private ArrayList<Performance> filteredPerformances;
 
     private String selectedDate;
-    private String filterKeyword;
+    private String filterNameKeyword;
+    private String filterDescKeyword;
+    private String filterLocKeyword;
     private String filterCategory;
     private String filterTime;
 
@@ -95,7 +100,9 @@ public class HomeFragmentPresenter {
                     // put filter data into bundle
                     Bundle bundle = new Bundle();
                     bundle.putString("dateFromFilter", selectedDate);
-                    bundle.putString("keywordFromFilter", filterKeyword);
+                    bundle.putString("nameKeywordFromFilter", filterNameKeyword);
+                    bundle.putString("descKeywordFromFilter", filterDescKeyword);
+                    bundle.putString("locKeywordFromFilter", filterLocKeyword);
                     bundle.putString("categoryFromFilter", filterCategory);
                     bundle.putString("timeFromFilter", filterTime);
                     googleMapFragment.setArguments(bundle);
@@ -111,7 +118,9 @@ public class HomeFragmentPresenter {
         if (bundle != null) {
             // if bundle exists, get the filter values
             selectedDate = getFilterDateFromBundle(bundle);
-            filterKeyword = getFilterKeywordFromBundle(bundle);
+            filterNameKeyword = getFilterNameKeywordFromBundle(bundle);
+            filterDescKeyword = getFilterDescKeywordFromBundle(bundle);
+            filterLocKeyword = getFilterLocKeywordFromBundle(bundle);
             filterCategory = getFilterCategoryFromBundle(bundle);
             filterTime = getFilterTimeFromBundle(bundle);
         } else {
@@ -157,11 +166,11 @@ public class HomeFragmentPresenter {
                 // check if any matching result is retrieved
                 if (performances.size() != 0) {
                     // if there is matching result, check if there are any advanced filter option other than date
-                    if (filterKeyword != null || filterCategory != null || filterTime != null) {
+                    if (filterNameKeyword != null || filterDescKeyword != null || filterLocKeyword != null || filterCategory != null || filterTime != null) {
                         // if there is other parameter as the filter requirement
                         try {
                             // do the advanced filtering, and get the final result in ArrayList
-                            filteredPerformances = advancedFilteringOnPerformanceList(performances, filterKeyword, filterCategory, filterTime);
+                            filteredPerformances = advancedFilteringOnPerformanceList(performances, filterNameKeyword, filterDescKeyword, filterLocKeyword, filterCategory, filterTime);
                             // check if there is matching result after advanced filtering
                             if (filteredPerformances.size() == 0) {
                                 // if no, show alertbox
@@ -215,6 +224,9 @@ public class HomeFragmentPresenter {
 
     // for setting the recycler view adapter
     public void setRecyclerViewAdapter() {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this.view.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        view.recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
         view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity(), HOME_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);

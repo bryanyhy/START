@@ -80,6 +80,30 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="5dp"
                 app:mtf_cardCollapsedHeight="4dp"
+                app:mtf_labelColor="@color/theme2"
+                app:mtf_image="@drawable/ic_pwd"
+                >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:singleLine="true"
+                    android:textColor="@color/theme2"
+                    android:textColorHint="@color/buttonText"
+                    android:textSize="15sp"
+                    android:id="@+id/registerPwdConfirm"
+                    />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="5dp"
+                app:mtf_cardCollapsedHeight="4dp"
                 app:mtf_labelColor="@color/theme3"
                 app:mtf_image="@drawable/ic_name"
                 >
@@ -123,11 +147,21 @@
                 android:id="@+id/portraitView"
                 android:layout_gravity="center_horizontal" />
 
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/terms_and_conditions"
+                android:buttonTint="@color/theme3"
+                android:textColor="@color/theme3"
+                android:id="@+id/checkBox" />
+
             <Button
                 android:layout_width="310dp"
                 android:layout_height="50dp"
                 android:textColor="@color/buttonText"
                 android:background="@color/theme5"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
                 android:text="Register"
                 android:id="@+id/registerButton" />
 
