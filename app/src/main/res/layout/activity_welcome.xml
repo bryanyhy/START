@@ -10,4 +10,5 @@
     tools:context="ambiesoft.start.view.activity.WelcomeActivity"
     android:background="@drawable/welcome_page">
 
+
 </RelativeLayout>

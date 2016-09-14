@@ -1,31 +1,72 @@
 package ambiesoft.start.view.activity;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ambiesoft.start.R;
 import ambiesoft.start.model.utility.MovingImageView;
+
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
+import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
  * Created by Zelta on 31/08/16.
  */
 public class LogInActivity extends AppCompatActivity{
 
+    private static final int NON_REG_USER = 0;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private Intent intent;
+
+    private static final String TAG = "Welcome Page";
+
     MovingImageView image;
     boolean toggleState = true;
     boolean toggleCustomMovement = true;
     int[] imageList = {R.drawable.anotherworld, R.drawable.futurecity, R.drawable.spacecargo, R.drawable.city};
     int pos = 0;
+    private int userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    setupBundleToMainActivity(user, userType);
+                    // Pass intent to MainActivity
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
 
 //        MovingImageView image = (MovingImageView) findViewById(R.id.imageBg);
 //        image.getMovingAnimator().setInterpolator(new BounceInterpolator());
@@ -38,6 +79,9 @@ public class LogInActivity extends AppCompatActivity{
 //                addHorizontalMoveToLeft().
 //                addVerticalMoveToUp().
 //                start();
+
+        // For passing bundle from activity to activity
+        intent = new Intent(LogInActivity.this, MainActivity.class);
 
         image = (MovingImageView) findViewById(R.id.imageBg);
         image.getMovingAnimator().addListener(new Animator.AnimatorListener() {
@@ -93,10 +137,49 @@ public class LogInActivity extends AppCompatActivity{
         toggleCustomMovement = !toggleCustomMovement;
     }
 
+    public void clickBuskerText(View v){
+        Intent intent = new Intent(getApplicationContext(), LogOnActivity.class);
+        startActivity(intent);
+    }
+
+    public void clickFanText(View v){
+        userType = NON_REG_USER;
+        showProgressDialog(LogInActivity.this);
+        mFirebaseAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInAnonymously", task.getException());
+                            Toast.makeText(LogInActivity.this, "Skip Sign In failed.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Anonymous Login Success.", Toast.LENGTH_LONG).show();
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
         if(image != null)
             image.getMovingAnimator().cancel();
+    }
+
+    // setup the content in intent send to MainActivity
+    public void setupBundleToMainActivity(FirebaseUser user, int userType) {
+        if (user != null) {
+            Bundle bundle = new Bundle();
+
+            bundle.putString("email", "Anonymous");
+
+            bundle.putInt("userType", userType);
+            intent.putExtras(bundle);
+        }
     }
 }

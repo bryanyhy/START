@@ -9,44 +9,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <net.grobas.view.MovingImageView
+        <ambiesoft.start.model.utility.MovingImageView
             android:id="@+id/imageBg"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
-            android:onClick="clickImage"
-            android:src="@drawable/anotherworld"
+            android:onClick="clickTitle"
+            android:src="@drawable/moving_pica"
             app:miv_load_on_create="true"
             app:miv_max_relative_size="3.0"
             app:miv_min_relative_offset="0.2"
             app:miv_repetitions="-1"
             app:miv_speed="100"
-            app:miv_start_delay="1000" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#80444444"
-            android:clickable="true"
-            android:onClick="clickTitle"
-            android:paddingLeft="25dp"
-            android:text="NExt"
-            android:textColor="@android:color/white"
-            android:textSize="50sp"
-            android:textStyle="bold|italic"
-            android:layout_above="@+id/textView"
-            android:layout_alignParentLeft="true"
+            app:miv_start_delay="1000"
+            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:onClick="clickText"
-            android:padding="16dp"
-            android:text="blah blah"
-            android:id="@+id/textView" />
+            android:gravity="center_horizontal"
+            android:onClick="clickBuskerText"
+            android:layout_marginTop="420dp"
+            android:textColor="@color/buttonText"
+            android:text="I  AM  BUSKER"
+            android:id="@+id/textView"
+            android:textSize="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+
+            android:layout_marginTop="80dp"
+            android:textColor="@color/buttonText"
+            android:text="I  AM  FAN"
+            android:id="@+id/text2"
+            android:textSize="30dp"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true" />
 
 
     </RelativeLayout>

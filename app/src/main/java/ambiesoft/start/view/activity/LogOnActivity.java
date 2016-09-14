@@ -159,10 +159,10 @@ public class LogOnActivity extends AppCompatActivity implements GoogleApiClient.
                 // ...
             }
         };
-
-        LinearLayout linearLay = (LinearLayout) findViewById(R.id.linearLay);
-        // set on click listener for hiding soft keyboard
-        linearLay.setOnTouchListener(this);
+//
+//        LinearLayout linearLay = (LinearLayout) findViewById(R.id.linearLay);
+//        // set on click listener for hiding soft keyboard
+//        linearLay.setOnTouchListener(this);
 
         // For passing bundle from activity to activity
         intent = new Intent(LogOnActivity.this, MainActivity.class);
