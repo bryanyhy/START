@@ -40,7 +40,7 @@ public class FilterResultFragment extends Fragment {
     private FilterResultFragmentPresenter presenter;
     private AppBarLayout abl;
 
-    public EditText keywordInput;
+    public EditText keywordInput, descInput, locInput;
     private Spinner categorySpinner;
     public Button filterButton;
     public Button dateButton;
@@ -52,6 +52,8 @@ public class FilterResultFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_filter_result, container, false);
         keywordInput = (EditText) view.findViewById(R.id.keywordInput);
+        descInput = (EditText) view.findViewById(R.id.descInput);
+        locInput = (EditText) view.findViewById(R.id.locInput);
         categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
         filterButton = (Button) view.findViewById(R.id.filterButton);
         dateButton = (Button) view.findViewById(R.id.dateButton);

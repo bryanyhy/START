@@ -108,6 +108,9 @@ public class MyBuskingFragment extends Fragment {
 
     // for setting the recycler view adapter
     public void setRecyclerViewEditableAdapter() {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
         adapter = new RecyclerViewEditableAdapter(new ArrayList<Performance>(), getActivity(), MY_BUSKING_FRAGMENT_ID);
         recyclerView.setAdapter(adapter);

@@ -12,7 +12,7 @@
     <item
         android:id="@+id/action_search"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_filter_list_white_24px"
+        android:icon="@drawable/filter_outline"
         android:title="Search"
         app:showAsAction="always" />
 

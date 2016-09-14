@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -32,6 +33,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.User;
+import ambiesoft.start.model.utility.PasswordValidator;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.FirebaseUtility.saveUser;
@@ -61,20 +67,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int NON_REG_USER = 0;
     private static final int REG_USER = 1;
 
-    public EditText etEmail, etPwd, nameInput;
+    public EditText etEmail, etPwd, nameInput, etConPwd;
     public TextView tvLogon, tvSkip;
     public Button btRegister;
     public Button imageButton;
     public ImageView portraitView;
+    public CheckBox checkBox;
 
+    private PasswordValidator passwordValidator;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent intent;
     private int userType;
     private String emailInput;
     private String pwdInput;
+    private String confirmPwdInput;
     private String usernameInput;
     private Uri portraitUri;
+    private boolean confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +94,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         // disable the screen orientation sensor, so the whole activity will be in Portrait mode
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        passwordValidator = new PasswordValidator();
+        confirm = false;
+
         etEmail = (EditText) findViewById(R.id.registerEmailInput);
         etPwd = (EditText) findViewById(R.id.registerPwdInput);
+        etConPwd = (EditText) findViewById(R.id.registerPwdConfirm);
         nameInput = (EditText) findViewById(R.id.nameInput);
         btRegister = (Button) findViewById(R.id.registerButton);
         imageButton = (Button) findViewById(R.id.imageButton);
         tvSkip = (TextView) findViewById(R.id.tvRegisterSkip);
         tvLogon = (TextView) findViewById(R.id.tvTurnToLogOn);
         portraitView = (ImageView) findViewById(R.id.portraitView);
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
 
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +124,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirm = !confirm;
+            }
+        });
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -120,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     setupBundleToMainActivity(user, userType);
                     // Pass intent to MainActivity
                     startActivity(intent);
+                    finish();
                 } else {
                     // User is signed out
                     Log.i("System.out", "onAuthStateChanged:signed_out");
@@ -152,32 +175,53 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void createAccount(final String email, String password, final String username) {
-        if (email.trim().matches("") || password.trim().matches("") || username.trim().matches("")) {
+    private void createAccount(final String email, String password, String confirmPassword, final String username) {
+        if (email.trim().matches("") || password.trim().matches("") || confirmPassword.trim().matches("") || username.trim().matches("")) {
             showAlertBox("Error", "No empty input is allowed.", this);
         } else {
-            userType = REG_USER;
-            showProgressDialog(RegisterActivity.this);
-            mFirebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (!task.isSuccessful()) {
-                                showAlertBox("Error", "Registration is failed. Email already exists.", RegisterActivity.this);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
-                                setupFirebase(RegisterActivity.this);
-                                saveUser(new User(email, username));
-                                if (portraitUri != null) {
-                                    uploadUserPortrait(portraitUri, emailInput, RegisterActivity.this);
-                                }
-                            }
-                            dismissProgressDialog();
-                        }
-                    });
+            if (passwordValidator.validate(password)) {
+                if (password.trim().matches(confirmPassword.trim())) {
+                    if (confirm) {
+                        userType = REG_USER;
+                        showProgressDialog(RegisterActivity.this);
+                        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        // If sign in fails, display a message to the user. If sign in succeeds
+                                        // the auth state listener will be notified and logic to handle the
+                                        // signed in user can be handled in the listener.
+                                        if (!task.isSuccessful()) {
+                                            try {
+                                                throw task.getException();
+                                            } catch (FirebaseAuthUserCollisionException e) {
+                                                showAlertBox("Error", "Registered email already exists.", RegisterActivity.this);
+                                            } catch (FirebaseAuthWeakPasswordException e) {
+                                                showAlertBox("Error", "Password must contain 6 to 20 characters, and at least 1 digit and 1 uppercase character.", RegisterActivity.this);
+                                            }
+                                            catch (Exception e) {
+                                                showAlertBox("Error", "Registration is failed. Please try again.", RegisterActivity.this);
+                                            }
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
+                                            setupFirebase(RegisterActivity.this);
+                                            saveUser(new User(email, username));
+                                            if (portraitUri != null) {
+                                                uploadUserPortrait(portraitUri, emailInput, RegisterActivity.this);
+                                            }
+                                        }
+                                        dismissProgressDialog();
+                                    }
+                                });
+                    } else {
+                        showAlertBox("Error", "You must read and agree on the Busking Guidelines 2011 issued by City of Melbourne before registration.", this);
+                    }
+                } else {
+                    showAlertBox("Error", "Password and confirm password are not matching.", this);
+                }
+            } else {
+                showAlertBox("Error", "Password must contain 6 to 20 characters, and at least 1 digit and 1 uppercase character.", this);
+            }
         }
     }
 
@@ -188,8 +232,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 hideSoftKeyboard(RegisterActivity.this);
                 emailInput = etEmail.getText().toString().trim();
                 pwdInput = etPwd.getText().toString().trim();
+                confirmPwdInput = etConPwd.getText().toString().trim();
                 usernameInput = nameInput.getText().toString().trim();
-                createAccount(emailInput, pwdInput, usernameInput);
+                createAccount(emailInput, pwdInput, confirmPwdInput, usernameInput);
                 break;
             case R.id.imageButton:
                 hideSoftKeyboard(RegisterActivity.this);

@@ -11,6 +11,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="terms_and_conditions">I ACCEPT and AGREE to all of the terms and conditions in the <u>Busking Guidelines 2011</u> issued by City of Melbourne.</string>
+
     <string-array name="category_array">
         <item>Instruments</item>
         <item>Singing</item>

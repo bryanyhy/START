@@ -106,14 +106,6 @@
         custom:pb_textComplete="@string/Success"
         custom:pb_textProgress="@string/Loading" />
 
-    <Button
-        android:layout_width="310dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/logingoogle"
-        android:id="@+id/googleSignInButton"
-        android:layout_gravity="center_horizontal" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -141,3 +133,11 @@
     </LinearLayout>
 
 </LinearLayout>
+
+<!--<Button-->
+<!--android:layout_width="310dp"-->
+<!--android:layout_height="50dp"-->
+<!--android:layout_marginTop="15dp"-->
+<!--android:background="@drawable/logingoogle"-->
+<!--android:id="@+id/googleSignInButton"-->
+<!--android:layout_gravity="center_horizontal" />-->

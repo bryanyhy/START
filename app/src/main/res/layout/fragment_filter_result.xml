@@ -31,7 +31,44 @@
             android:hint="Like: Guitar/Busker Name/Location"
             android:id="@+id/keywordInput"
             android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColor" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/buttonText"
+            android:text="Keywords in description"
+            android:id="@+id/descTextView" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Like: Guitar/Busker Name/Location"
+            android:id="@+id/descInput"
+            android:backgroundTint="@color/colorTint"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColor" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/buttonText"
+            android:text="Keywords in location"
+            android:id="@+id/locTextView" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Like: Little Bourke, Flinder"
+            android:id="@+id/locInput"
+            android:backgroundTint="@color/colorTint"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColor" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+
 import ambiesoft.start.R;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.presenter.fragment.GoogleMapFragmentPresenter;
@@ -27,6 +29,7 @@ public class GoogleMapFragment extends Fragment {
 
     private FloatingActionButton fab;
     private AppBarLayout abl;
+    private NavigationTabBar ntb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +53,9 @@ public class GoogleMapFragment extends Fragment {
         // collapse the app bar layout
         abl = ((MainActivity) getActivity()).getAppBarLayout();
         abl.setExpanded(false);
+
+        ntb = ((MainActivity) getActivity()).getNavigationTabBar();
+        ntb.hide();
 
         if (presenter == null) {
             presenter = new GoogleMapFragmentPresenter(this);

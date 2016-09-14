@@ -16,16 +16,33 @@ public class FilterResult {
     private static ArrayList<Performance> filteredPerformances;
 
     // Method to do advanced filtering on keyword, category and time
-    public static ArrayList<Performance> advancedFilteringOnPerformanceList(ArrayList<Performance> resultList, String filterKeyword, String filterCategory, String filterTime) throws ParseException {
+    public static ArrayList<Performance> advancedFilteringOnPerformanceList(ArrayList<Performance> resultList, String filterNameKeyword, String filterDescKeyword,
+                                                                            String filterLocKeyword, String filterCategory, String filterTime) throws ParseException {
         // initialize the filtered result ArrayList
         filteredPerformances = new ArrayList<>();
         // for every performance object in the list we retrieved from FirebaseUtility
         for (Performance performance: resultList) {
             boolean valid = true;
-            // check if there is filter keyword
-            if (filterKeyword != null) {
+            // check if there is name filter keyword
+            if (filterNameKeyword != null) {
                 // check if keyword doesn't match performance's name
-                if (performance.getName().toLowerCase().indexOf(filterKeyword.toLowerCase()) == -1) {
+                if (performance.getName().toLowerCase().indexOf(filterNameKeyword.toLowerCase()) == -1) {
+                    // if true, the performance object is not valid for the filtering result
+                    valid = false;
+                }
+            }
+            // check if there is desc filter keyword
+            if (filterDescKeyword != null) {
+                // check if keyword doesn't match performance's name
+                if (performance.getDesc().toLowerCase().indexOf(filterDescKeyword.toLowerCase()) == -1) {
+                    // if true, the performance object is not valid for the filtering result
+                    valid = false;
+                }
+            }
+            // check if there is loc filter keyword
+            if (filterLocKeyword != null) {
+                // check if keyword doesn't match performance's name
+                if (performance.getAddress().toLowerCase().indexOf(filterLocKeyword.toLowerCase()) == -1) {
                     // if true, the performance object is not valid for the filtering result
                     valid = false;
                 }

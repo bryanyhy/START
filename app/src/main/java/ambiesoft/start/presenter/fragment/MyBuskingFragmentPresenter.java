@@ -127,6 +127,9 @@ public class MyBuskingFragmentPresenter {
 
     // for setting the recycler view adapter
     public void setRecyclerViewEditableAdapter() {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this.view.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        view.recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
         view.adapter = new RecyclerViewEditableAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);

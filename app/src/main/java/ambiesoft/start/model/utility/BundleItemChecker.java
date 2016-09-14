@@ -37,6 +37,39 @@ public class BundleItemChecker {
         }
     }
 
+    // check if there is name keyword in bundle
+    public static String getFilterNameKeywordFromBundle(Bundle bundle) {
+        if (bundle.containsKey("nameKeywordFromFilter")) {
+            // return keyword from bundle
+            return bundle.getString("nameKeywordFromFilter");
+        } else {
+            // return null if no keyword in bundle
+            return null;
+        }
+    }
+
+    // check if there is desc keyword in bundle
+    public static String getFilterDescKeywordFromBundle(Bundle bundle) {
+        if (bundle.containsKey("descKeywordFromFilter")) {
+            // return keyword from bundle
+            return bundle.getString("descKeywordFromFilter");
+        } else {
+            // return null if no keyword in bundle
+            return null;
+        }
+    }
+
+    // check if there is loc keyword in bundle
+    public static String getFilterLocKeywordFromBundle(Bundle bundle) {
+        if (bundle.containsKey("locKeywordFromFilter")) {
+            // return keyword from bundle
+            return bundle.getString("locKeywordFromFilter");
+        } else {
+            // return null if no keyword in bundle
+            return null;
+        }
+    }
+
     // check if there is category in bundle
     public static String getFilterCategoryFromBundle(Bundle bundle) {
         if (bundle.containsKey("categoryFromFilter")) {
