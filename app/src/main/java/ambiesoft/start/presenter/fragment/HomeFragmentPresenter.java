@@ -43,6 +43,7 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterLocKeywor
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterNameKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
+import static ambiesoft.start.model.utility.DateFormatter.sortPerformanceListByDateTimeAndDuration;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
 import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
@@ -175,13 +176,16 @@ public class HomeFragmentPresenter {
                             if (filteredPerformances.size() == 0) {
                                 // if no, show alertbox
                                 showAlertBox("Sorry", "There is no matching result on " + selectedDate + ".", (Activity) view.getContext());
+                            } else {
+                                sortPerformanceListByDateTimeAndDuration(filteredPerformances);
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        // if only date is the filter parameters, the final result is what we retrieved from FirebaseUtility
+                        // if only date is the filter parameters, the final result is what we retrieved from Firebase
                         filteredPerformances = performances;
+                        sortPerformanceListByDateTimeAndDuration(filteredPerformances);
                     }
                 } else {
                     // if no matching result is found from FirebaseUtility

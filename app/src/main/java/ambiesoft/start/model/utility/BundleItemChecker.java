@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.model.dataclass.Artwork;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
 
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
 
@@ -151,6 +152,16 @@ public class BundleItemChecker {
         if (bundle.containsKey("performanceListFromPreviousFragment")) {
             // return the object from bundle
             return bundle.getParcelableArrayList("performanceListFromPreviousFragment");
+        } else {
+            // return null if no object in bundle
+            return null;
+        }
+    }
+
+    public static User getSelectedBuskerFromBundle(Bundle bundle) {
+        if (bundle.containsKey("buskerDetailFromPreviousFragment")) {
+            // return the object from bundle
+            return bundle.getParcelable("buskerDetailFromPreviousFragment");
         } else {
             // return null if no object in bundle
             return null;

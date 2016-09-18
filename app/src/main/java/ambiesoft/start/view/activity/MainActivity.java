@@ -1,6 +1,8 @@
 package ambiesoft.start.view.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.Image;
@@ -8,10 +10,12 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.util.ArrayList;
 
@@ -29,11 +36,16 @@ import ambiesoft.start.presenter.fragment.HeatMapFragmentPresenter;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Main activity for the tab bar and navigation bar, and also the content frame for showing all fragments
  */
 public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener, View.OnTouchListener {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "0s4cAM3C26UFDVI47BWLuc2VZ";
+    private static final String TWITTER_SECRET = "TDrjsuV65t9IyCzGEr3DgPW0RBJLXDmcFpeGlCtHKu9ZiUeMYn";
 
     private static final int NON_REG_USER = 0;
     private static final int REG_USER = 1;
@@ -54,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // for twitter
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig), new TweetComposer());
+
         setContentView(R.layout.activity_main);
 //        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // disable the screen orientation sensor, so the whole activity will be in Portrait mode
@@ -153,6 +170,13 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
             );
             models.add(
                     new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.twitter),
+                            Color.parseColor(colors[2]))
+                            .title(tabBarItemName[5])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
                             getResources().getDrawable(R.drawable.ic_menu_5),
                             Color.parseColor(colors[4]))
                             .title(tabBarItemName[4])
@@ -175,8 +199,15 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
             );
             models.add(
                     new NavigationTabBar.Model.Builder(
-                            getResources().getDrawable(R.drawable.ic_menu_3),
+                            getResources().getDrawable(R.drawable.twitter),
                             Color.parseColor(colors[2]))
+                            .title(tabBarItemName[5])
+                            .build()
+            );
+            models.add(
+                    new NavigationTabBar.Model.Builder(
+                            getResources().getDrawable(R.drawable.ic_menu_3),
+                            Color.parseColor(colors[1]))
                             .title(tabBarItemName[2])
                             .build()
             );
@@ -262,5 +293,20 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         imm.hideSoftInputFromWindow((null == getCurrentFocus()) ?
                 null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        Fragment fragment = getFragmentManager().findFragmentByTag("TwitterFragment");
+//        if (fragment != null) {
+//            fragment.onActivityResult(requestCode, resultCode, data);
+//        }
+//        else Log.d("Twitter", "fragment is null");
+        Fragment fragment = getFragmentManager().findFragmentByTag("PostTweetFragment");
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+        else Log.d("Twitter", "fragment is null");
     }
 }

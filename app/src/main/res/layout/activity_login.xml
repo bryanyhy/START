@@ -34,7 +34,6 @@
             android:layout_marginTop="420dp"
             android:textColor="@color/buttonText"
             android:text="I  AM  BUSKER"
-            android:id="@+id/textView"
             android:textSize="30dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />

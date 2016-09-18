@@ -18,6 +18,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,6 +98,7 @@ public class FirebaseUtility {
 //            }
             tempPerformanceList.add(performance);
         }
+
         // return the ArrayList
         return tempPerformanceList;
     }

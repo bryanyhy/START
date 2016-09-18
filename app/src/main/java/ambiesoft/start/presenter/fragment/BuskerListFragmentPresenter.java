@@ -1,16 +1,10 @@
 package ambiesoft.start.presenter.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -19,45 +13,40 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import ambiesoft.start.R;
-import ambiesoft.start.model.dataclass.Performance;
-import ambiesoft.start.model.utility.RecyclerViewAdapter;
+import ambiesoft.start.model.dataclass.User;
+import ambiesoft.start.model.utility.RecyclerViewBuskerAdapter;
 import ambiesoft.start.model.utility.RecyclerViewEditableAdapter;
 import ambiesoft.start.view.activity.MainActivity;
-import ambiesoft.start.view.fragment.CreatePerformanceFragment;
-import ambiesoft.start.view.fragment.FilterResultFragment;
-import ambiesoft.start.view.fragment.MyBuskingFragment;
+import ambiesoft.start.view.fragment.BuskerListFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
-import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
 import static ambiesoft.start.model.utility.DateFormatter.sortPerformanceListByDateTimeAndDuration;
-import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
+import static ambiesoft.start.model.utility.FirebaseUtility.getUserListFromFirebase;
 import static ambiesoft.start.model.utility.FirebaseUtility.setupFirebase;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
 
 /**
- * Created by Bryanyhy on 30/8/2016.
+ * Created by Bryanyhy on 18/9/2016.
  */
-public class MyBuskingFragmentPresenter {
+public class BuskerListFragmentPresenter {
 
-    private static final int MY_BUSKING_FRAGMENT_ID = 2;
-    private final static String DB_URL = "https://start-c9adf.firebaseio.com/performance";
+    private static final int BUSKING_LIST_FRAGMENT_ID = 3;
+    private final static String DB_URL = "https://start-c9adf.firebaseio.com/user";
 
-    private MyBuskingFragment view;
-    private ArrayList<Performance> performances;
+    private BuskerListFragment view;
+    private ArrayList<User> buskers;
     private Firebase firebase;
 
-    public MyBuskingFragmentPresenter(MyBuskingFragment view) {
+    public BuskerListFragmentPresenter(BuskerListFragment view) {
         this.view = view;
-        // initialize performance ArrayList
-        performances = new ArrayList<>();
+        // initialize busker ArrayList
+        buskers = new ArrayList<>();
         ((MainActivity) view.getActivity()).getNavigationTabBar().show();
         checkNetworkAvailability();
     }
@@ -83,25 +72,22 @@ public class MyBuskingFragmentPresenter {
     public void setFireBaseListener() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
-        // get data that match the specific date from Firebase
-        Query queryRef = firebase.orderByChild("email").equalTo(((MainActivity) view.getActivity()).getUserEmail());
         // value event listener that is triggered everytime data in Firebase's Performance root is updated
         // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase
-        queryRef.addValueEventListener(new ValueEventListener() {
+        firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
                 Log.i("System.out","Firebase has update");
                 // initialize performance ArrayList
-                performances = new ArrayList<>();
+                buskers = new ArrayList<>();
                 // get all performance detail and save them into Performance ArrayList as Performance Object
-                performances = getPerformanceListFromFirebase(ds);
+                buskers = getUserListFromFirebase(ds);
                 // check if any matching result is retrieved
-                if (performances.size() != 0) {
-                    sortPerformanceListByDateTimeAndDuration(performances);
-                    Collections.reverse(performances);
+                if (buskers.size() != 0) {
+
                 } else {
                     // if no matching result is found from Firebase
-                    showAlertBox("Sorry", "There is no performance created yet.", (Activity) view.getContext());
+                    showAlertBox("Sorry", "There is no busker yet.", (Activity) view.getContext());
                 }
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -133,33 +119,9 @@ public class MyBuskingFragmentPresenter {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         view.recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
-        view.adapter = new RecyclerViewEditableAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
+        view.adapter = new RecyclerViewBuskerAdapter(buskers, view.getActivity(), BUSKING_LIST_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    public void imageButtonSelection(ImageButton imageButton){
-        int id = imageButton.getId();
-
-        if (id == R.id.createNewButton) {
-            Fragment createPerformanceFragment = new CreatePerformanceFragment();
-            // create bundle, add all performance information into it
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("performanceListFromPreviousFragment", performances);
-            createPerformanceFragment.setArguments(bundle);
-            // pass bundle to the new createPerformanceFragment
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
-        }
-    }
-
-    public void actionBarItemSelection(MenuItem item) {
-        int id = item.getItemId();
-        // if search button is clicked
-        if (id == R.id.action_info) {
-            String title1 = "<b><u>Create Performance</u></b>";
-            String title2 = "<b><u>Edit/Delete Performance</u></b>";
-            showAlertBoxWithUnderline("Info", Html.fromHtml(title1 + "<br>Click on the New Busking button to create a performance. <br><br>" +
-                    title2 + "<br>Swipe on the performance list item to edit or delete."), view.getActivity());
-        }
-    }
 }

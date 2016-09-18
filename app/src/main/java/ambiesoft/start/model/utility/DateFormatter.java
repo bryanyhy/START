@@ -2,10 +2,16 @@ package ambiesoft.start.model.utility;
 
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+
+import ambiesoft.start.model.dataclass.Performance;
 
 /**
  * Created by Bryanyhy on 20/8/2016.
@@ -151,6 +157,42 @@ public class DateFormatter {
             // In all other case, time is clashed
             return true;
         }
+    }
+
+    public static void sortPerformanceListByDateTimeAndDuration(ArrayList<Performance> pList) {
+        Collections.sort(pList, new Comparator<Performance>() {
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            @Override
+            public int compare(Performance o1, Performance o2) {
+                try {
+                    int dComp = sdf.parse(o1.getDate()).compareTo(sdf.parse(o2.getDate()));
+                    if (dComp != 0) {
+                        return dComp;
+                    } else {
+                        int stComp = o1.getsTime().compareTo(o2.getsTime());
+                        if (stComp != 0) {
+                            return stComp;
+                        } else {
+                            Integer a = o1.getDuration();
+                            Integer b = o2.getDuration();
+                            return a.compareTo(b);
+                        }
+                    }
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+//
+//
+//                int stComp = o1.getsTime().compareTo(o2.getsTime());
+//                if (stComp != 0) {
+//                    return stComp;
+//                } else {
+//                    Integer a = o1.getDuration();
+//                    Integer b = o2.getDuration();
+//                    return a.compareTo(b);
+//                }
+            }
+        });
     }
 }
 

@@ -14,12 +14,15 @@ import com.google.firebase.auth.FirebaseUser;
 import ambiesoft.start.R;
 import ambiesoft.start.presenter.fragment.GoogleMapFragmentPresenter;
 import ambiesoft.start.view.activity.MainActivity;
+import ambiesoft.start.view.fragment.BuskerListFragment;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.MoreFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
 import ambiesoft.start.view.fragment.ProfileFragment;
+import ambiesoft.start.view.fragment.TwitterFragment;
+import ambiesoft.start.view.fragment.TwitterResultListFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.NetworkAvailability.isNetworkAvailable;
@@ -58,13 +61,14 @@ public class MainActivityPresenter {
             if (model.getTitle().matches(tabBarItemName[0])) {
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
             } else if (model.getTitle().matches(tabBarItemName[1])) {
-                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
-                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
-                            .replace(R.id.content_frame, new ProfileFragment()).commit();
-                } else {
-                    view.getFragmentManager().beginTransaction()
-                            .replace(R.id.content_frame, new ProfileFragment()).commit();
-                }
+                showAlertBox("Sorry", "Functions will be added in next version.", view);
+//                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+//                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+//                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+//                } else {
+//                    view.getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+//                }
             } else if (model.getTitle().matches(tabBarItemName[2])) {
                 if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                     view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
@@ -74,11 +78,30 @@ public class MainActivityPresenter {
                             .replace(R.id.content_frame, new MyBuskingFragment()).commit();
                 }
             } else if (model.getTitle().matches(tabBarItemName[3])) {
-                showAlertBox("Sorry", "Functions will be added in next version.", view);
-            } else if (model.getTitle().matches(tabBarItemName[4])) {
 //                showAlertBox("Sorry", "Functions will be added in next version.", view);
-                view.getFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, new MoreFragment()).commit();
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new BuskerListFragment()).commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new BuskerListFragment()).commit();
+                }
+            } else if (model.getTitle().matches(tabBarItemName[4])) {
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new MoreFragment()).commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new MoreFragment()).commit();
+                }
+            } else if (model.getTitle().matches(tabBarItemName[5])) {
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new TwitterFragment(), "TwitterFragment").commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new TwitterFragment(), "TwitterFragment").commit();
+                }
             }
         } else {
             showAlertBox("Alert", "There is no internet connection. All functions are disabled.", view);

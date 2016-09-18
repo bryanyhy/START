@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,9 +16,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.utility.MovingImageView;
+import io.fabric.sdk.android.Fabric;
 
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgressDialog;
 import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDialog;
@@ -46,6 +50,7 @@ public class LogInActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();

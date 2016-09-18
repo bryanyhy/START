@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ambiesoft.start.view.fragment.PostTweetFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="match_parent" >
+
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="5dp"
+            app:mtf_labelColor="@color/theme1"
+            app:mtf_cardCollapsedHeight="4dp"
+            app:mtf_image="@drawable/ic_mail"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tweet Content"
+                android:singleLine="true"
+                android:textColor="@color/theme1"
+                android:textColorHint="@color/buttonText"
+                android:textSize="15sp"
+                android:id="@+id/tweetContent"
+                />
+        </com.github.florent37.materialtextfield.MaterialTextField>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Photo to upload                          "
+                android:textColor="@color/theme4"
+                android:id="@+id/textView4"
+                android:textSize="18dp" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_choosepic"
+                android:id="@+id/imageButton" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:textColor="@color/buttonText"
+            android:background="@color/theme5"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="Post"
+            android:id="@+id/postTweetButton" />
+
+    </LinearLayout>
+</LinearLayout>
