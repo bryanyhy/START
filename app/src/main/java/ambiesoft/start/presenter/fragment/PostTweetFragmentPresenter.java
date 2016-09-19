@@ -12,7 +12,9 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
 
+import ambiesoft.start.R;
 import ambiesoft.start.view.fragment.PostTweetFragment;
+import ambiesoft.start.view.fragment.TwitterResultListFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 
@@ -99,6 +101,11 @@ public class PostTweetFragmentPresenter {
         catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    public void back() {
+        view.getFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
     }
 
 }

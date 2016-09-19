@@ -22,7 +22,7 @@ public class PostTweetFragment extends Fragment {
     private PostTweetFragmentPresenter presenter;
 
     public EditText tweetContent;
-    public Button imageButton, postTweetButton;
+    public Button imageButton, postTweetButton, backButton;
     public ImageView imageView;
 
     public PostTweetFragment() {
@@ -37,6 +37,7 @@ public class PostTweetFragment extends Fragment {
         imageButton = (Button) view.findViewById(R.id.imageButton);
         postTweetButton = (Button) view.findViewById(R.id.postTweetButton);
         imageView = (ImageView) view.findViewById(R.id.imageView);
+        backButton = (Button) view.findViewById(R.id.backButton);
         return view;
     }
 
@@ -58,6 +59,13 @@ public class PostTweetFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 presenter.postTweet();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                presenter.back();
             }
         });
     }

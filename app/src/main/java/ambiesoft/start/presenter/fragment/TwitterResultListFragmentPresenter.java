@@ -88,7 +88,7 @@ public class TwitterResultListFragmentPresenter {
 
     public void postTweet() {
         view.getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new PostTweetFragment(), "PostTweetFragment").addToBackStack(null).commit();
+                .replace(R.id.content_frame, new PostTweetFragment(), "PostTweetFragment").commit();
     }
 
     public void refreshTwitterList() {

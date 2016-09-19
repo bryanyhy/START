@@ -97,10 +97,10 @@ public class MainActivityPresenter {
             } else if (model.getTitle().matches(tabBarItemName[5])) {
                 if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                     view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
-                            .replace(R.id.content_frame, new TwitterFragment(), "TwitterFragment").commit();
+                            .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").commit();
                 } else {
                     view.getFragmentManager().beginTransaction()
-                            .replace(R.id.content_frame, new TwitterFragment(), "TwitterFragment").commit();
+                            .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").commit();
                 }
             }
         } else {
