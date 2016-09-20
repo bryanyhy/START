@@ -30,13 +30,14 @@ import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDi
  * Created by Zelta on 31/08/16.
  */
 public class LogInActivity extends AppCompatActivity{
-
+//
     private static final int NON_REG_USER = 0;
-
+//
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private Intent intent;
+    private FirebaseUser mFirebaseUser;
+//
+//    private Intent in;
 
     private static final String TAG = "Welcome Page";
 
@@ -52,8 +53,16 @@ public class LogInActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
+//
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        //REALLY IMPORTANT
+        // Sign Out every time application start
+        mFirebaseAuth.signOut();
+        // must be null as we signed out
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        // For passing bundle from activity to activity
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -61,9 +70,17 @@ public class LogInActivity extends AppCompatActivity{
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    setupBundleToMainActivity(user, userType);
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("email", "Anonymous");
+
+                    bundle.putInt("userType", userType);
+//                    in.putExtras(bundle);
+                    //setupBundleToMainActivity(user, userType);
                     // Pass intent to MainActivity
-                    startActivity(intent);
+                    Intent in = new Intent(LogInActivity.this, MainActivity.class);
+                    in.putExtras(bundle);
+                    startActivity(in);
                     finish();
                 } else {
                     // User is signed out
@@ -85,8 +102,7 @@ public class LogInActivity extends AppCompatActivity{
 //                addVerticalMoveToUp().
 //                start();
 
-        // For passing bundle from activity to activity
-        intent = new Intent(LogInActivity.this, MainActivity.class);
+
 
         image = (MovingImageView) findViewById(R.id.imageBg);
         image.getMovingAnimator().addListener(new Animator.AnimatorListener() {
@@ -112,38 +128,38 @@ public class LogInActivity extends AppCompatActivity{
         });
     }
 
-    public void clickImage(View v) {
-        if (toggleState) {
-            image.getMovingAnimator().pause();
-            Toast.makeText(this, "Pause", Toast.LENGTH_SHORT).show();
-        } else {
-            image.getMovingAnimator().resume();
-            Toast.makeText(this, "Resume", Toast.LENGTH_SHORT).show();
-        }
-        toggleState = !toggleState;
-    }
+//    public void clickImage(View v) {
+//        if (toggleState) {
+//            image.getMovingAnimator().pause();
+//            Toast.makeText(this, "Pause", Toast.LENGTH_SHORT).show();
+//        } else {
+//            image.getMovingAnimator().resume();
+//            Toast.makeText(this, "Resume", Toast.LENGTH_SHORT).show();
+//        }
+//        toggleState = !toggleState;
+//    }
 
-    public void clickTitle(View v) {
-        pos = (pos + 1) >= imageList.length ? 0 : pos + 1;
-        image.setImageResource(imageList[pos]);
-        toggleCustomMovement = true;
-        Toast.makeText(this, "Next picture", Toast.LENGTH_SHORT).show();
-    }
+//    public void clickTitle(View v) {
+//        pos = (pos + 1) >= imageList.length ? 0 : pos + 1;
+//        image.setImageResource(imageList[pos]);
+//        toggleCustomMovement = true;
+//        Toast.makeText(this, "Next picture", Toast.LENGTH_SHORT).show();
+//    }
 
-    public void clickText(View v) {
-        if(toggleCustomMovement) {
-            image.getMovingAnimator().addCustomMovement().addDiagonalMoveToDownRight().addHorizontalMoveToLeft().addDiagonalMoveToUpRight()
-                    .addVerticalMoveToDown().addHorizontalMoveToLeft().addVerticalMoveToUp().start();
-            Toast.makeText(this, "Custom movement", Toast.LENGTH_SHORT).show();
-        } else {
-            image.getMovingAnimator().clearCustomMovement();
-            Toast.makeText(this, "Default movement", Toast.LENGTH_SHORT).show();
-        }
-        toggleCustomMovement = !toggleCustomMovement;
-    }
+//    public void clickText(View v) {
+//        if(toggleCustomMovement) {
+//            image.getMovingAnimator().addCustomMovement().addDiagonalMoveToDownRight().addHorizontalMoveToLeft().addDiagonalMoveToUpRight()
+//                    .addVerticalMoveToDown().addHorizontalMoveToLeft().addVerticalMoveToUp().start();
+//            Toast.makeText(this, "Custom movement", Toast.LENGTH_SHORT).show();
+//        } else {
+//            image.getMovingAnimator().clearCustomMovement();
+//            Toast.makeText(this, "Default movement", Toast.LENGTH_SHORT).show();
+//        }
+//        toggleCustomMovement = !toggleCustomMovement;
+//    }
 
     public void clickBuskerText(View v){
-        Intent intent = new Intent(getApplicationContext(), LogOnActivity.class);
+        Intent intent = new Intent(LogInActivity.this, LogOnActivity.class);
         startActivity(intent);
     }
 
@@ -169,22 +185,37 @@ public class LogInActivity extends AppCompatActivity{
                 });
     }
 
+    //setting auth listener
     @Override
-    protected void onStop() {
-        super.onStop();
-        if(image != null)
-            image.getMovingAnimator().cancel();
+    public void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
     }
 
-    // setup the content in intent send to MainActivity
-    public void setupBundleToMainActivity(FirebaseUser user, int userType) {
-        if (user != null) {
-            Bundle bundle = new Bundle();
-
-            bundle.putString("email", "Anonymous");
-
-            bundle.putInt("userType", userType);
-            intent.putExtras(bundle);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if(image != null)
+//            image.getMovingAnimator().cancel();
+//    }
+
+//     setup the content in intent send to MainActivity
+//    public void setupBundleToMainActivity(FirebaseUser user, int userType) {
+//        if (user != null) {
+//            Bundle bundle = new Bundle();
+//
+//            bundle.putString("email", "Anonymous");
+//
+//            bundle.putInt("userType", userType);
+//            in.putExtras(bundle);
+//        }
+//    }
 }

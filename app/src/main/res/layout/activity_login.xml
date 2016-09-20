@@ -13,8 +13,8 @@
             android:id="@+id/imageBg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="clickTitle"
+
+
             android:src="@drawable/moving_pica"
             app:miv_load_on_create="true"
             app:miv_max_relative_size="3.0"
@@ -41,10 +41,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:gravity="center_horizontal"
 
-            android:layout_marginTop="80dp"
+            android:gravity="center_horizontal"
+            android:onClick="clickFanText"
+            android:layout_marginTop="380dp"
             android:textColor="@color/buttonText"
             android:text="I  AM  FAN"
             android:id="@+id/text2"

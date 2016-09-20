@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     private NavigationTabBar navigationTabBar;
     private NestedScrollView nsv;
     private FrameLayout fl;
+
 
     private String email;
     private int userType;
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         fab = (FloatingActionButton) findViewById(R.id.fab);
         backdrop = (ImageView) findViewById(R.id.backdrop);
         fab.hide();
+
 
         abl = (AppBarLayout) findViewById(R.id.appbar);
         nsv = (NestedScrollView) findViewById(R.id.content_frame);
@@ -154,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         navigationTabBar = (NavigationTabBar) findViewById(R.id.bottomBar);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         if (userType == NON_REG_USER) {
+
             models.add(
                     new NavigationTabBar.Model.Builder(
                             getResources().getDrawable(R.drawable.ic_menu_1),
@@ -183,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
                             .build()
             );
         } else {
+
             models.add(
                     new NavigationTabBar.Model.Builder(
                             getResources().getDrawable(R.drawable.ic_menu_1),
