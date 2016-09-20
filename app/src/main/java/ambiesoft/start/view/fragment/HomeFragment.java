@@ -22,6 +22,7 @@ import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 import java.util.ArrayList;
 
 import ambiesoft.start.R;
+import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.presenter.fragment.HomeFragmentPresenter;
@@ -97,7 +98,7 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
-        adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), HOME_FRAGMENT_ID);
+        adapter = new RecyclerViewAdapter(new ArrayList<Performance>(), getActivity(), HOME_FRAGMENT_ID, new User());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        Handler handler = new Handler();

@@ -2,6 +2,7 @@ package ambiesoft.start.view.activity;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -53,9 +54,12 @@ public class LogInActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-//
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
+
+        // disable the screen orientation sensor, so the whole activity will be in Portrait mode
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
         //REALLY IMPORTANT
         // Sign Out every time application start
         mFirebaseAuth.signOut();

@@ -24,6 +24,7 @@ import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
+import ambiesoft.start.view.fragment.ProfileFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
@@ -31,6 +32,7 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromB
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedBuskerFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 import static ambiesoft.start.model.utility.FilterResult.advancedFilteringOnPerformanceList;
 import static ambiesoft.start.model.utility.FirebaseUtility.getPerformanceListFromFirebase;
@@ -50,6 +52,7 @@ public class PerformanceDetailFragmentPresenter {
     private ArrayList<User> users;
 
     private Performance selectedPerformance;
+    private User selectedBusker;
     private int previousFragmentID;
     private String filterDate;
     private String filterKeyword;
@@ -70,6 +73,7 @@ public class PerformanceDetailFragmentPresenter {
             filterCategory = getFilterCategoryFromBundle(bundle);
             filterTime = getFilterTimeFromBundle(bundle);
             selectedPerformance = getSelectedPerformanceFromBundle(bundle);
+            selectedBusker = getSelectedBuskerFromBundle(bundle);
             previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
             // set the textView from data in bundle accordingly
             view.nameText.setText(selectedPerformance.getName());
@@ -112,7 +116,15 @@ public class PerformanceDetailFragmentPresenter {
             googleMapFragment.setArguments(bundle);
             // pass the bundle to a new googleMapFragment
             view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, googleMapFragment).remove(view).commit();
-        } else {
+        } else if (previousFragmentID == 3) {
+            Fragment profileFragment = new ProfileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("buskerDetailFromPreviousFragment", selectedBusker);
+            bundle.putInt("previousFragmentID", previousFragmentID);
+            profileFragment.setArguments(bundle);
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, profileFragment).remove(view).commit();
+        }
+        else {
             // show alertbox if the previous fragment ID is not valid
             showAlertBox("Error", "Unexpected error occurs. Please restart the app.", view.getActivity());
         }

@@ -44,6 +44,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class MainActivity extends AppCompatActivity implements HeatMapFragmentPresenter.OnHeadlineSelectedListener, View.OnTouchListener {
 
+    private static final int GALLERY_INTENT = 2;
+
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "0s4cAM3C26UFDVI47BWLuc2VZ";
     private static final String TWITTER_SECRET = "TDrjsuV65t9IyCzGEr3DgPW0RBJLXDmcFpeGlCtHKu9ZiUeMYn";
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
             navigationTabBar.setModelIndex(0, true);
         } else if (userType == REG_USER) {
             // default selection on the NTB, once application starts
-            navigationTabBar.setModelIndex(2, true);
+            navigationTabBar.setModelIndex(3, true);
         } else {
         }
     }
@@ -312,6 +314,14 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
-        else Log.d("Twitter", "fragment is null");
+
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
+            fragment = getFragmentManager().findFragmentByTag("EditProfileFragment");
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+
+
     }
 }

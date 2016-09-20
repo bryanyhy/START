@@ -61,14 +61,14 @@ public class MainActivityPresenter {
             if (model.getTitle().matches(tabBarItemName[0])) {
                 view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
             } else if (model.getTitle().matches(tabBarItemName[1])) {
-                showAlertBox("Sorry", "Functions will be added in next version.", view);
-//                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
-//                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
-//                            .replace(R.id.content_frame, new ProfileFragment()).commit();
-//                } else {
-//                    view.getFragmentManager().beginTransaction()
-//                            .replace(R.id.content_frame, new ProfileFragment()).commit();
-//                }
+//                showAlertBox("Sorry", "Functions will be added in next version.", view);
+                if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
+                    view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())
+                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+                } else {
+                    view.getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new ProfileFragment()).commit();
+                }
             } else if (model.getTitle().matches(tabBarItemName[2])) {
                 if (GoogleMapFragmentPresenter.getCurrentGoogleMapFragment() != null) {
                     view.getFragmentManager().beginTransaction().remove(GoogleMapFragmentPresenter.getCurrentGoogleMapFragment())

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 
@@ -39,13 +40,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ArrayList performanceList;
     public Activity activity;
     public int previousFragmentID;
+    public User selectedBusker;
     public Context context;
 
     // Constructor
-    public RecyclerViewAdapter(ArrayList list, Activity activity, int previousFragmentID) {
+    public RecyclerViewAdapter(ArrayList list, Activity activity, int previousFragmentID, User selectedBusker) {
         this.performanceList = list;
         this.activity = activity;
         this.previousFragmentID = previousFragmentID;
+        this.selectedBusker = selectedBusker;
     }
 
     @Override
@@ -85,7 +88,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                         performanceDetailFragment.setArguments(bundle);
                         // transact to performanceDetailFragment
                         activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
-                    } else {
+                    } else if (previousFragmentID == 3) {
+                        Fragment performanceDetailFragment = new PerformanceDetailFragment();
+                        // create bundle, with data added into it
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("performancesDetailFromPreviousFragment", performance);
+                        bundle.putParcelable("buskerDetailFromPreviousFragment", selectedBusker);
+                        bundle.putInt("previousFragmentID", previousFragmentID);
+                        performanceDetailFragment.setArguments(bundle);
+                        // transact to performanceDetailFragment
+                        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, performanceDetailFragment).commit();
+                    }
+                    else {
                     }
                 }
             });

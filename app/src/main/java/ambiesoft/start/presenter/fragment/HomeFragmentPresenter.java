@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import ambiesoft.start.R;
 import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
@@ -232,7 +233,7 @@ public class HomeFragmentPresenter {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         view.recyclerView.setLayoutManager(layoutManager);
         // adapter for recycler view, to get all performance result and show them in cardview
-        view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity(), HOME_FRAGMENT_ID);
+        view.adapter = new RecyclerViewAdapter(filteredPerformances, view.getActivity(), HOME_FRAGMENT_ID, new User());
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 //        Handler handler = new Handler();

@@ -111,6 +111,15 @@ public class FirebaseUtility {
         userRef.push().setValue(user);
     }
 
+    public static void updateUser(User user, String key) {
+        // create a firebase reference
+        com.firebase.client.Firebase ref = new com.firebase.client.Firebase(REF_LINK);
+        // the child of the root is performance
+        Log.i("System.out", "" + user.getKey());
+        com.firebase.client.Firebase userRef = ref.child("user").child(key);
+        userRef.setValue(user);
+    }
+
     // upload the portrait onto Firebase storage
     public static void uploadUserPortrait(Uri uri, String emailInput, final Activity activity) {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference();
@@ -154,10 +163,13 @@ public class FirebaseUtility {
         tempUserList = new ArrayList<>();
         // get all performance detail and save them into Performance ArrayList as Performance Object
         for (DataSnapshot dataSnapshot : ds.getChildren()) {
+            String key = dataSnapshot.getKey();
             String username = dataSnapshot.child("username").getValue().toString();
             String email = dataSnapshot.child("email").getValue().toString();
+            String category = dataSnapshot.child("category").getValue().toString();
+            String desc = dataSnapshot.child("desc").getValue().toString();
             User user;
-            user = new User(email, username);
+            user = new User(key, email, username, category, desc);
             tempUserList.add(user);
         }
         // return the ArrayList

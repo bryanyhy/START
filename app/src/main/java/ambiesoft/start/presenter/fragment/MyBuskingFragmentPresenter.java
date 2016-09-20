@@ -116,7 +116,7 @@ public class MyBuskingFragmentPresenter {
                 }, 100);
             }
 
-            // Handle FirebaseUtility error
+            // Handle Firebase error
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast toast = Toast.makeText(view.getContext(), firebaseError.toString(), Toast.LENGTH_SHORT);

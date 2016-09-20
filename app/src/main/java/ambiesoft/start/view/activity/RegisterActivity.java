@@ -205,7 +205,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
                                             setupFirebase(RegisterActivity.this);
-                                            saveUser(new User(email, username));
+                                            saveUser(new User(email, username, "No category yet", "No description yet"));
                                             if (portraitUri != null) {
                                                 uploadUserPortrait(portraitUri, emailInput, RegisterActivity.this);
                                             }

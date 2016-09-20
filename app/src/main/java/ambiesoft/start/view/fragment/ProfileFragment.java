@@ -6,15 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ambiesoft.start.R;
+import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.utility.RecyclerViewAdapter;
 import ambiesoft.start.presenter.fragment.ProfileFragmentPresenter;
 import ambiesoft.start.view.activity.MainActivity;
 
@@ -24,12 +33,15 @@ import ambiesoft.start.view.activity.MainActivity;
 public class ProfileFragment extends Fragment {
 
 
-    public TextView buskerName;
+    public TextView buskerName, buskerCategory, buskerDesc, editProfile;
     public ImageView portrait;
+    public LinearLayout buskerPerformance;
+    public RecyclerView recyclerView;
 
     private AppBarLayout abl;
 
     private ProfileFragmentPresenter presenter;
+    public RecyclerViewAdapter adapter;
 
     public ProfileFragment() {
     }
@@ -40,10 +52,13 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         buskerName = (TextView) view.findViewById(R.id.profileBuskerName);
+        buskerCategory = (TextView) view.findViewById(R.id.buskerCategory);
+        buskerDesc = (TextView) view.findViewById(R.id.buskerDesc);
+        buskerPerformance = (LinearLayout) view.findViewById(R.id.busker_per_content);
+        editProfile = (TextView) view.findViewById(R.id.editProfile);
+        recyclerView = (RecyclerView) view.findViewById(R.id.perRecyclerView);
         portrait = (ImageView) view.findViewById(R.id.profilePortrait);
-
         return view;
-        
     }
 
     @Override
@@ -65,6 +80,13 @@ public class ProfileFragment extends Fragment {
         if (presenter == null) {
             presenter = new ProfileFragmentPresenter(this);
         }
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                presenter.editProfile();
+            }
+        });
 
     }
 
