@@ -12,10 +12,17 @@ import ambiesoft.start.model.dataclass.Performance;
 
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDateFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterDescKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterLocKeywordFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getFilterNameKeywordFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterTimeFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getPerformanceListFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedArtworkFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedBuskerFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLatFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLngFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 import static org.junit.Assert.*;
 
@@ -45,10 +52,17 @@ public class BundleItemCheckerTest {
         assertEquals(expectedDateOutput, getFilterDateFromBundle(emptyBundle));
         // return null if the bundle has no specific key
         assertEquals(null, getFilterKeywordFromBundle(emptyBundle));
+        assertEquals(null, getFilterNameKeywordFromBundle(emptyBundle));
         assertEquals(null, getFilterCategoryFromBundle(emptyBundle));
+        assertEquals(null, getFilterDescKeywordFromBundle(emptyBundle));
+        assertEquals(null, getFilterLocKeywordFromBundle(emptyBundle));
         assertEquals(null, getFilterTimeFromBundle(emptyBundle));
         assertEquals(null, getSelectedPerformanceFromBundle(emptyBundle));
         assertEquals(null, getSelectedArtworkFromBundle(emptyBundle));
+        assertEquals(null, getSelectedLatFromBundle(emptyBundle));
+        assertEquals(null, getSelectedLngFromBundle(emptyBundle));
+        assertEquals(null, getPerformanceListFromBundle(emptyBundle));
+        assertEquals(null, getSelectedBuskerFromBundle(emptyBundle));
         // return -1 if the bundle has no fragmentID
         assertEquals(-1, getPreviousFragmentIDFromBundle(emptyBundle));
     }

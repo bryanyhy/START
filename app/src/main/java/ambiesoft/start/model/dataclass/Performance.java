@@ -24,6 +24,12 @@ public class Performance implements Parcelable {
 
     public Performance() {}
 
+    public Performance(String date, String sTime, int duration) {
+        this.date = date;
+        this.sTime = sTime;
+        this.duration = duration;
+    }
+
     public Performance(String key, String name, String category, String desc, String date, String sTime, String eTime, int duration, Double lat, Double lng, String address, String email) {
         this.key = key;
         this.name = name;

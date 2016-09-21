@@ -30,6 +30,9 @@ public class EditProfileFragmentPresenter {
     private EditProfileFragment view;
     private User selectedBusker;
     private Uri portraitUri;
+    private String username, category, desc;
+
+    public EditProfileFragmentPresenter() {}
 
     public EditProfileFragmentPresenter(EditProfileFragment view){
         this.view = view;
@@ -50,9 +53,9 @@ public class EditProfileFragmentPresenter {
     }
 
     public void saveChanges() {
-        String username = view.username.getText().toString();
-        String category = view.userCategory.getText().toString();
-        String desc = view.userDesc.getText().toString();
+        username = view.username.getText().toString();
+        category = view.userCategory.getText().toString();
+        desc = view.userDesc.getText().toString();
         if (validInput(username)) {
             User user = new User(selectedBusker.getEmail(), username, category, desc);
             updateUser(user, selectedBusker.getKey());
@@ -103,7 +106,15 @@ public class EditProfileFragmentPresenter {
         view.portrait.setImageURI(portraitUri);
     }
 
-//    // save the uri once image is selected by user from Gallery
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    //    // save the uri once image is selected by user from Gallery
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);

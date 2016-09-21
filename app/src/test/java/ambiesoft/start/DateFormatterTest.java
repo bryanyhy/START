@@ -4,13 +4,17 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import ambiesoft.start.model.dataclass.Performance;
 
 import static ambiesoft.start.model.utility.DateFormatter.checkIfTimeIsInBetween;
 import static ambiesoft.start.model.utility.DateFormatter.getEndingTimeForPerformance;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedDateWithLeadingZero;
 import static ambiesoft.start.model.utility.DateFormatter.getSelectedTimeWithLeadingZero;
 import static ambiesoft.start.model.utility.DateFormatter.getTodayDate;
+import static ambiesoft.start.model.utility.DateFormatter.sortPerformanceListByDateTimeAndDuration;
 import static org.junit.Assert.*;
 
 /**
@@ -95,12 +99,12 @@ public class DateFormatterTest {
         // test on date and time involving 2 dates
         boolean expectedOutput5 = checkIfTimeIsInBetween("04/09/2016", "00:31", "00:40", "03/09/2016", "23:00", "00:30");
         boolean expectedOutput6 = checkIfTimeIsInBetween("03/09/2016", "23:00", "00:30", "04/09/2016", "00:31", "00:40");
-        assertEquals(expectedOutput1, false);
-        assertEquals(expectedOutput2, false);
-        assertEquals(expectedOutput3, false);
-        assertEquals(expectedOutput4, false);
-        assertEquals(expectedOutput5, false);
-        assertEquals(expectedOutput6, false);
+        assertEquals(false, expectedOutput1);
+        assertEquals(false, expectedOutput2);
+        assertEquals(false, expectedOutput3);
+        assertEquals(false, expectedOutput4);
+        assertEquals(false, expectedOutput5);
+        assertEquals(false, expectedOutput6);
     }
 
     // return true if the desired time is in between or same as existing performance's time
@@ -119,14 +123,83 @@ public class DateFormatterTest {
         // test on date and time involving 2 dates, and is in between starting and ending time
         boolean expectedOutput8 = checkIfTimeIsInBetween("04/09/2016", "00:30", "00:40", "03/09/2016", "23:00", "01:00");
         boolean expectedOutput9 = checkIfTimeIsInBetween("03/09/2016", "23:50", "00:50", "03/09/2016", "23:00", "01:00");
-        assertEquals(expectedOutput1, true);
-        assertEquals(expectedOutput2, true);
-        assertEquals(expectedOutput3, true);
-        assertEquals(expectedOutput4, true);
-        assertEquals(expectedOutput5, true);
-        assertEquals(expectedOutput6, true);
-        assertEquals(expectedOutput7, true);
-        assertEquals(expectedOutput8, true);
-        assertEquals(expectedOutput9, true);
+        assertEquals(true, expectedOutput1);
+        assertEquals(true, expectedOutput2);
+        assertEquals(true, expectedOutput3);
+        assertEquals(true, expectedOutput4);
+        assertEquals(true, expectedOutput5);
+        assertEquals(true, expectedOutput6);
+        assertEquals(true, expectedOutput7);
+        assertEquals(true, expectedOutput8);
+        assertEquals(true, expectedOutput9);
+    }
+
+    @Test
+    public void testIfPerformanceInDifferentDateWillBeCorrectlySorted() {
+        // 3 performance on different date
+        Performance per1 = new Performance("05/09/2016", "16:00", 30);
+        Performance per2 = new Performance("03/09/2016", "16:00", 30);
+        Performance per3 = new Performance("04/09/2016", "16:00", 30);
+        // actual result arraylist
+        ArrayList<Performance> performances = new ArrayList<>();
+        // expected result arraylist
+        ArrayList<Performance> expectedPerformances = new ArrayList<>();
+        // testing
+        performances.add(per1);
+        performances.add(per2);
+        performances.add(per3);
+        // expected result
+        expectedPerformances.add(per2);
+        expectedPerformances.add(per3);
+        expectedPerformances.add(per1);
+        // method to test
+        sortPerformanceListByDateTimeAndDuration(performances);
+        assertEquals(expectedPerformances, performances);
+    }
+
+    @Test
+    public void testIfPerformanceInDifferentTimeWillBeCorrectlySorted() {
+        // 3 performance on different time
+        Performance per1 = new Performance("05/09/2016", "17:00", 30);
+        Performance per2 = new Performance("05/09/2016", "16:00", 30);
+        Performance per3 = new Performance("05/09/2016", "15:00", 30);
+        // actual result arraylist
+        ArrayList<Performance> performances = new ArrayList<>();
+        // expected result arraylist
+        ArrayList<Performance> expectedPerformances = new ArrayList<>();
+        // testing
+        performances.add(per1);
+        performances.add(per2);
+        performances.add(per3);
+        // expected result
+        expectedPerformances.add(per3);
+        expectedPerformances.add(per2);
+        expectedPerformances.add(per1);
+        // method to test
+        sortPerformanceListByDateTimeAndDuration(performances);
+        assertEquals(expectedPerformances, performances);
+    }
+
+    @Test
+    public void testIfPerformanceInDifferentDurationWillBeCorrectlySorted() {
+        // 3 performance on different time
+        Performance per1 = new Performance("05/09/2016", "17:00", 75);
+        Performance per2 = new Performance("05/09/2016", "17:00", 30);
+        Performance per3 = new Performance("05/09/2016", "17:00", 120);
+        // actual result arraylist
+        ArrayList<Performance> performances = new ArrayList<>();
+        // expected result arraylist
+        ArrayList<Performance> expectedPerformances = new ArrayList<>();
+        // testing
+        performances.add(per1);
+        performances.add(per2);
+        performances.add(per3);
+        // expected result
+        expectedPerformances.add(per2);
+        expectedPerformances.add(per1);
+        expectedPerformances.add(per3);
+        // method to test
+        sortPerformanceListByDateTimeAndDuration(performances);
+        assertEquals(expectedPerformances, performances);
     }
 }
