@@ -78,7 +78,9 @@ public class MoreFragment extends Fragment {
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertBox("Sorry", "Functions will be added in next version.", MoreFragment.this.getActivity());
+                Fragment accoutnFragment = new MyAccountFragment();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, accoutnFragment).addToBackStack(null).commit();
+
             }
         });
 

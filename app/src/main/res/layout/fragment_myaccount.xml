@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/buttonText"
+        android:text="Reset Password"
+        android:id="@+id/textView16"
+        android:textSize="20dp" />
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="5dp"
+        app:mtf_cardCollapsedHeight="4dp"
+        app:mtf_labelColor="@color/theme2"
+        app:mtf_image="@drawable/ic_pwd"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:singleLine="true"
+            android:textColor="@color/theme2"
+            android:textColorHint="@color/buttonText"
+            android:textSize="15sp"
+            android:id="@+id/resetPwdInput"
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="5dp"
+        app:mtf_cardCollapsedHeight="4dp"
+        app:mtf_labelColor="@color/theme2"
+        app:mtf_image="@drawable/ic_pwd"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:singleLine="true"
+            android:textColor="@color/theme2"
+            android:textColorHint="@color/buttonText"
+            android:textSize="15sp"
+            android:id="@+id/resetPwdConfirm"
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <Button
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:textColor="@color/buttonText"
+        android:background="@color/theme5"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Reset Password"
+        android:id="@+id/resetPwdButton" />
+
+    <Button
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:textColor="@color/buttonText"
+        android:background="@color/theme4"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Back"
+        android:id="@+id/resetBack" />
+
+</LinearLayout>
