@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -39,6 +40,7 @@ public class TwitterResultListFragment extends Fragment {
     public SwipeRefreshLayout swipeRefreshLayout;
 
     public TwitterResultListFragmentPresenter presenter;
+    private AppBarLayout abl;
 
     public TwitterResultListFragment() {
         // Required empty public constructor
@@ -57,6 +59,16 @@ public class TwitterResultListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.twitter_banner);
+
+        // extend the app bar layout
+        abl = ((MainActivity) getActivity()).getAppBarLayout();
+        abl.setExpanded(true, true);
+        abl.setActivated(true);
+
         // collapse the app bar layout
         AppBarLayout abl = ((MainActivity) getActivity()).getAppBarLayout();
         abl.setExpanded(false);

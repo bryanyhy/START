@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 
@@ -61,6 +62,10 @@ public class BuskerListFragment extends Fragment {
         navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
         navigationTabBar.show();
         navigationTabBar.setBehaviorEnabled(true);
+
+        //set backdrop image
+        ImageView banner = ((MainActivity) getActivity()).getBackdrop();
+        banner.setBackgroundResource(R.drawable.busker_banner);
 
         setRecyclerViewEditableAdapter();
         // hide the floating action button in main activity

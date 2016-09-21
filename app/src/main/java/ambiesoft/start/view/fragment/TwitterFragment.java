@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -21,6 +22,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import ambiesoft.start.R;
+import ambiesoft.start.view.activity.MainActivity;
 import io.fabric.sdk.android.Fabric;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
