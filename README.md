@@ -1,9 +1,11 @@
 # ST.ART Copyright@AmbieSoft
 
-ST.ART is an android app helping build a busker and busking community. 
+ST.ART is an android application to help building a busker and busking fan community in City of Melbourne.  
+This application only support Android version 6.0 Marshmallow (API 23) or above.
 
 - Iteration 1
-- Iteration 2 (Current Phase)
+- Iteration 2
+- Iteration 3 (Current Phase)
 
 ### Change log
 ****
@@ -97,6 +99,11 @@ Add posting Tweet function
 20 Sep 2016  
 Add busker list and its functions;  
 Add busker profile and its edit function  
+  
+3.4  
+21 Sep 2016  
+Add post tweet function for performance detail;  
+Fixed bugs in twitter list.
 ****
 
 ### Application Architecture
