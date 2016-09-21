@@ -124,12 +124,12 @@ public class PostTweetFragmentPresenter {
             }
         }
         builder.show();
-        if (previousFragmentID == PER_DETAIL) {
-            view.getFragmentManager().popBackStack();
-        } else {
-            view.getFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
-        }
+//        if (previousFragmentID == PER_DETAIL) {
+//            // do nothing
+//        } else {
+//            view.getFragmentManager().beginTransaction()
+//                    .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
+//        }
     }
 
     public String twitterContentForPerformance() {

@@ -68,7 +68,7 @@ public class RecyclerViewBuskerAdapter extends RecyclerView.Adapter<ViewHolderBu
                     bundle.putInt("previousFragmentID", previousFragmentID);
                     profileFragment.setArguments(bundle);
                     // transact to performanceDetailFragment
-                    activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, profileFragment).addToBackStack(null).commit();
+                    activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, profileFragment).commit();
                 }
             });
         }

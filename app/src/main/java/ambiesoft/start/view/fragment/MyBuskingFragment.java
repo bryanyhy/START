@@ -110,8 +110,7 @@ public class MyBuskingFragment extends Fragment {
         myProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment myProfile = new ProfileFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, myProfile).addToBackStack(null).commit();
+                presenter.transactToProfile();
             }
         });
     }

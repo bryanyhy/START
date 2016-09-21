@@ -99,6 +99,7 @@ public class PerformanceDetailFragmentPresenter {
         view.getFragmentManager().beginTransaction().replace(R.id.content_frame, postTweetFragment).addToBackStack(null).commit();
     }
 
+
     // Method called when user clicked the "back" button
     public void backToPreviousFragment() {
         Log.i("System.out","ID:" + previousFragmentID);

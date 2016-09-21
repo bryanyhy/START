@@ -32,6 +32,7 @@ import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.FilterResultFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
+import ambiesoft.start.view.fragment.ProfileFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
@@ -145,6 +146,14 @@ public class MyBuskingFragmentPresenter {
         bundle.putInt("previousFragmentID", MY_BUSKING_FRAGMENT_ID);
         heatMapFragment.setArguments(bundle);
         view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, heatMapFragment).remove(view).commit();
+    }
+
+    public void transactToProfile() {
+        Fragment myProfile = new ProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("previousFragmentID", MY_BUSKING_FRAGMENT_ID);
+        myProfile.setArguments(bundle);
+        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, myProfile).commit();
     }
 
     public void imageButtonSelection(ImageButton imageButton){

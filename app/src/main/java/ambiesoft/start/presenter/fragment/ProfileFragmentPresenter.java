@@ -26,7 +26,9 @@ import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.model.utility.RecyclerViewAdapter;
 import ambiesoft.start.view.activity.MainActivity;
+import ambiesoft.start.view.fragment.BuskerListFragment;
 import ambiesoft.start.view.fragment.EditProfileFragment;
+import ambiesoft.start.view.fragment.MyBuskingFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
 import ambiesoft.start.view.fragment.ProfileFragment;
 
@@ -78,13 +80,14 @@ public class ProfileFragmentPresenter {
             // if bundle exists, get the filter values
             selectedBusker = getSelectedBuskerFromBundle(bundle);
             previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
-            // set the textView from data in bundle accordingly
-            view.buskerName.setText(selectedBusker.getUsername());
-            view.buskerHashtag.setText(selectedBusker.getHashtag());
-            view.buskerCategory.setText(selectedBusker.getCategory());
-            view.buskerDesc.setText(selectedBusker.getDesc());
-            setUserPortraitUri(selectedBusker.getEmail(), view.getContext(), view.portrait);
-//            setFireBaseListenerOnUser();
+            if (previousFragmentID == BUSKER_LIST_TRANSACTION) {
+                // set the textView from data in bundle accordingly
+                view.buskerName.setText(selectedBusker.getUsername());
+                view.buskerHashtag.setText(selectedBusker.getHashtag());
+                view.buskerCategory.setText(selectedBusker.getCategory());
+                view.buskerDesc.setText(selectedBusker.getDesc());
+                setUserPortraitUri(selectedBusker.getEmail(), view.getContext(), view.portrait);
+            }
         }
     }
 
@@ -120,6 +123,14 @@ public class ProfileFragmentPresenter {
         editProfileFragment.setArguments(bundle);
         // transact to performanceDetailFragment
         view.getFragmentManager().beginTransaction().replace(R.id.content_frame, editProfileFragment, "EditProfileFragment").commit();
+    }
+
+    public void backToPreviousFragment() {
+        if (previousFragmentID == BUSKER_LIST_TRANSACTION) {
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new BuskerListFragment()).remove(view).commit();
+        } else {
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyBuskingFragment()).remove(view).commit();
+        }
     }
 
     // set the Firebase data listener, and update the data retrieved in the application

@@ -35,6 +35,7 @@ public class ProfileFragment extends Fragment {
 
     public TextView buskerName, buskerHashtag, buskerCategory, buskerDesc, editProfile;
     public ImageView portrait;
+    public Button backButton;
     public LinearLayout buskerPerformance;
     public RecyclerView recyclerView;
 
@@ -50,13 +51,13 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         buskerName = (TextView) view.findViewById(R.id.profileBuskerName);
         buskerHashtag = (TextView) view.findViewById(R.id.buskerHashtag);
         buskerCategory = (TextView) view.findViewById(R.id.buskerCategory);
         buskerDesc = (TextView) view.findViewById(R.id.buskerDesc);
         buskerPerformance = (LinearLayout) view.findViewById(R.id.busker_per_content);
         editProfile = (TextView) view.findViewById(R.id.editProfile);
+        backButton = (Button) view.findViewById(R.id.backButton);
         recyclerView = (RecyclerView) view.findViewById(R.id.perRecyclerView);
         portrait = (ImageView) view.findViewById(R.id.profilePortrait);
         return view;
@@ -89,6 +90,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                presenter.backToPreviousFragment();
+            }
+        });
     }
 
     // setup the menu items on the top action bar

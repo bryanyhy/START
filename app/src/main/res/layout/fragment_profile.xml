@@ -18,8 +18,8 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             />
 
 
@@ -83,7 +83,19 @@
         android:text="No description yet"
         android:layout_gravity="center_vertical"
         android:id="@+id/buskerDesc"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/backButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/buttonText"
+        android:background="@color/theme1"/>
 
     <LinearLayout
         android:orientation="vertical"
