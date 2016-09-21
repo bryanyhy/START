@@ -29,14 +29,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/portrait"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginTop="1dp"
                     android:layout_marginLeft="1dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     />
+
+                <!--<ImageView-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="80dp"-->
+                    <!--android:id="@+id/portrait"-->
+                    <!--android:layout_marginBottom="@dimen/activity_vertical_margin"-->
+                    <!--android:layout_marginTop="1dp"-->
+                    <!--android:layout_marginLeft="1dp"-->
+                    <!--/>-->
 
                 <LinearLayout
                     android:orientation="vertical"
