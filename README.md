@@ -83,7 +83,7 @@ Hotfixes for Iteration 2
 13 Sep 2016  
 Improvement on Iteration 2  
   
-3.1
+3.1  
 14 Sep 2016  
 Update Welcome Page  
   
