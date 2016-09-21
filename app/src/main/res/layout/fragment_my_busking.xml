@@ -8,7 +8,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
 
         >
 
@@ -16,55 +16,85 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="100dp">
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/createNewButton"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/ic_create_new"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Busking"
-                    android:layout_gravity="center"
-                    android:textColor="@color/buttonText"
-                    android:id="@+id/textView2" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginRight="100dp">
+                android:layout_height="match_parent">
 
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/heatMapButton"
-                    android:background="@drawable/ic_heatmap"
-                    android:layout_marginRight="10dp"/>
-
-                <TextView
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HeatMap"
-                    android:id="@+id/textView3"
-                    android:textColor="@color/buttonText"/>
-            </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/createNewButton"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="left"
+                        android:background="@drawable/ic_create_new"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Busking"
+                        android:layout_gravity="center"
+                        android:textColor="@color/buttonText"
+                        android:id="@+id/textView2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="50dp"
+                    >
+
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/heatMapButton"
+                        android:background="@drawable/ic_heatmap"
+                        android:layout_marginLeft="9dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HeatMap"
+                        android:id="@+id/textView3"
+                        android:textColor="@color/buttonText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="50dp"
+                    >
+
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/myProfileButton"
+                        android:background="@drawable/ic_account"
+                        android:layout_marginLeft="9dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Profile"
+                        android:textColor="@color/buttonText"/>
+                </LinearLayout>
+            </TableRow>
+
 
         </LinearLayout>
 

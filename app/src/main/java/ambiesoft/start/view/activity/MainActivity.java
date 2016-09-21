@@ -197,13 +197,13 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
                             .title(tabBarItemName[0])
                             .build()
             );
-            models.add(
-                    new NavigationTabBar.Model.Builder(
-                            getResources().getDrawable(R.drawable.ic_menu_2),
-                            Color.parseColor(colors[1]))
-                            .title(tabBarItemName[1])
-                            .build()
-            );
+//            models.add(
+//                    new NavigationTabBar.Model.Builder(
+//                            getResources().getDrawable(R.drawable.ic_menu_2),
+//                            Color.parseColor(colors[1]))
+//                            .title(tabBarItemName[1])
+//                            .build()
+//            );
             models.add(
                     new NavigationTabBar.Model.Builder(
                             getResources().getDrawable(R.drawable.twitter),

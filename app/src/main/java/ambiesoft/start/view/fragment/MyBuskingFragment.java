@@ -43,7 +43,7 @@ public class MyBuskingFragment extends Fragment {
 
     public RecyclerView recyclerView;
     public RecyclerViewEditableAdapter adapter;
-    public ImageButton createNew, heatMap;
+    public ImageButton createNew, heatMap, myProfile;
 
     private AppBarLayout abl;
     private NavigationTabBar navigationTabBar;
@@ -59,6 +59,7 @@ public class MyBuskingFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         createNew = (ImageButton) view.findViewById(R.id.createNewButton);
         heatMap = (ImageButton) view.findViewById(R.id.heatMapButton);
+        myProfile = (ImageButton) view.findViewById(R.id.myProfileButton);
 
         // Inflate the layout for this fragment
         return view;
@@ -103,6 +104,14 @@ public class MyBuskingFragment extends Fragment {
 //                showAlertBox("Sorry", "Functions will be added in next version.", MyBuskingFragment.this.getActivity());
                 presenter.transactToHeatMap();
 
+            }
+        });
+
+        myProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment myProfile = new ProfileFragment();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, myProfile).addToBackStack(null).commit();
             }
         });
     }

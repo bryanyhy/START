@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
     public RecyclerView recyclerView;
     public RecyclerViewAdapter adapter;
 
+    private ImageView searchBar;
+
     private FloatingActionButton fab;
     private NavigationTabBar ntb;
     private AppBarLayout abl;
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // setting up the floating action button, to access from home to map fragment
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        searchBar = (ImageView) view.findViewById(R.id.searchbar);
 
         return view;
     }
@@ -78,6 +81,14 @@ public class HomeFragment extends Fragment {
         //set backdrop image
         ImageView banner = ((MainActivity) getActivity()).getBackdrop();
         banner.setBackgroundResource(R.drawable.home_banner);
+
+        searchBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment filterFragment = new FilterResultFragment();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, filterFragment).addToBackStack(null).commit();
+            }
+        });
 
         setRecyclerViewAdapter();
         // show the floating action button in main activity
