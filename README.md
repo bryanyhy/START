@@ -74,6 +74,29 @@ Implement photo uploading functions on user registration
 5 Sep 2016  
 Improve UI and fixing bugs on user registration and login system;  
 Improve UI layout on all functions  
+  
+2.9  
+8 Sep 2016  
+Hotfixes for Iteration 2    
+****
+3.0  
+13 Sep 2016  
+Improvement on Iteration 2  
+  
+3.1
+14 Sep 2016  
+Update Welcome Page  
+  
+3.2  
+18 Sep 2016  
+Implement Twitter SDK;  
+Add Tweet Result list;  
+Add posting Tweet function  
+  
+3.3  
+20 Sep 2016  
+Add busker list and its functions;  
+Add busker profile and its edit function  
 ****
 
 ### Application Architecture
