@@ -166,7 +166,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
         mNumberPicker.setMinValue(1);
         // if this fragment is just created
         if (selectedDuration == 0) {
-            // set the default duration selection to be 1
+            // set the default duration selection to be 30
             selectedDuration = 30;
             mNumberPicker.setValue(selectedDuration);
         } else {

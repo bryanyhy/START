@@ -80,6 +80,7 @@ public class ProfileFragmentPresenter {
             previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
             // set the textView from data in bundle accordingly
             view.buskerName.setText(selectedBusker.getUsername());
+            view.buskerHashtag.setText(selectedBusker.getHashtag());
             view.buskerCategory.setText(selectedBusker.getCategory());
             view.buskerDesc.setText(selectedBusker.getDesc());
             setUserPortraitUri(selectedBusker.getEmail(), view.getContext(), view.portrait);
@@ -190,6 +191,7 @@ public class ProfileFragmentPresenter {
                 if (users.size() != 0) {
                     selectedBusker = users.get(0);
                     view.buskerName.setText(selectedBusker.getUsername());
+                    view.buskerHashtag.setText(selectedBusker.getHashtag());
                     view.buskerCategory.setText(selectedBusker.getCategory());
                     view.buskerDesc.setText(selectedBusker.getDesc());
                     setUserPortraitUri(selectedBusker.getEmail(), view.getContext(), view.portrait);

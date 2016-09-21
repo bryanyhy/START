@@ -53,32 +53,19 @@ public class EditProfileFragmentPresenter {
     }
 
     public void saveChanges() {
-        username = view.username.getText().toString();
         category = view.userCategory.getText().toString();
         desc = view.userDesc.getText().toString();
-        if (validInput(username)) {
-            User user = new User(selectedBusker.getEmail(), username, category, desc, selectedBusker.getHashtag());
-            updateUser(user, selectedBusker.getKey());
-            if (portraitUri != null) {
-                uploadUserPortrait(portraitUri, selectedBusker.getEmail(), view.getActivity());
-            }
-            Toast.makeText(view.getActivity(), "Profile is updated.", Toast.LENGTH_SHORT).show();
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new ProfileFragment()).remove(view).commit();
-        } else {
-            showAlertBox("Error", "Username can't be empty.", view.getActivity());
+        User user = new User(selectedBusker.getEmail(), selectedBusker.getUsername(), category, desc, selectedBusker.getHashtag());
+        updateUser(user, selectedBusker.getKey());
+        if (portraitUri != null) {
+            uploadUserPortrait(portraitUri, selectedBusker.getEmail(), view.getActivity());
         }
+        Toast.makeText(view.getActivity(), "Profile is updated.", Toast.LENGTH_SHORT).show();
+        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new ProfileFragment()).remove(view).commit();
     }
 
     public void backToPreviousFragment() {
         view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new ProfileFragment()).remove(view).commit();
-    }
-
-    public boolean validInput(String username) {
-        if (username.trim().matches("")) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public void updatePortrait() {
@@ -104,14 +91,6 @@ public class EditProfileFragmentPresenter {
     public void getPortraitUri(Intent data) {
         portraitUri = data.getData();
         view.portrait.setImageURI(portraitUri);
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     //    // save the uri once image is selected by user from Gallery

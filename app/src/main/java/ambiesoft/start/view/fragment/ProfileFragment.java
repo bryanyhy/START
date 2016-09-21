@@ -33,7 +33,7 @@ import ambiesoft.start.view.activity.MainActivity;
 public class ProfileFragment extends Fragment {
 
 
-    public TextView buskerName, buskerCategory, buskerDesc, editProfile;
+    public TextView buskerName, buskerHashtag, buskerCategory, buskerDesc, editProfile;
     public ImageView portrait;
     public LinearLayout buskerPerformance;
     public RecyclerView recyclerView;
@@ -52,6 +52,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         buskerName = (TextView) view.findViewById(R.id.profileBuskerName);
+        buskerHashtag = (TextView) view.findViewById(R.id.buskerHashtag);
         buskerCategory = (TextView) view.findViewById(R.id.buskerCategory);
         buskerDesc = (TextView) view.findViewById(R.id.buskerDesc);
         buskerPerformance = (LinearLayout) view.findViewById(R.id.busker_per_content);

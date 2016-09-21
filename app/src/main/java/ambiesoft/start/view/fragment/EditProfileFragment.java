@@ -26,8 +26,8 @@ import static ambiesoft.start.model.utility.SoftKeyboard.hideSoftKeyboard;
  */
 public class EditProfileFragment extends Fragment {
 
-    public TextView updatePortrait;
-    public EditText username, userCategory, userDesc;
+    public TextView updatePortrait, username;
+    public EditText userCategory, userDesc;
     public ImageView portrait;
     private Button saveBtn, backBtn;
 
@@ -42,7 +42,7 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_edit, container, false);
         updatePortrait = (TextView) view.findViewById(R.id.updatePortrait);
-        username = (EditText) view.findViewById(R.id.username);
+        username = (TextView) view.findViewById(R.id.username);
         userCategory = (EditText) view.findViewById(R.id.userCategory);
         userDesc = (EditText) view.findViewById(R.id.userDesc);
         portrait = (ImageView) view.findViewById(R.id.portrait);

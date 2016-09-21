@@ -44,6 +44,16 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/buskerHashtag"
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp" />
+
+            <TextView
+                android:textColor="@color/buttonText"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="No category yet"
                 android:id="@+id/buskerCategory"
                 android:layout_gravity="center_vertical"
