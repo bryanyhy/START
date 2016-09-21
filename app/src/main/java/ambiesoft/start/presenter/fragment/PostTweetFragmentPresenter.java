@@ -29,7 +29,7 @@ import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerform
  */
 public class PostTweetFragmentPresenter {
 
-    private static final String HASHTAG = "#STARTinMelb";
+    private static final String HASHTAG = "#STARTMelb";
     private static final String APP_PACKAGE_NAME = "com.twitter.android";
     private static final int GALLERY_INTENT = 2;
     private final static int PER_DETAIL = 9;
@@ -124,6 +124,12 @@ public class PostTweetFragmentPresenter {
             }
         }
         builder.show();
+        if (previousFragmentID == PER_DETAIL) {
+            view.getFragmentManager().popBackStack();
+        } else {
+            view.getFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
+        }
     }
 
     public String twitterContentForPerformance() {
