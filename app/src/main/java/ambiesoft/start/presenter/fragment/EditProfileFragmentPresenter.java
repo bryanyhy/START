@@ -57,7 +57,7 @@ public class EditProfileFragmentPresenter {
         category = view.userCategory.getText().toString();
         desc = view.userDesc.getText().toString();
         if (validInput(username)) {
-            User user = new User(selectedBusker.getEmail(), username, category, desc);
+            User user = new User(selectedBusker.getEmail(), username, category, desc, selectedBusker.getHashtag());
             updateUser(user, selectedBusker.getKey());
             if (portraitUri != null) {
                 uploadUserPortrait(portraitUri, selectedBusker.getEmail(), view.getActivity());

@@ -29,7 +29,7 @@ import ambiesoft.start.view.fragment.TwitterResultListFragment;
  */
 public class TwitterResultListFragmentPresenter {
 
-    private static final String HASHTAG = "#STARTinMelb";
+    private static final String HASHTAG = "#startinmelb";
 //    #STARTinMelb
 
     private TwitterResultListFragment view;
@@ -44,6 +44,7 @@ public class TwitterResultListFragmentPresenter {
     }
 
     public void twitterResultListSetup() {
+        Log.i("System.out", "run twitter list");
         searchTimeline = new SearchTimeline.Builder()
                 .query(HASHTAG)
                 .build();
@@ -55,6 +56,11 @@ public class TwitterResultListFragmentPresenter {
         adapter = new TweetTimelineListAdapter.Builder(view.getActivity())
                 .setTimeline(searchTimeline)
                 .build();
+
+//        final TweetTimelineListAdapter timelineAdapter = new TweetTimelineListAdapter(view.getContext(), searchTimeline);
+
+//        view.tweetList.setAdapter(timelineAdapter);
+
         view.tweetList.setAdapter(adapter);
         view.tweetList.setNestedScrollingEnabled(true);
 

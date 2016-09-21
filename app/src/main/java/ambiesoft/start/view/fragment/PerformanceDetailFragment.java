@@ -32,7 +32,7 @@ public class PerformanceDetailFragment extends Fragment {
     public TextView timeText;
     public TextView descText;
     public TextView locText;
-    private Button backButton;
+    private Button postTweetButton, backButton;
     public ImageView portrait;
 
     private AppBarLayout abl;
@@ -50,6 +50,13 @@ public class PerformanceDetailFragment extends Fragment {
         descText = (TextView) view.findViewById(R.id.descText);
         locText = (TextView) view.findViewById(R.id.locText);
         portrait = (ImageView) view.findViewById(R.id.portrait);
+        postTweetButton = (Button) view.findViewById(R.id.postTweetButton);
+        postTweetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                presenter.postTweet();
+            }
+        });
         backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

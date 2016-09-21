@@ -168,8 +168,9 @@ public class FirebaseUtility {
             String email = dataSnapshot.child("email").getValue().toString();
             String category = dataSnapshot.child("category").getValue().toString();
             String desc = dataSnapshot.child("desc").getValue().toString();
+            String hashtag = dataSnapshot.child("hashtag").getValue().toString();
             User user;
-            user = new User(key, email, username, category, desc);
+            user = new User(key, email, username, category, desc, hashtag);
             tempUserList.add(user);
         }
         // return the ArrayList

@@ -205,7 +205,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Registration Success.", Toast.LENGTH_LONG).show();
                                             setupFirebase(RegisterActivity.this);
-                                            saveUser(new User(email, username, "No category yet", "No description yet"));
+
+                                            saveUser(new User(email, username, "No category yet", "No description yet", hashtagForBusker(username)));
                                             if (portraitUri != null) {
                                                 uploadUserPortrait(portraitUri, emailInput, RegisterActivity.this);
                                             }
@@ -223,6 +224,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 showAlertBox("Error", "Password must contain 6 to 20 characters, and at least 1 digit and 1 uppercase character.", this);
             }
         }
+    }
+
+    public String hashtagForBusker(String username) {
+        String hashtag = "#START" + username.trim().replace(" ", "").toLowerCase();
+        return hashtag;
     }
 
     @Override

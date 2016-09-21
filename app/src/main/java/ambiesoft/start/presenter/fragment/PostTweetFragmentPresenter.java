@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
@@ -13,10 +14,15 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.io.File;
 
 import ambiesoft.start.R;
+import ambiesoft.start.model.dataclass.Performance;
+import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.view.fragment.PostTweetFragment;
 import ambiesoft.start.view.fragment.TwitterResultListFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
+import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedBuskerFromBundle;
+import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
 
 /**
  * Created by Bryanyhy on 17/9/2016.
@@ -26,13 +32,28 @@ public class PostTweetFragmentPresenter {
     private static final String HASHTAG = "#STARTinMelb";
     private static final String APP_PACKAGE_NAME = "com.twitter.android";
     private static final int GALLERY_INTENT = 2;
+    private final static int PER_DETAIL = 9;
 
     private PostTweetFragment view;
     private Uri imageUrl;
     private String content;
+    private int previousFragmentID;
+    private User selectedBusker;
+    private Performance selectedPerformance;
 
     public PostTweetFragmentPresenter(PostTweetFragment view) {
         this.view = view;
+        getBundleFromPreviousFragment();
+    }
+
+    public void getBundleFromPreviousFragment() {
+        Bundle bundle = view.getArguments();
+        if (bundle != null) {
+            // if bundle exists, get the filter values
+            selectedBusker = getSelectedBuskerFromBundle(bundle);
+            selectedPerformance = getSelectedPerformanceFromBundle(bundle);
+            previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
+        }
     }
 
     // once the select image button is clicked, show Gallery to user
@@ -75,7 +96,6 @@ public class PostTweetFragmentPresenter {
             Log.i("System.out", "" + data.toUri(0));
             imageUrl = data.getData();
             view.imageView.setImageURI(imageUrl);
-
         }
     }
 
@@ -83,14 +103,38 @@ public class PostTweetFragmentPresenter {
         content = view.tweetContent.getText().toString();
         TweetComposer.Builder builder;
         if (imageUrl != null) {
-            builder = new TweetComposer.Builder(view.getActivity())
-                    .image(imageUrl)
-                    .text(content + " " + HASHTAG);
+            if (previousFragmentID == PER_DETAIL) {
+                builder = new TweetComposer.Builder(view.getActivity())
+                        .image(imageUrl)
+                        .text(content + "\n\n" + twitterContentForPerformance() + "\n\n" + HASHTAG
+                                + " " + selectedBusker.getHashtag());
+            } else {
+                builder = new TweetComposer.Builder(view.getActivity())
+                        .image(imageUrl)
+                        .text(content + "\n" + HASHTAG);
+            }
         } else {
-            builder = new TweetComposer.Builder(view.getActivity())
-                    .text(content + " " + HASHTAG);
+            if (previousFragmentID == PER_DETAIL) {
+                builder = new TweetComposer.Builder(view.getActivity())
+                        .text(content + "\n" + twitterContentForPerformance() + "\n" + HASHTAG
+                                + " " + selectedBusker.getHashtag());
+            } else {
+                builder = new TweetComposer.Builder(view.getActivity())
+                        .text(content + "\n" + HASHTAG);
+            }
         }
         builder.show();
+    }
+
+    public String twitterContentForPerformance() {
+        String[] splitDate = selectedPerformance.getDate().split("/", 3);
+        String date = splitDate[0] + "/" + splitDate[1];
+
+        String tweetContent = selectedPerformance.getName() + "\n" +
+                date + "\n" +
+                selectedPerformance.getsTime() + "-" + selectedPerformance.geteTime() + "\n" +
+                selectedPerformance.getAddress();
+        return tweetContent;
     }
 
     public static boolean isTwitterInstalled(Context context) {
@@ -104,8 +148,12 @@ public class PostTweetFragmentPresenter {
     }
 
     public void back() {
-        view.getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
+        if (previousFragmentID == PER_DETAIL) {
+            view.getFragmentManager().popBackStack();
+        } else {
+            view.getFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, new TwitterResultListFragment(), "TwitterFragment").remove(view).commit();
+        }
     }
 
 }

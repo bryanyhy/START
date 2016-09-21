@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Display;
@@ -33,8 +34,6 @@ import ambiesoft.start.view.activity.MainActivity;
  */
 public class TwitterResultListFragment extends Fragment {
 
-    private static final String HASHTAG = "#STARTinMelb";
-
     public Button postTweetButton;
     public ListView tweetList;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -61,6 +60,10 @@ public class TwitterResultListFragment extends Fragment {
         // collapse the app bar layout
         AppBarLayout abl = ((MainActivity) getActivity()).getAppBarLayout();
         abl.setExpanded(false);
+
+        // hide the floating action button in main activity
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFloatingActionButton();
+        fab.hide();
 
         if (presenter == null) {
             presenter = new TwitterResultListFragmentPresenter(this);

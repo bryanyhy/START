@@ -30,6 +30,7 @@ import ambiesoft.start.model.utility.RecyclerViewEditableAdapter;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.FilterResultFragment;
+import ambiesoft.start.view.fragment.HeatMapFragment;
 import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
@@ -136,6 +137,14 @@ public class MyBuskingFragmentPresenter {
         view.adapter = new RecyclerViewEditableAdapter(performances, view.getActivity(), MY_BUSKING_FRAGMENT_ID);
         view.recyclerView.setAdapter(view.adapter);
         view.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+    }
+
+    public void transactToHeatMap() {
+        Fragment heatMapFragment = new HeatMapFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("previousFragmentID", MY_BUSKING_FRAGMENT_ID);
+        heatMapFragment.setArguments(bundle);
+        view.getFragmentManager().beginTransaction().replace(R.id.content_frame_map, heatMapFragment).remove(view).commit();
     }
 
     public void imageButtonSelection(ImageButton imageButton){

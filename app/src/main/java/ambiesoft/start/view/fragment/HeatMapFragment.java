@@ -44,7 +44,7 @@ public class HeatMapFragment extends Fragment {
     private HeatMapFragmentPresenter presenter;
     private PlaceAutocompleteFragment autocompleteFragment;
     private AppBarLayout abl;
-    private Button confirmButton;
+    public Button confirmButton;
     private Spinner daySpinner;
     private Spinner timeSpinner;
 

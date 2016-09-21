@@ -14,22 +14,25 @@ public class User implements Parcelable {
     private String username;
     private String category;
     private String desc;
+    private String hashtag;
 
     public User() {}
 
-    public User(String key, String email, String username, String category, String desc) {
+    public User(String key, String email, String username, String category, String desc, String hashtag) {
         this.key = key;
         this.email = email;
         this.username = username;
         this.category = category;
         this.desc = desc;
+        this.hashtag = hashtag;
     }
 
-    public User(String email, String username, String category, String desc) {
+    public User(String email, String username, String category, String desc, String hashtag) {
         this.email = email;
         this.username = username;
         this.category = category;
         this.desc = desc;
+        this.hashtag = hashtag;
     }
 
     public String getKey() {
@@ -72,12 +75,21 @@ public class User implements Parcelable {
         this.desc = desc;
     }
 
+    public String getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
+    }
+
     protected User(Parcel in) {
         key = in.readString();
         email = in.readString();
         username = in.readString();
         category = in.readString();
         desc = in.readString();
+        hashtag = in.readString();
     }
 
     @Override
@@ -92,6 +104,7 @@ public class User implements Parcelable {
         dest.writeString(username);
         dest.writeString(category);
         dest.writeString(desc);
+        dest.writeString(hashtag);
     }
 
     @SuppressWarnings("unused")

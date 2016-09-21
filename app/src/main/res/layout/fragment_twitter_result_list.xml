@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Post a Tweet"
+        android:textColor="@color/buttonText"
+        android:background="@color/theme3"
         android:id="@+id/postTweetButton" />
 
     <android.support.v4.widget.SwipeRefreshLayout

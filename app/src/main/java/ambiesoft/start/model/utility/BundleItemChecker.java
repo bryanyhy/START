@@ -132,8 +132,8 @@ public class BundleItemChecker {
             // return the object from bundle
             return bundle.getDouble("latFromPreviousFragment");
         } else {
-            // return null if no object in bundle
-            return null;
+            // return value if no object in bundle
+            return -37.813243;
         }
     }
 
@@ -143,8 +143,8 @@ public class BundleItemChecker {
             // return the object from bundle
             return bundle.getDouble("lngFromPreviousFragment");
         } else {
-            // return null if no object in bundle
-            return null;
+            // return default value if no object in bundle
+            return 144.962762;
         }
     }
 

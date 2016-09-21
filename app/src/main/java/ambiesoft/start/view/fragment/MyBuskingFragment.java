@@ -100,7 +100,8 @@ public class MyBuskingFragment extends Fragment {
         heatMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertBox("Sorry", "Functions will be added in next version.", MyBuskingFragment.this.getActivity());
+//                showAlertBox("Sorry", "Functions will be added in next version.", MyBuskingFragment.this.getActivity());
+                presenter.transactToHeatMap();
 
             }
         });

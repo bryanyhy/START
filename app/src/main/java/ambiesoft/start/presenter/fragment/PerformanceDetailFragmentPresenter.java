@@ -24,6 +24,7 @@ import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.GoogleMapFragment;
 import ambiesoft.start.view.fragment.HomeFragment;
 import ambiesoft.start.view.fragment.PerformanceDetailFragment;
+import ambiesoft.start.view.fragment.PostTweetFragment;
 import ambiesoft.start.view.fragment.ProfileFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
@@ -46,6 +47,7 @@ import static ambiesoft.start.model.utility.ProgressLoadingDialog.dismissProgres
 public class PerformanceDetailFragmentPresenter {
 
     private final static String DB_URL = "https://start-c9adf.firebaseio.com/user";
+    private final static int PER_DETAIL = 9;
 
     private PerformanceDetailFragment view;
     private Firebase firebase;
@@ -85,6 +87,16 @@ public class PerformanceDetailFragmentPresenter {
             setUserPortraitUri(selectedPerformance.getEmail(), view.getContext(), view.portrait);
             setFireBaseListenerOnUser();
         }
+    }
+
+    public void postTweet() {
+        Fragment postTweetFragment = new PostTweetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("buskerDetailFromPreviousFragment", selectedBusker);
+        bundle.putParcelable("performancesDetailFromPreviousFragment", selectedPerformance);
+        bundle.putInt("previousFragmentID", PER_DETAIL);
+        postTweetFragment.setArguments(bundle);
+        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, postTweetFragment).addToBackStack(null).commit();
     }
 
     // Method called when user clicked the "back" button
@@ -130,7 +142,7 @@ public class PerformanceDetailFragmentPresenter {
         }
     }
 
-    // set the FirebaseUtility data listener, and update the data retrieved in the application
+    // set the Firebase data listener, and update the data retrieved in the application
     public void setFireBaseListenerOnUser() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL);
@@ -149,6 +161,7 @@ public class PerformanceDetailFragmentPresenter {
                 // check if any matching result is retrieved
                 if (users.size() != 0) {
                     view.buskerName.setText(users.get(0).getUsername());
+                    selectedBusker = users.get(0);
                 } else {
                 }
             }

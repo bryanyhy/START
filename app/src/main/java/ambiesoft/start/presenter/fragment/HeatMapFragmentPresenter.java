@@ -45,9 +45,11 @@ import ambiesoft.start.model.dataclass.PedSensor;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
+import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.AlertBox.showAlertBoxWithUnderline;
+import static ambiesoft.start.model.utility.BundleItemChecker.getPreviousFragmentIDFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLatFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedLngFromBundle;
 import static ambiesoft.start.model.utility.BundleItemChecker.getSelectedPerformanceFromBundle;
@@ -61,6 +63,8 @@ import static ambiesoft.start.model.utility.ProgressLoadingDialog.showProgressDi
  * Created by Bryanyhy on 28/8/2016.
  */
 public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final int MY_BUSKING_FRAGMENT_ID = 2;
 
     private HeatMapFragment view;
     private GoogleMap mMap;
@@ -76,6 +80,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     private TileOverlay mOverlay;
     private int selectedDay;
     private int selectedTime;
+    private int previousFragmentID = 0;
 
     OnHeadlineSelectedListener mCallback;
 
@@ -86,6 +91,10 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
 
     public HeatMapFragmentPresenter(HeatMapFragment view) {
         this.view = view;
+        getPreviousFragmentID();
+        if (previousFragmentID == MY_BUSKING_FRAGMENT_ID) {
+            this.view.confirmButton.setText("Back");
+        }
         getLatAndLngBundleFromPreviousFragment();
         ((MainActivity) view.getActivity()).getNavigationTabBar().hide();
         selectedDay = 0;
@@ -98,6 +107,14 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         } catch (ClassCastException e) {
             throw new ClassCastException(view.getActivity().toString()
                     + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public void getPreviousFragmentID() {
+        Bundle bundle = view.getArguments();
+        if (bundle != null) {
+            // if bundle exists, get the filter values
+            previousFragmentID = getPreviousFragmentIDFromBundle(bundle);
         }
     }
 
@@ -161,9 +178,9 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     public void setMarkerLocation(LatLng location) {
         this.locationMarker = mMap.addMarker(new MarkerOptions()
                 .position(location)
-                .title("Drag it to your performance location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .draggable(true));
+                .title("Your performance location")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//                .draggable(true));
     }
 
 //    public void setMarkerDragListener() {
@@ -232,8 +249,12 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
     }
 
     public void confirmLocation() {
-        mCallback.onLocationSelected(locationAddress, selectedLat, selectedLng);
-        view.getFragmentManager().popBackStack();
+        if (previousFragmentID == MY_BUSKING_FRAGMENT_ID) {
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyBuskingFragment()).remove(view).commit();
+        } else {
+            mCallback.onLocationSelected(locationAddress, selectedLat, selectedLng);
+            view.getFragmentManager().popBackStack();
+        }
     }
 
     // class used for setup the Pedestrian Sensor location in City of Melbourne
