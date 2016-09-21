@@ -109,6 +109,7 @@ public class LogInActivity extends AppCompatActivity{
 
 
         image = (MovingImageView) findViewById(R.id.imageBg);
+        image.getMovingAnimator().setSpeed(1000);
         image.getMovingAnimator().addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
