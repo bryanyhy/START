@@ -98,7 +98,7 @@ public class HeatMapFragmentPresenter implements OnMapReadyCallback, GoogleApiCl
         getLatAndLngBundleFromPreviousFragment();
         ((MainActivity) view.getActivity()).getNavigationTabBar().hide();
         selectedDay = 0;
-        selectedTime = 0;
+        selectedTime = 13;
         connectGoogleApiClient();
         geocoder = new Geocoder(view.getContext(), Locale.getDefault());
         loadGoogleMapFragment();

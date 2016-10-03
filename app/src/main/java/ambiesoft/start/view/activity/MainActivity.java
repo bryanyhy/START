@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
             navigationTabBar.setModelIndex(0, true);
         } else if (userType == REG_USER) {
             // default selection on the NTB, once application starts
-            navigationTabBar.setModelIndex(3, true);
+            navigationTabBar.setModelIndex(2, true);
         } else {
         }
     }

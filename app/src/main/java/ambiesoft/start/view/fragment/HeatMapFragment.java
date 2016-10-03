@@ -122,7 +122,7 @@ public class HeatMapFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         timeSpinner.setAdapter(adapter);
-        timeSpinner.setSelection(0,false);
+        timeSpinner.setSelection(13,false);
         timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
