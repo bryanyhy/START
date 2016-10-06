@@ -67,7 +67,7 @@ public class MyAccountFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Fragment moreFragment = new MoreFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, moreFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, moreFragment).commit();
 
             }
         });

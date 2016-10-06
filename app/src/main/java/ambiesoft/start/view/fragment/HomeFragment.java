@@ -85,8 +85,7 @@ public class HomeFragment extends Fragment {
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment filterFragment = new FilterResultFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, filterFragment).addToBackStack(null).commit();
+                presenter.filterBarSelection();
             }
         });
 

@@ -42,6 +42,7 @@ public class CreatePerformanceFragment extends Fragment {
     public Button dateButton;
     public Button sTimeButton;
     public Button durationButton;
+    private Button backButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +57,15 @@ public class CreatePerformanceFragment extends Fragment {
         dateButton = (Button) view.findViewById(R.id.dateButton);
         sTimeButton = (Button) view.findViewById(R.id.sTimeButton);
         durationButton = (Button) view.findViewById(R.id.durationButton);
+        backButton = (Button) view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment myBuskingFragment = new MyBuskingFragment();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, myBuskingFragment).commit();
+
+            }
+        });
         return view;
     }
 

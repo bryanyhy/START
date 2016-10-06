@@ -79,7 +79,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment accoutnFragment = new MyAccountFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, accoutnFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, accoutnFragment).commit();
 
             }
         });
@@ -88,14 +88,14 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment helpFragment = new HelpFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, helpFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, helpFragment).commit();
             }
         });
         version.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment versionFragment = new VersionFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, versionFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, versionFragment).commit();
 
             }
         });
@@ -104,7 +104,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment privacyFragment = new PrivacyFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, privacyFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, privacyFragment).commit();
             }
         });
 
@@ -112,7 +112,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment aboutFragment = new AboutUsFragment();
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, aboutFragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, aboutFragment).commit();
 
             }
         });

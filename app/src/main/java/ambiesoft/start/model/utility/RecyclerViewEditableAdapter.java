@@ -154,7 +154,7 @@ public class RecyclerViewEditableAdapter extends RecyclerView.Adapter<ViewHolder
         bundle.putParcelableArrayList("performanceListFromPreviousFragment", pList);
         createPerformanceFragment.setArguments(bundle);
         // pass bundle to the new createPerformanceFragment
-        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+        activity.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).commit();
     }
 
     public void deletePerformance(final Performance performance) {

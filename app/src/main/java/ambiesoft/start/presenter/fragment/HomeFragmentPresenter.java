@@ -272,4 +272,21 @@ public class HomeFragmentPresenter {
         }
     }
 
+    public void filterBarSelection() {
+        if (isNetworkAvailable(view.getContext()) == false) {
+            // if no network is detected
+            dismissProgressDialog();
+            showAlertBox("Alert", "There is no internet connection detected. Filter is disabled.", view.getActivity());
+        } else {
+            Fragment filterResultFragment = new FilterResultFragment();
+            // make a bundle with this fragment's ID and current selected date
+            Bundle bundle = new Bundle();
+            bundle.putInt("previousFragmentID", HOME_FRAGMENT_ID);
+            bundle.putString("filterDate", selectedDate);
+            filterResultFragment.setArguments(bundle);
+            // pass the bundle to new FilterResultFragment
+            fm.beginTransaction().replace(R.id.content_frame, filterResultFragment).commit();
+        }
+    }
+
 }

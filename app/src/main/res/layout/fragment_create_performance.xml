@@ -177,7 +177,7 @@
                 android:id="@+id/locationButton"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/buttonText"
-                android:background="@color/theme5"/>
+                android:background="@color/theme4"/>
         </TableRow>
 
         <TableRow
@@ -193,7 +193,23 @@
                 android:text="Create"
                 android:id="@+id/createButton"
                 android:textColor="@color/buttonText"
-                android:background="@color/theme4"/>
+                android:background="@color/theme5"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:text="Back"
+                android:id="@+id/backButton"
+                android:textColor="@color/buttonText"
+                android:background="@color/theme1"/>
         </TableRow>
 
     </LinearLayout>

@@ -80,7 +80,7 @@
         android:layout_width="310dp"
         android:layout_height="50dp"
         android:textColor="@color/buttonText"
-        android:background="@color/theme4"
+        android:background="@color/theme1"
         android:layout_gravity="center_horizontal"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"

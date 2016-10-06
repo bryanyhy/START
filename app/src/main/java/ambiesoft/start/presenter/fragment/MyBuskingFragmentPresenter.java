@@ -166,7 +166,7 @@ public class MyBuskingFragmentPresenter {
             bundle.putParcelableArrayList("performanceListFromPreviousFragment", performances);
             createPerformanceFragment.setArguments(bundle);
             // pass bundle to the new createPerformanceFragment
-            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).addToBackStack(null).commit();
+            view.getFragmentManager().beginTransaction().replace(R.id.content_frame, createPerformanceFragment).commit();
         }
     }
 
