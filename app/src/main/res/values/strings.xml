@@ -257,6 +257,32 @@ We reserve the right to amend this Privacy Policy from time to time to reflect c
 
     </string>
 
+    <string name="License">
+\n Melbourne Pedestrian Count
+\n http://www.pedestrian.melbourne.vic.gov.au
+        \n
+        \n Melbourne Public Artwork
+        \n https://data.melbourne.vic.gov.au/data?search=Melbourne+Public+Artwork
+        \n
+        \n Google Maps Android API
+        \n https://developers.google.com/maps/documentation/android-api
+        \n
+        \n Google Places API
+        \n https://developers.google.com/places
+        \n
+        \n Google Play Services API
+        \n https://developers.google.com/android/guides/overview
+        \n
+        \n Firebase
+        \n https://firebase.google.com
+        \n
+        \n Twitter Android SDK
+        \n https://docs.fabric.io/android/fabric/overview.html
+        \n
+        \n
+
+    </string>
+
     <string name="intro">
         Two Door Cinema Club are an Irish indie rock band from Bangor and Donaghadee in County Down. The band formed in 2007 and is composed of three members: Alex Trimble, Sam Halliday, and Kevin Baird.
     </string>

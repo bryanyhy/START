@@ -27,7 +27,7 @@ import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
  */
 public class MoreFragment extends Fragment {
 
-    public TextView logout,about,privacy,version,help,account;
+    public TextView logout,about,privacy,version,help,account,license;
     private AppBarLayout abl;
     private NavigationTabBar navigationTabBar;
     //private FragmentManager fm;
@@ -51,6 +51,7 @@ public class MoreFragment extends Fragment {
         version = (TextView) view.findViewById(R.id.tvVersion);
         help = (TextView) view.findViewById(R.id.tvHelp);
         account = (TextView) view.findViewById(R.id.tvMyAccount);
+        license = (TextView) view.findViewById(R.id.tvLicense);
         return view;
     }
 
@@ -113,6 +114,15 @@ public class MoreFragment extends Fragment {
             public void onClick(View v) {
                 Fragment aboutFragment = new AboutUsFragment();
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, aboutFragment).commit();
+
+            }
+        });
+
+        license.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment licenseFragment = new LicenseFragment();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, licenseFragment).commit();
 
             }
         });
