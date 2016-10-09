@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements HeatMapFragmentPr
     public NavigationTabBar getNavigationTabBar() {return navigationTabBar;}
     //TODO
     public String getUserEmail() {return email;}
+    public int getUserType() {return userType;}
 
     public void navigationTabBarSetting() {
         final String[] tabBarItemName = getResources().getStringArray(R.array.tab_bar_array);

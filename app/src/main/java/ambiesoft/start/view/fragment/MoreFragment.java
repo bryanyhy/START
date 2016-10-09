@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
@@ -27,7 +28,11 @@ import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
  */
 public class MoreFragment extends Fragment {
 
+    private static final int NON_REG_USER = 0;
+    private static final int REG_USER = 1;
+
     public TextView logout,about,privacy,version,help,account,license;
+    public TableRow myAccountRow;
     private AppBarLayout abl;
     private NavigationTabBar navigationTabBar;
     //private FragmentManager fm;
@@ -52,6 +57,7 @@ public class MoreFragment extends Fragment {
         help = (TextView) view.findViewById(R.id.tvHelp);
         account = (TextView) view.findViewById(R.id.tvMyAccount);
         license = (TextView) view.findViewById(R.id.tvLicense);
+        myAccountRow = (TableRow) view.findViewById(R.id.myAccountRow);
         return view;
     }
 
@@ -137,6 +143,15 @@ public class MoreFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        int userType = ((MainActivity) getActivity()).getUserType();
+        if (userType == NON_REG_USER) {
+            myAccountRow.setVisibility(View.INVISIBLE);
+        } else if (userType == REG_USER) {
+            // default selection on the NTB, once application starts
+            myAccountRow.setVisibility(View.VISIBLE);
+        } else {
+        }
     }
 
 
