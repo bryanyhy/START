@@ -104,8 +104,14 @@ Add busker profile and its edit function
 21 Sep 2016  
 Add post tweet function for performance detail;  
 Fixed bugs in twitter list.
+****  
+4.0  
+9 Oct 2016  
+New Licenses fragment  
+Fixing bugs  
+Minor interface improvement  
 ****
-
+  
 ### Application Architecture
 
 This application are designed based on the Model-View-Presenter (MVP) architectual pattern.  
