@@ -15,6 +15,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 import ambiesoft.start.model.dataclass.User;
 import ambiesoft.start.model.utility.RecyclerViewBuskerAdapter;
@@ -84,7 +85,12 @@ public class BuskerListFragmentPresenter {
                 buskers = getUserListFromFirebase(ds);
                 // check if any matching result is retrieved
                 if (buskers.size() != 0) {
-
+                    Collections.sort(buskers, new Comparator<User>() {
+                        @Override
+                        public int compare(User s1, User s2) {
+                            return s1.getUsername().compareToIgnoreCase(s2.getUsername());
+                        }
+                    });
                 } else {
                     // if no matching result is found from Firebase
                     showAlertBox("Sorry", "There is no busker yet.", (Activity) view.getContext());

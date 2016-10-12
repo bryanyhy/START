@@ -28,8 +28,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/theme5" >
+                    android:layout_gravity="center_horizontal" >
 
                     <ImageButton
                         android:layout_width="40dp"
@@ -53,8 +52,7 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:background="@color/theme4" >
+                    android:layout_marginLeft="50dp" >
 
                     <ImageButton
                         android:layout_width="40dp"
@@ -76,8 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginLeft="50dp"
-                    android:background="@color/theme2" >
+                    android:layout_marginLeft="50dp" >
 
                     <ImageButton
                         android:layout_width="40dp"
