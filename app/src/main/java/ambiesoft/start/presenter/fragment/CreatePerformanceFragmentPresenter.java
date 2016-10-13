@@ -30,6 +30,7 @@ import ambiesoft.start.model.dataclass.Performance;
 import ambiesoft.start.view.activity.MainActivity;
 import ambiesoft.start.view.fragment.CreatePerformanceFragment;
 import ambiesoft.start.view.fragment.HeatMapFragment;
+import ambiesoft.start.view.fragment.MyBuskingFragment;
 
 import static ambiesoft.start.model.utility.AlertBox.showAlertBox;
 import static ambiesoft.start.model.utility.BundleItemChecker.getFilterCategoryFromBundle;
@@ -299,7 +300,7 @@ public class CreatePerformanceFragmentPresenter implements GoogleApiClient.Conne
             Toast.makeText(view.getActivity(), "Performance is updated.", Toast.LENGTH_SHORT).show();
         }
         // back to MyBuskingFragment
-        view.getFragmentManager().popBackStack();
+        view.getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyBuskingFragment()).remove(view).commit();
     }
 
     // validate if the user input is correct
