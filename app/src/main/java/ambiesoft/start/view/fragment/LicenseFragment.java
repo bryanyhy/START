@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+
 import ambiesoft.start.R;
+import ambiesoft.start.view.activity.MainActivity;
 
 /**
  * Created by Bryanyhy on 7/10/2016.
@@ -32,6 +35,13 @@ public class LicenseFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        NavigationTabBar navigationTabBar = ((MainActivity) getActivity()).getNavigationTabBar();
+        navigationTabBar.hide();
     }
 
 }

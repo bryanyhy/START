@@ -157,7 +157,7 @@
                 android:id="@+id/img6"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/ic_about"
+                android:background="@drawable/ic_choosepic"
                 android:layout_gravity="center_vertical" />
 
             <TextView

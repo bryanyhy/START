@@ -30,9 +30,9 @@
             android:singleLine="true"
             android:hint="Like: Guitar/Busker Name/Location"
             android:id="@+id/keywordInput"
-            android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textColor" />
+            android:backgroundTint="@color/buttonText"
+            android:textColor="@color/buttonText"
+            android:textColorHint="@color/colorTint" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,9 +48,9 @@
             android:singleLine="true"
             android:hint="Like: Guitar/Busker Name/Location"
             android:id="@+id/descInput"
-            android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textColor" />
+            android:backgroundTint="@color/buttonText"
+            android:textColor="@color/buttonText"
+            android:textColorHint="@color/colorTint" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,9 +66,9 @@
             android:singleLine="true"
             android:hint="Like: Little Bourke, Flinder"
             android:id="@+id/locInput"
-            android:backgroundTint="@color/colorTint"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textColor" />
+            android:backgroundTint="@color/buttonText"
+            android:textColor="@color/buttonText"
+            android:textColorHint="@color/colorTint" />
 
         <TextView
             android:layout_width="wrap_content"
