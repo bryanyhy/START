@@ -137,7 +137,7 @@ public class ProfileFragmentPresenter {
     public void setFireBaseListenerForPerformance() {
         //establish connection to firebase
         firebase = new Firebase(DB_URL_PERFORMANCE);
-        // get data that match the specific date from Firebase
+        // get data that match the specific email from Firebase
         Query queryRef = firebase.orderByChild("email").equalTo(selectedBusker.getEmail());
         // value event listener that is triggered everytime data in Firebase's Performance root is updated
         // Retrieve all performance's attributes from each post on Firebase, when any data is updated in the Firebase

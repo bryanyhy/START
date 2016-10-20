@@ -148,9 +148,9 @@ public class HomeFragmentPresenter {
         }
     }
 
-    // set the FirebaseUtility data listener, and update the data retrieved in the application
+    // set the Firebase data listener, and update the data retrieved in the application
     public void setFireBaseListener() {
-        //establish connection to firebase
+        //establish connection to Firebase
         firebase = new Firebase(DB_URL);
 
         // get data that match the specific date from Firebase
