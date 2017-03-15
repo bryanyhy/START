@@ -2,9 +2,13 @@
 
 ST.ART is an android application to help building a busker and busking fan community in City of Melbourne.  
 This application only support Android version 6.0 Marshmallow (API 23) or above.  
-System Architecture  
+
+### System Architecture  
+****
 ![alt tag](http://i64.tinypic.com/119c8kj.png)
 
+### Iterations  
+****
 - Iteration 1
 - Iteration 2
 - Iteration 3 
